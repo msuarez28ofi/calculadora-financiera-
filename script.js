@@ -1,15 +1,14 @@
 // =========================================================================
-// CONFIGURACIÓN GLOBAL Y ACTUALIZACIÓN DE TASA EN VIVO (API)
+// CONFIGURACIÓN GLOBAL Y ACTUALIZACIÓN DE TASAS EN VIVO (USD y EUR a VES)
 // =========================================================================
-// Valor de respaldo por si el usuario no tiene internet o fallan todas las APIs
-let TASA_CAMBIO_BS_USD = 40.00; 
+// Tasas estables de respaldo en caso de desconexión
+let TASA_USD_VES = 40.00; 
+let TASA_EUR_VES = 43.50; 
 
-// Función para obtener la tasa de cambio real y actualizada
-async function obtenerTasaActual() {
-    const displayTasa = document.getElementById('display-tasa');
-    displayTasa.textContent = "Cargando...";
+async function obtenerTasasActuales() {
+    const displayUSD = document.getElementById('display-tasa');
+    const displayEUR = document.getElementById('display-tasa-eur');
 
-    // Lista de APIs de respaldo en caso de que una falle
     const apis = [
         "https://open.er-api.com/v6/latest/USD",
         "https://api.exchangerate-api.com/v4/latest/USD"
@@ -20,31 +19,34 @@ async function obtenerTasaActual() {
     for (let url of apis) {
         try {
             const response = await fetch(url);
-            if (!response.ok) throw new Error("Error al conectar con la API");
+            if (!response.ok) throw new Error("Error en red");
             
             const data = await response.json();
             
-            // Verificamos si la API contiene el valor del Bolívar (VES)
-            if (data && data.rates && data.rates.VES) {
-                TASA_CAMBIO_BS_USD = parseFloat(data.rates.VES);
+            if (data && data.rates && data.rates.VES && data.rates.EUR) {
+                // Tasa directa USD a Bolívares
+                TASA_USD_VES = parseFloat(data.rates.VES);
+                
+                // Calculamos Euro a Bolívares usando el cruce de monedas de la API
+                // Tasa EUR_VES = Tasa USD_VES / Tasa USD_EUR
+                TASA_EUR_VES = TASA_USD_VES / parseFloat(data.rates.EUR);
+                
                 exito = true;
-                console.log(`Tasa obtenida con éxito desde ${url}: ${TASA_CAMBIO_BS_USD}`);
-                break; // Si funciona, salimos del ciclo
+                console.log(`Tasas actualizadas desde ${url}: USD=${TASA_USD_VES} | EUR=${TASA_EUR_VES}`);
+                break;
             }
         } catch (error) {
-            console.warn(`Falló el intento con ${url}, probando siguiente opción...`);
+            console.warn(`No se pudo con ${url}, intentando respaldo...`);
         }
     }
 
     if (!exito) {
-        console.error("No se pudieron conectar las APIs de divisas. Se usará la tasa por defecto.");
+        console.error("Usando tasas de cambio predeterminadas fijas.");
     }
 
-    // Mostrar el resultado final formateado correctamente en el header
-    displayTasa.textContent = TASA_CAMBIO_BS_USD.toLocaleString('es-VE', { 
-        minimumFractionDigits: 2, 
-        maximumFractionDigits: 2 
-    });
+    // Renderizar en el menú superior
+    displayUSD.textContent = TASA_USD_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    displayEUR.textContent = TASA_EUR_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 // Gestión de Vistas / Pestañas
@@ -62,9 +64,10 @@ function changeView(viewName) {
     }
 }
 
-// Formateadores numéricos de salida
+// Formateadores de moneda
 function formatUSD(val) { return '$' + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 function formatBS(val) { return 'Bs ' + val.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function formatEUR(val) { return '€' + val.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 function formatPercent(val) { return (val * 100).toLocaleString('en-US', { maximumFractionDigits: 4 }) + '%'; }
 
 function formatCustomTime(val, modeId) {
@@ -73,7 +76,6 @@ function formatCustomTime(val, modeId) {
     return val.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' ' + text;
 }
 
-// Cambiar dinámicamente las etiquetas de los formularios según el periodo seleccionado
 function updateSimpleLabels() {
     const select = document.getElementById('sim-m');
     const text = select.options[select.selectedIndex].text;
@@ -87,7 +89,7 @@ function updateCompoundLabels() {
 }
 
 // =========================================================================
-// INTERÉS SIMPLE: LÓGICA DINÁMICA
+// LÓGICA DE INTERÉS SIMPLE
 // =========================================================================
 function toggleSimpleFields() {
     const target = document.getElementById('sim-target').value;
@@ -137,7 +139,7 @@ function calcSimple(event) {
             } else if (!isNaN(iMoney) && iMoney > 0) {
                 resultValue = iMoney / (r * (t / m)); 
             } else {
-                alert("Por favor rellena el campo de Valor Futuro (F) o el de Interés ganado (I) para despejar P.");
+                alert("Rellena el campo Valor Futuro (F) o Interés ganado (I) para despejar P.");
                 return;
             }
             labelText = "Capital Inicial (P):";
@@ -172,18 +174,22 @@ function calcSimple(event) {
 
     document.getElementById('res-sim-label').textContent = labelText;
     if (isMonetary) {
+        let valorEnBs = resultValue * TASA_USD_VES;
+        let valorEnEur = valorEnBs / TASA_EUR_VES;
+
         document.getElementById('res-sim-value').textContent = formatUSD(resultValue);
-        document.getElementById('res-sim-bs').textContent = formatBS(resultValue * TASA_CAMBIO_BS_USD);
-        document.getElementById('res-sim-bs-box').classList.remove('hidden');
+        document.getElementById('res-sim-bs').textContent = formatBS(valorEnBs);
+        document.getElementById('res-sim-eur').textContent = formatEUR(valorEnEur);
+        document.getElementById('res-sim-multi-currency').classList.remove('hidden');
     } else {
         document.getElementById('res-sim-value').textContent = (target === 'i') ? formatPercent(resultValue) : formatCustomTime(resultValue, 'sim-m');
-        document.getElementById('res-sim-bs-box').classList.add('hidden');
+        document.getElementById('res-sim-multi-currency').classList.add('hidden');
     }
     document.getElementById('res-simple-container').classList.remove('hidden');
 }
 
 // =========================================================================
-// INTERÉS COMPUESTO: LÓGICA DINÁMICA
+// LÓGICA DE INTERÉS COMPUESTO
 // =========================================================================
 function toggleCompoundFields() {
     const target = document.getElementById('cmp-target').value;
@@ -243,19 +249,21 @@ function calcCompound(event) {
 
     document.getElementById('res-cmp-label').textContent = labelText;
     if (isMonetary) {
+        let valorEnBs = resultValue * TASA_USD_VES;
+        let valorEnEur = valorEnBs / TASA_EUR_VES;
+
         document.getElementById('res-cmp-value').textContent = formatUSD(resultValue);
-        document.getElementById('res-cmp-bs').textContent = formatBS(resultValue * TASA_CAMBIO_BS_USD);
-        document.getElementById('res-cmp-bs-box').classList.remove('hidden');
+        document.getElementById('res-cmp-bs').textContent = formatBS(valorEnBs);
+        document.getElementById('res-cmp-eur').textContent = formatEUR(valorEnEur);
+        document.getElementById('res-cmp-multi-currency').classList.remove('hidden');
     } else {
         document.getElementById('res-cmp-value').textContent = (target === 'i') ? formatPercent(resultValue) : formatCustomTime(resultValue, 'cmp-m');
-        document.getElementById('res-cmp-bs-box').classList.add('hidden');
+        document.getElementById('res-cmp-multi-currency').classList.add('hidden');
     }
     document.getElementById('res-compound-container').classList.remove('hidden');
 }
 
-// =========================================================================
-// INICIALIZACIÓN DE LA APLICACIÓN
-// =========================================================================
-obtenerTasaActual();
+// Inicialización de la App
+obtenerTasasActuales();
 toggleSimpleFields();
 toggleCompoundFields();
