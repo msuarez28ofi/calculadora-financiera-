@@ -8,32 +8,62 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen bg-gray-100 overflow-x-hidden">
 
-    <header class="bg-blue-900 text-white shadow-md">
-        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+    <header class="bg-blue-900 text-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             
-            <div onclick="changeView('home')" class="text-2xl font-bold mb-4 md:mb-0 flex items-center cursor-pointer hover:text-blue-300 transition" title="Ir al Inicio">
-                <svg class="w-8 h-8 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                FinanzasWeb
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleSidebar()" class="p-2 rounded-md hover:bg-blue-800 transition focus:outline-none" title="Abrir Menú de Intereses">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                
+                <div onclick="changeView('home')" class="text-xl sm:text-2xl font-bold flex items-center cursor-pointer hover:text-blue-300 transition" title="Ir al Inicio">
+                    <svg class="w-7 h-7 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="inline-block">FinanzasWeb</span>
+                </div>
             </div>
 
-            <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-4">
-                <div class="flex flex-col sm:flex-row gap-2 bg-blue-800 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium border border-blue-700 shadow-inner text-center">
-                    <div>1$ = <span id="display-tasa" class="font-bold text-green-300">Cargando...</span> Bs</div>
-                    <div class="hidden sm:block text-blue-400">|</div>
-                    <div>1€ = <span id="display-tasa-eur" class="font-bold text-blue-300">Cargando...</span> Bs</div>
-                </div>
-                
-                <nav class="flex space-x-2">
-                    <button onclick="changeView('simple')" id="nav-simple" class="px-3 py-2 rounded-md font-medium transition hover:bg-blue-700">Interés Simple</button>
-                    <button onclick="changeView('compound')" id="nav-compound" class="px-3 py-2 rounded-md font-medium transition hover:bg-blue-700">Interés Compuesto</button>
-                </nav>
+            <div class="flex flex-col sm:flex-row gap-1 sm:gap-3 bg-blue-800 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium border border-blue-700 shadow-inner text-center">
+                <div>1$ = <span id="display-tasa" class="font-bold text-green-300">Cargando...</span> Bs</div>
+                <div class="hidden sm:block text-blue-400">|</div>
+                <div>1€ = <span id="display-tasa-eur" class="font-bold text-blue-300">Cargando...</span> Bs</div>
             </div>
         </div>
     </header>
+
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-50 hidden transition-opacity duration-300 opacity-0"></div>
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-slate-900 text-gray-200 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
+        <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-blue-950 text-white">
+            <span class="font-bold text-lg tracking-wide">Tipos de Interés</span>
+            <button onclick="toggleSidebar()" class="p-1 rounded-md hover:bg-slate-800 text-gray-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <nav class="flex-grow p-4 space-y-2">
+            <button onclick="selectInterestFromSidebar('home')" id="side-home" class="w-full text-left px-4 py-3 rounded-lg font-medium transition bg-slate-800 text-blue-400 flex items-center space-x-3">
+                <span>🏠 Inicio / Fórmulas</span>
+            </button>
+            <div class="pt-4 pb-2 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Módulos</div>
+            <button onclick="selectInterestFromSidebar('simple')" id="side-simple" class="w-full text-left px-4 py-3 rounded-lg font-medium transition hover:bg-slate-800 hover:text-white flex items-center justify-between">
+                <span>📉 Interés Simple</span>
+                <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">Proporcional</span>
+            </button>
+            <button onclick="selectInterestFromSidebar('compound')" id="side-compound" class="w-full text-left px-4 py-3 rounded-lg font-medium transition hover:bg-slate-800 hover:text-white flex items-center justify-between">
+                <span>📈 Interés Compuesto</span>
+                <span class="text-xs bg-teal-500/20 text-teal-400 px-2 py-0.5 rounded-full">Exponencial</span>
+            </button>
+        </nav>
+        <div class="p-4 border-t border-slate-800 text-xs text-center text-slate-500 bg-slate-950">
+            Ingeniería Económica 2026
+        </div>
+    </aside>
 
     <main class="flex-grow container mx-auto px-4 py-8">
         
@@ -41,7 +71,7 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-4">Manual de Usuario y Formulario Financiero</h1>
             
             <div class="prose max-w-none text-gray-600">
-                <p class="mb-6 text-lg">Bienvenido a la <strong>Calculadora Financiera</strong>. En el menú superior puedes acceder a las herramientas de cálculo automático. A continuación, dispones del compendio completo de fórmulas y despejes matemáticos de ingeniería económica integrados en esta plataforma.</p>
+                <p class="mb-6 text-lg">Bienvenido a la <strong>Calculadora Financiera</strong>. Utiliza el <strong>botón de menú lateral (☰)</strong> en la esquina superior izquierda para seleccionar el tipo de análisis matemático financiero que deseas realizar.</p>
 
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-8 text-sm">
                     <h3 class="font-bold text-gray-800 mb-2">Nomenclatura Estándar Aplicada:</h3>
@@ -96,16 +126,12 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="mt-6 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-4 text-sm">
-                    <strong>⚠️ Nota sobre el Tiempo y Tasa en el cálculo automático:</strong> Las calculadoras automáticas permiten seleccionar la unidad de tiempo (meses, trimestres, años, etc.). Asegúrate de ingresar los valores correspondientes a la unidad seleccionada.
-                </div>
             </div>
         </section>
 
         <section id="view-simple" class="hidden fade-in max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="bg-blue-600 px-6 py-4">
-                <h2 class="text-2xl font-bold text-white">Interés Simple</h2>
+                <h2 class="text-2xl font-bold text-white">Calculadora - Interés Simple</h2>
             </div>
             
             <div class="p-6 md:p-8">
@@ -162,12 +188,10 @@
 
                 <div id="res-simple-container" class="hidden mt-8 p-6 border-2 border-blue-100 rounded-lg bg-blue-50">
                     <h3 class="text-lg font-bold text-gray-800 border-b border-blue-200 pb-2 mb-4">Resultado del Despeje</h3>
-                    
                     <div class="flex justify-between items-center text-xl mb-3">
                         <span id="res-sim-label" class="text-gray-800 font-bold">Dato obtenido:</span>
                         <span id="res-sim-value" class="font-bold text-blue-700">0.00</span>
                     </div>
-
                     <div id="res-sim-multi-currency" class="pt-3 border-t border-blue-200 space-y-2">
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-gray-600">Equivalente en Bolívares:</span>
@@ -184,7 +208,7 @@
 
         <section id="view-compound" class="hidden fade-in max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="bg-teal-600 px-6 py-4">
-                <h2 class="text-2xl font-bold text-white">Interés Compuesto</h2>
+                <h2 class="text-2xl font-bold text-white">Calculadora - Interés Compuesto</h2>
             </div>
             
             <div class="p-6 md:p-8">
@@ -234,12 +258,10 @@
 
                 <div id="res-compound-container" class="hidden mt-8 p-6 border-2 border-teal-100 rounded-lg bg-teal-50">
                     <h3 class="text-lg font-bold text-gray-800 border-b border-teal-200 pb-2 mb-4">Resultado del Despeje</h3>
-                    
                     <div class="flex justify-between items-center text-xl mb-3">
                         <span id="res-cmp-label" class="text-gray-800 font-bold">Dato obtenido:</span>
                         <span id="res-cmp-value" class="font-bold text-teal-700">0.00</span>
                     </div>
-
                     <div id="res-cmp-multi-currency" class="pt-3 border-t border-teal-200 space-y-2">
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-gray-600">Equivalente en Bolívares:</span>

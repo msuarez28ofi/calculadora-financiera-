@@ -1,7 +1,6 @@
 // =========================================================================
 // CONFIGURACIÓN GLOBAL Y ACTUALIZACIÓN DE TASAS EN VIVO (USD y EUR a VES)
 // =========================================================================
-// Tasas estables de respaldo en caso de desconexión
 let TASA_USD_VES = 40.00; 
 let TASA_EUR_VES = 43.50; 
 
@@ -24,13 +23,8 @@ async function obtenerTasasActuales() {
             const data = await response.json();
             
             if (data && data.rates && data.rates.VES && data.rates.EUR) {
-                // Tasa directa USD a Bolívares
                 TASA_USD_VES = parseFloat(data.rates.VES);
-                
-                // Calculamos Euro a Bolívares usando el cruce de monedas de la API
-                // Tasa EUR_VES = Tasa USD_VES / Tasa USD_EUR
                 TASA_EUR_VES = TASA_USD_VES / parseFloat(data.rates.EUR);
-                
                 exito = true;
                 console.log(`Tasas actualizadas desde ${url}: USD=${TASA_USD_VES} | EUR=${TASA_EUR_VES}`);
                 break;
@@ -40,28 +34,63 @@ async function obtenerTasasActuales() {
         }
     }
 
-    if (!exito) {
-        console.error("Usando tasas de cambio predeterminadas fijas.");
-    }
+    if (!exito) console.error("Usando tasas de cambio predeterminadas fijas.");
 
-    // Renderizar en el menú superior
     displayUSD.textContent = TASA_USD_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     displayEUR.textContent = TASA_EUR_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-// Gestión de Vistas / Pestañas
+// =========================================================================
+// CONTROL DEL MENÚ LATERAL (SIDEBAR)
+// =========================================================================
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    
+    const isOpen = sidebar.classList.contains('translate-x-0');
+    
+    if (isOpen) {
+        // Cerrar
+        sidebar.classList.remove('translate-x-0');
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('opacity-0');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+    } else {
+        // Abrir
+        overlay.classList.remove('hidden');
+        setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+        sidebar.classList.remove('-translate-x-full');
+        sidebar.classList.add('translate-x-0');
+    }
+}
+
+function selectInterestFromSidebar(viewName) {
+    changeView(viewName);
+    toggleSidebar(); // Cierra el menú al seleccionar
+}
+
+// Gestión interna de Vistas
 function changeView(viewName) {
+    // Ocultar todas las secciones
     document.getElementById('view-home').classList.add('hidden');
     document.getElementById('view-simple').classList.add('hidden');
     document.getElementById('view-compound').classList.add('hidden');
 
-    const navButtons = ['nav-simple', 'nav-compound'];
-    navButtons.forEach(id => document.getElementById(id).classList.remove('bg-blue-800'));
+    // Quitar estilos activos de los botones del Sidebar
+    const sideButtons = ['side-home', 'side-simple', 'side-compound'];
+    sideButtons.forEach(id => {
+        const btn = document.getElementById(id);
+        btn.classList.remove('bg-blue-600', 'text-white');
+        btn.classList.add('hover:bg-slate-800', 'text-gray-200');
+    });
 
+    // Mostrar sección solicitada
     document.getElementById('view-' + viewName).classList.remove('hidden');
-    if(viewName !== 'home') {
-        document.getElementById('nav-' + viewName).classList.add('bg-blue-800');
-    }
+    
+    // Activar botón correspondiente en el Sidebar
+    const activeBtn = document.getElementById('side-' + viewName);
+    activeBtn.classList.remove('hover:bg-slate-800', 'text-gray-200');
+    activeBtn.classList.add('bg-blue-600', 'text-white');
 }
 
 // Formateadores de moneda
