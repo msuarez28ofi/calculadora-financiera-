@@ -1,8 +1,51 @@
 // =========================================================================
-// CONFIGURACIÓN GLOBAL Y REFRESH DE INTERFAZ
+// CONFIGURACIÓN GLOBAL Y ACTUALIZACIÓN DE TASA EN VIVO (API)
 // =========================================================================
-const TASA_CAMBIO_BS_USD = 36.50; 
-document.getElementById('display-tasa').textContent = TASA_CAMBIO_BS_USD.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// Valor de respaldo por si el usuario no tiene internet o fallan todas las APIs
+let TASA_CAMBIO_BS_USD = 40.00; 
+
+// Función para obtener la tasa de cambio real y actualizada
+async function obtenerTasaActual() {
+    const displayTasa = document.getElementById('display-tasa');
+    displayTasa.textContent = "Cargando...";
+
+    // Lista de APIs de respaldo en caso de que una falle
+    const apis = [
+        "https://open.er-api.com/v6/latest/USD",
+        "https://api.exchangerate-api.com/v4/latest/USD"
+    ];
+
+    let exito = false;
+
+    for (let url of apis) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Error al conectar con la API");
+            
+            const data = await response.json();
+            
+            // Verificamos si la API contiene el valor del Bolívar (VES)
+            if (data && data.rates && data.rates.VES) {
+                TASA_CAMBIO_BS_USD = parseFloat(data.rates.VES);
+                exito = true;
+                console.log(`Tasa obtenida con éxito desde ${url}: ${TASA_CAMBIO_BS_USD}`);
+                break; // Si funciona, salimos del ciclo
+            }
+        } catch (error) {
+            console.warn(`Falló el intento con ${url}, probando siguiente opción...`);
+        }
+    }
+
+    if (!exito) {
+        console.error("No se pudieron conectar las APIs de divisas. Se usará la tasa por defecto.");
+    }
+
+    // Mostrar el resultado final formateado correctamente en el header
+    displayTasa.textContent = TASA_CAMBIO_BS_USD.toLocaleString('es-VE', { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+    });
+}
 
 // Gestión de Vistas / Pestañas
 function changeView(viewName) {
@@ -210,6 +253,9 @@ function calcCompound(event) {
     document.getElementById('res-compound-container').classList.remove('hidden');
 }
 
-// Inicialización de la UI
+// =========================================================================
+// INICIALIZACIÓN DE LA APLICACIÓN
+// =========================================================================
+obtenerTasaActual();
 toggleSimpleFields();
 toggleCompoundFields();
