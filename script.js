@@ -15,45 +15,59 @@ async function obtenerTasasActuales() {
         "https://api.exchangerate-api.com/v4/latest/USD"
     ];
 
-    let exito = false;
+    // Pintamos los datos guardados en caché inmediatamente para una UX instantánea sin esperar a la red
+    if (displayUSD) displayUSD.textContent = TASA_USD_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (displayEUR) displayEUR.textContent = TASA_EUR_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-    for (let url of apis) {
+    // Definimos la función de petición individual con su respectivo timeout
+    const fetchConTimeout = async (url) => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2500); // 2.5 segundos máximo por API
+
         try {
-            // Establecemos un tiempo límite (timeout) corto para que no se quede colgado cargando sin internet
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 segundos máximo
-
             const response = await fetch(url, { signal: controller.signal });
             clearTimeout(timeoutId);
 
-            if (!response.ok) stroke(new Error("Error en red"));
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             
             const data = await response.json();
             
             if (data && data.rates && data.rates.VES && data.rates.EUR) {
-                TASA_USD_VES = parseFloat(data.rates.VES);
-                TASA_EUR_VES = TASA_USD_VES / parseFloat(data.rates.EUR);
-                exito = true;
-                
-                // ¡ESTA ES LA CLAVE! Guardamos con éxito la última actualización en el navegador
-                localStorage.setItem('LAST_TASA_USD', TASA_USD_VES);
-                localStorage.setItem('LAST_TASA_EUR', TASA_EUR_VES);
-
-                console.log(`Tasas actualizadas desde ${url}: USD=${TASA_USD_VES} | EUR=${TASA_EUR_VES}`);
-                break;
+                return {
+                    usd: parseFloat(data.rates.VES),
+                    eurFactor: parseFloat(data.rates.EUR),
+                    fuente: url
+                };
             }
+            throw new Error("Estructura de datos inválida");
         } catch (error) {
-            console.warn(`No se pudo conectar con ${url} (Modo Offline o Error de Red)`);
+            clearTimeout(timeoutId);
+            throw error; // Re-lanzamos para que Promise.any sepa que esta petición falló
         }
-    }
+    };
 
-    if (!exito) {
-        console.warn("Aplicación Offline. Se mantendrán intactas las tasas de la última sesión exitosa.");
-    }
+    try {
+        // Lanzamos todas las peticiones al mismo tiempo. Se quedará con la primera que responda con éxito.
+        const resultadoRapido = await Promise.any(apis.map(url => fetchConTimeout(url)));
+        
+        // Asignación de los valores obtenidos de la API más veloz
+        TASA_USD_VES = resultadoRapido.usd;
+        TASA_EUR_VES = TASA_USD_VES / resultadoRapido.eurFactor;
 
-    // Al final, pinte lo que se haya rescatado (la nueva de internet o la última guardada en el localStorage)
-    if (displayUSD) displayUSD.textContent = TASA_USD_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    if (displayEUR) displayEUR.textContent = TASA_EUR_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        // Guardamos con éxito la última actualización en el navegador
+        localStorage.setItem('LAST_TASA_USD', TASA_USD_VES);
+        localStorage.setItem('LAST_TASA_EUR', TASA_EUR_VES);
+
+        console.log(`⚡ Tasa ultra-rápida obtenida desde ${resultadoRapido.fuente}: USD=${TASA_USD_VES} | EUR=${TASA_EUR_VES}`);
+
+        // Actualizamos la interfaz con los datos frescos en tiempo récord
+        if (displayUSD) displayUSD.textContent = TASA_USD_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if (displayEUR) displayEUR.textContent = TASA_EUR_VES.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    } catch (error) {
+        // Entra aquí únicamente si TODAS las APIs fallaron o dieron timeout simultáneamente
+        console.warn("Aplicación Offline o APIs caídas. Se mantienen intactas las tasas de la última sesión exitosa.");
+    }
 }
 
 // =========================================================================
@@ -114,6 +128,7 @@ function formatCustomTime(val, modeId) {
     return val.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' ' + text;
 }
 
+// Actualizadores de texto dinámico en etiquetas
 function updateSimpleLabels() {
     const select = document.getElementById('sim-m');
     const text = select.options[select.selectedIndex].text;
