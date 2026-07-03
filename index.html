@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,318 +8,326 @@
 </head>
 <body>
 
+    <!-- --- HEADER / ENCABEZADO --- -->
     <header class="main-header">
         <div class="header-container">
             <div class="header-left">
-                <button onclick="toggleSidebar()" class="menu-btn" title="Abrir Menú de Intereses">
-                    <svg style="width:24px;height:24px" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <button id="menu-btn" class="menu-btn" aria-label="Abrir menú">
+                    <svg class="brand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
-                <div onclick="changeView('home')" class="brand-logo" title="Ir al Inicio">
-                    <svg class="brand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>FinanzasWeb</span>
+                <div id="logo-inicio" class="brand-logo" style="cursor: pointer;">
+                    <span>FinanzasCalc</span>
                 </div>
             </div>
 
-            <div class="rates-box">
-                <div>1$ = <span id="display-tasa" class="tasa-usd">Cargando...</span> Bs</div>
-                <div class="rates-divider">|</div>
-                <div>1€ = <span id="display-tasa-eur" class="tasa-eur">Cargando...</span> Bs</div>
+            <div class="header-right">
+                <div class="rates-box">
+                    <div>USD/VES: <span id="tasa-usd" class="tasa-usd">Cargando...</span></div>
+                    <div class="rates-divider">|</div>
+                    <div>EUR/VES: <span id="tasa-eur" class="tasa-eur">Cargando...</span></div>
+                </div>
+                <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Cambiar tema">
+                    <svg id="theme-icon-sun" class="brand-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M16.243 17.657l.707.707M6.343 6.344l.707-.707A6 6 0 1112 18a6 6 0 010-12z"></path>
+                    </svg>
+                    <svg id="theme-icon-moon" class="brand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
 
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="sidebar-overlay"></div>
-    
+    <!-- --- SIDEBAR / MENÚ LATERAL --- -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
     <aside id="sidebar" class="sidebar">
         <div class="sidebar-header">
-            <span>Temas a Presentar</span>
-            <button onclick="toggleSidebar()" class="close-sidebar-btn">
-                <svg style="width:24px;height:24px" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <span>MENÚ</span>
+            <button id="close-sidebar-btn" class="close-sidebar-btn" aria-label="Cerrar menú">
+                <svg style="width: 1.5rem; height: 1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
         </div>
         <nav class="sidebar-nav">
-            <button onclick="selectInterestFromSidebar('home')" id="side-home" class="nav-btn">
-                <span>🏠 Inicio / Fórmulas</span>
-            </button>
-            <div class="nav-section-title">Interés</div>
-            <button onclick="selectInterestFromSidebar('simple')" id="side-simple" class="nav-btn">
-                <span>📉 Interés Simple</span>
-            </button>
-            <button onclick="selectInterestFromSidebar('compound')" id="side-compound" class="nav-btn">
-                <span>📈 Interés Compuesto</span>
-            </button>
-            <div class="nav-section-title">Factores de Equivalencia Financiera</div>
-            <button onclick="selectInterestFromSidebar('single-payment')" id="side-single" class="nav-btn">
-                <span>🎯 Pagos Únicos (F/P, P/F)</span>
-            </button>
-            <button onclick="selectInterestFromSidebar('uniform-series')" id="side-uniform" class="nav-btn">
-                <span>📊 Series Uniformes (Anualidades)</span>
-            </button>
+            <span class="nav-section-title">Explorar</span>
+            <button id="nav-inicio" class="nav-btn active">Inicio y Conceptos</button>
+            
+            <span class="nav-section-title">Calculadoras</span>
+            <button id="nav-simple" class="nav-btn">Interés Simple</button>
+            <button id="nav-compound" class="nav-btn">Interés Compuesto</button>
+            <button id="nav-single" class="nav-btn">Pagos Únicos</button>
+            <button id="nav-uniform" class="nav-btn">Series Uniformes</button>
         </nav>
         <div class="sidebar-footer">
-            Ingeniería Económica 2026
+            <span>© 2026 FinanzasCalc</span>
         </div>
     </aside>
 
+    <!-- --- CONTENEDOR PRINCIPAL --- -->
     <main>
-        
-        <section id="view-home" class="fade-in card-panel max-w-home">
+
+        <!-- SECCIÓN: INICIO / CONCEPTOS CORREGIDOS -->
+        <section id="section-inicio" class="card-panel max-w-home fade-in">
             <div class="panel-body">
-                <h1 class="main-title">Conceptos de Ingeniería Económica</h1>
+                <h1 class="main-title">Conceptos Fundamentales de Ingeniería Económica</h1>
                 
-                <div class="intro-text">
-                    <div style="background-color: #f8fafc; border-left: 4px solid #475569; padding: 1rem; margin-bottom: 1.5rem; border-radius: 0 8px 8px 0;">
-                        <p style="margin: 0; color: #334155; line-height: 1.6;">
-                            <strong>¿Qué es la Ingeniería Económica?</strong> Es un conjunto de principios y técnicas matemáticas orientadas al análisis, comparación y evaluación cuantitativa de alternativas de inversión. Su objetivo fundamental es la toma de decisiones financieras óptimas sobre proyectos de ingeniería, analizando el comportamiento del dinero a través del tiempo para maximizar la rentabilidad y reducir los costos operativos.
-                        </p>
+                <div class="concept-hero" style="margin-bottom: 1.5rem;">
+                    <h2>El Valor del Dinero en el Tiempo</h2>
+                    <p>Un dólar o un bolívar hoy **vale más** que un dólar o un bolívar mañana, debido al potencial de rendimiento que tiene el dinero a través de inversiones, tasas de interés y el efecto de la inflación.</p>
+                </div>
+
+                <div class="nomenclatura-box" style="margin-bottom: 1.5rem;">
+                    <h3>Variables Clave del Entorno</h3>
+                    <div class="nomenclatura-grid">
+                        <div><strong>P o C:</strong> Capital Inicial / Valor Presente</div>
+                        <div><strong>F o Vf:</strong> Monto acumulado / Valor Futuro</div>
+                        <div><strong>A:</strong> Serie de pagos periódicos e iguales (Anualidades)</div>
+                        <div><strong>i:</strong> Tasa de interés por período porcentual</div>
+                        <div><strong>n o t:</strong> Número de períodos o tiempo total de la operación</div>
                     </div>
+                </div>
 
-                    <p>Bienvenido a la <strong>Calculadora Financiera</strong>. Utiliza el <strong>botón de menú lateral (☰)</strong> en la esquina superior izquierda para seleccionar el tipo de análisis matemático financiero que deseas realizar.</p>
-
-                    <div class="nomenclatura-box">
-                        <h3>Nomenclatura Estándar Aplicada:</h3>
-                        <div class="nomenclatura-grid">
-                            <div><strong>F:</strong> Valor Futuro (Monto Total)</div>
-                            <div><strong>P:</strong> Valor Presente (Capital inicial)</div>
-                            <div><strong>A:</strong> Anualidad o serie de pagos uniformes</div>
-                            <div><strong>i:</strong> Tasa de interés efectiva por período</div>
-                            <div><strong>n:</strong> Número de períodos de capitalización</div>
-                        </div>
+                <div class="intro-text" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div style="background: var(--bg-card); padding: 1rem; border-left: 4px solid #10b981; border-radius: 4px;">
+                        <h4>1. Interés Simple</h4>
+                        <p style="font-size: 0.875rem;">Se calcula **exclusivamente sobre el capital inicial**. Los intereses devengados en cada período no se acumulan al capital para producir nuevos intereses.</p>
                     </div>
-
-                    <div class="formulas-grid">
-                        <div class="box-formula-simple">
-                            <h2>Interés Simple</h2>
-                            <p class="formula-desc">Los intereses se generan únicamente sobre el capital inicial.</p>
-                            <div class="formula-code-block">
-                                <div>• Interés: <span class="code-highlight">I = P · i · n</span></div>
-                                <div>• Valor Futuro: <span class="code-highlight">F = P(1 + i · n)</span></div>
-                            </div>
-                        </div>
-
-                        <div class="box-formula-compound">
-                            <h2>Interés Compuesto</h2>
-                            <p class="formula-desc">Los intereses se capitalizan período a período aumentando el capital base.</p>
-                            <div class="formula-code-block">
-                                <div>• Valor Futuro: <span class="code-highlight">F = P(1 + i)<sup>n</sup></span></div>
-                                <div>• Valor Presente: <span class="code-highlight">P = F / (1 + i)<sup>n</sup></span></div>
-                            </div>
-                        </div>
-
-                        <div class="box-formula-simple" style="border-top-color: #4f46e5;">
-                            <h2 style="color: #4f46e5;">Factores de Pagos Únicos</h2>
-                            <p class="formula-desc">Relación matemática directa entre un único valor presente (P) y un valor futuro (F).</p>
-                            <div class="formula-code-block" style="background-color: #f5f3ff;">
-                                <div>• Dado P hallar F: <span class="code-highlight" style="color: #4f46e5; background-color: #ede9fe;">F = P · (1 + i)<sup>n</sup></span></div>
-                                <div>• Dado F hallar P: <span class="code-highlight" style="color: #4f46e5; background-color: #ede9fe;">P = F · (1 + i)<sup>-n</sup></span></div>
-                            </div>
-                        </div>
-
-                        <div class="box-formula-compound" style="border-top-color: #0891b2;">
-                            <h2 style="color: #0891b2;">Series Uniformes (Anualidades)</h2>
-                            <p class="formula-desc">Conjunto de depósitos o pagos consecutivos de igual valor monetario.</p>
-                            <div class="formula-code-block" style="background-color: #ecfeff;">
-                                <div>• Hallar P dado A: <span class="code-highlight" style="color: #0891b2; background-color: #ede9fe;">P = A · [(1+i)<sup>n</sup> - 1] / [i(1+i)<sup>n</sup>]</span></div>
-                                <div>• Hallar A dado P: <span class="code-highlight" style="color: #0891b2; background-color: #ede9fe;">A = P · [i(1+i)<sup>n</sup>] / [(1+i)<sup>n</sup> - 1]</span></div>
-                                <div>• Hallar F dado A: <span class="code-highlight" style="color: #0891b2; background-color: #ede9fe;">F = A · [(1+i)<sup>n</sup> - 1] / i</span></div>
-                                <div>• Hallar A dado F: <span class="code-highlight" style="color: #0891b2; background-color: #ede9fe;">A = F · i / [(1+i)<sup>n</sup> - 1]</span></div>
-                            </div>
-                        </div>
+                    <div style="background: var(--bg-card); padding: 1rem; border-left: 4px solid #3b82f6; border-radius: 4px;">
+                        <h4>2. Interés Compuesto</h4>
+                        <p style="font-size: 0.875rem;">Los intereses se **capitalizan**. Significa que al finalizar cada período de tiempo, los intereses se suman al capital original para generar más intereses (interés sobre interés).</p>
                     </div>
-
+                    <div style="background: var(--bg-card); padding: 1rem; border-left: 4px solid #4f46e5; border-radius: 4px;">
+                        <h4>3. Factores de Pagos Únicos</h4>
+                        <p style="font-size: 0.875rem;">Permiten calcular la equivalencia económica entre un único monto monetario en el presente (P) y un único monto en el futuro (F) dada una tasa compuesta.</p>
+                    </div>
+                    <div style="background: var(--bg-card); padding: 1rem; border-left: 4px solid #db2777; border-radius: 4px;">
+                        <h4>4. Series Uniformes (Anualidades)</h4>
+                        <p style="font-size: 0.875rem;">Modelan situaciones con flujos de efectivo constantes que ocurren a intervalos regulares de tiempo (ej. cuotas de créditos, fondos de retiro, alquileres).</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="view-simple" class="hidden fade-in card-panel max-w-calculator">
-            <div class="panel-header-simple">
-                <h2>Interés Simple</h2>
-            </div>
+        <!-- SECCIÓN: INTERÉS SIMPLE -->
+        <section id="section-simple" class="card-panel max-w-calculator fade-in hidden">
+            <div class="panel-header-simple"><h2>Interés Simple (Todos los Despejes)</h2></div>
             <div class="panel-body">
-                <div class="selector-target-container">
-                    <label for="sim-target">¿Qué dato deseas calcular?</label>
-                    <select id="sim-target" onchange="toggleSimpleFields()" class="form-select">
-                        <option value="F">Valor Futuro / Monto Total (F)</option>
-                        <option value="I">Interés en dinero (I)</option>
-                        <option value="P">Capital Inicial / Valor Presente (P)</option>
-                        <option value="i">Tasa de Interés Anual (i)</option>
-                        <option value="n">Tiempo / Duración (n)</option>
-                    </select>
-                </div>
-
-                <form id="form-simple" onsubmit="calcSimple(event)" class="form-group-stack">
-                    <div id="box-sim-P"><label class="field-label">Capital Inicial / Presente (P) ($)</label><input type="number" id="sim-p" step="any" class="form-input" placeholder="Ej: 1000"></div>
-                    <div id="box-sim-F" class="hidden"><label class="field-label">Valor Futuro / Monto Total (F) ($)</label><input type="number" id="sim-f" step="any" class="form-input" placeholder="Ej: 1150"></div>
-                    <div id="box-sim-I" class="hidden"><label class="field-label">Interés ganado en dinero (I) ($)</label><input type="number" id="sim-i-money" step="any" class="form-input" placeholder="Ej: 150"></div>
-                    <div class="form-row-grid">
-                        <div id="box-sim-i"><label class="field-label">Tasa Anual (i) (%)</label><input type="number" id="sim-r" step="any" class="form-input" placeholder="Ej: 5"></div>
-                        <div id="box-sim-n"><label id="label-sim-t" class="field-label">Tiempo (n)</label><input type="number" id="sim-t" step="any" class="form-input" placeholder="Ej: 6"></div>
-                    </div>
-                    <div id="box-sim-frec">
-                        <label class="field-label">Unidad del Tiempo / Período</label>
-                        <select id="sim-m" onchange="updateSimpleLabels()" class="form-select">
-                            <option value="1">Años</option><option value="2">Semestres</option><option value="4">Trimestres</option><option value="12" selected>Meses</option><option value="365">Días</option>
+                <form id="form-simple" class="form-group-stack" onsubmit="return false;">
+                    <div class="selector-target-container">
+                        <label for="simple-target">¿Qué variable deseas despejar?</label>
+                        <select id="simple-target" class="form-select">
+                            <option value="Vf">Monto Final / Valor Futuro (Vf)</option>
+                            <option value="I">Interés Neto Ganado (I)</option>
+                            <option value="C">Capital Inicial (C)</option>
+                            <option value="i">Tasa de Interés (i)</option>
+                            <option value="t">Tiempo / Período (t)</option>
                         </select>
                     </div>
-                    <button type="submit" class="submit-btn simple">Calcular Variable</button>
+                    
+                    <div id="group-simple-c">
+                        <label class="field-label" for="simple-c">Capital Inicial (C)</label>
+                        <input type="number" id="simple-c" class="form-input" step="any" placeholder="Ej. 1000">
+                    </div>
+                    <div id="group-simple-i">
+                        <label class="field-label" id="label-simple-i" for="simple-i">Tasa de Interés Anual (i %)</label>
+                        <input type="number" id="simple-i" class="form-input" step="any" placeholder="Ej. 12">
+                    </div>
+                    <div id="group-simple-t" class="form-row-grid">
+                        <div>
+                            <label class="field-label" for="simple-t">Tiempo / Duración</label>
+                            <input type="number" id="simple-t" class="form-input" step="any" placeholder="Ej. 5">
+                        </div>
+                        <div>
+                            <label class="field-label" for="simple-t-type">Unidad</label>
+                            <select id="simple-t-type" class="form-select">
+                                <option value="years">Años</option>
+                                <option value="months">Meses</option>
+                                <option value="days">Días</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="group-simple-vf" class="hidden">
+                        <label class="field-label" for="simple-vf">Monto Final Acumulado (Vf)</label>
+                        <input type="number" id="simple-vf" class="form-input" step="any" placeholder="Ej. 1500">
+                    </div>
+                    <div id="group-simple-int-earned" class="hidden">
+                        <label class="field-label" for="simple-int-earned">Interés Neto Ganado (I)</label>
+                        <input type="number" id="simple-int-earned" class="form-input" step="any" placeholder="Ej. 500">
+                    </div>
+                    
+                    <button type="button" id="btn-calc-simple" class="submit-btn simple">Calcular Variable</button>
                 </form>
 
-                <div id="res-simple-container" class="hidden results-wrapper">
-                    <h3 class="results-title">Resultado del Despeje</h3>
-                    <div class="result-main-line"><span id="res-sim-label" class="label">Dato obtenido:</span><span id="res-sim-value" class="value simple">0.00</span></div>
-                    <div id="res-sim-multi-currency" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Equivalente en Bolívares:</span><span id="res-sim-bs" class="value">Bs 0.00</span></div>
-                        <div class="conversion-row"><span class="label">Equivalente en Euros:</span><span id="res-sim-eur" class="value eur">€ 0.00</span></div>
+                <div id="results-simple" class="results-wrapper hidden">
+                    <h3 class="results-title">Resultado de la Ecuación</h3>
+                    <div class="result-main-line">
+                        <span class="label" id="res-simple-label">Monto Final:</span>
+                        <span class="value simple" id="res-simple-val">0.00 VES</span>
+                    </div>
+                    <div id="res-simple-conversion" class="currency-conversion-zone">
+                        <div class="conversion-row"><span class="label">En dólares:</span><span class="value" id="res-simple-usd">$0.00</span></div>
+                        <div class="conversion-row"><span class="label">En euros:</span><span class="value" id="res-simple-eur">€0.00</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="view-compound" class="hidden fade-in card-panel max-w-calculator">
-            <div class="panel-header-compound">
-                <h2>Interés Compuesto</h2>
-            </div>
+        <!-- SECCIÓN: INTERÉS COMPUESTO -->
+        <section id="section-compound" class="card-panel max-w-calculator fade-in hidden">
+            <div class="panel-header-compound"><h2>Interés Compuesto (Todos los Despejes)</h2></div>
             <div class="panel-body">
-                <div class="selector-target-container compound">
-                    <label for="cmp-target">¿Qué dato deseas calcular?</label>
-                    <select id="cmp-target" onchange="toggleCompoundFields()" class="form-select">
-                        <option value="F">Valor Futuro / Monto Total (F)</option>
-                        <option value="P">Capital Inicial / Valor Presente (P)</option>
-                        <option value="i">Tasa de Interés Anual (i)</option>
-                        <option value="n">Tiempo / Períodos totales (n)</option>
-                    </select>
-                </div>
-
-                <form id="form-compound" onsubmit="calcCompound(event)" class="form-group-stack">
-                    <div id="box-cmp-P"><label class="field-label">Capital Inicial / Presente (P) ($)</label><input type="number" id="cmp-p" step="any" class="form-input" placeholder="Ej: 1000"></div>
-                    <div id="box-cmp-F" class="hidden"><label class="field-label">Valor Futuro / Monto Acumulado (F) ($)</label><input type="number" id="cmp-f" step="any" class="form-input" placeholder="Ej: 1157.63"></div>
-                    <div class="form-row-grid">
-                        <div id="box-cmp-i"><label class="field-label">Tasa Anual nominal (i) (%)</label><input type="number" id="cmp-r" step="any" class="form-input" placeholder="Ej: 5"></div>
-                        <div id="box-cmp-n"><label id="label-cmp-t" class="field-label">Tiempo total (n)</label><input type="number" id="cmp-t" step="any" class="form-input" placeholder="Ej: 3"></div>
-                    </div>
-                    <div id="box-cmp-frec">
-                        <label class="field-label">Frecuencia de Capitalización (m)</label>
-                        <select id="cmp-m" onchange="updateCompoundLabels()" class="form-select">
-                            <option value="1">Anualmente</option><option value="2">Semestralmente</option><option value="4">Trimestralmente</option><option value="12" selected>Mensualmente</option><option value="365">Diariamente</option>
+                <form id="form-compound" class="form-group-stack" onsubmit="return false;">
+                    <div class="selector-target-container compound">
+                        <label for="compound-target">¿Qué variable deseas despejar?</label>
+                        <select id="compound-target" class="form-select">
+                            <option value="Vf">Monto Final / Valor Futuro (Vf)</option>
+                            <option value="C">Capital Inicial (C)</option>
+                            <option value="i">Tasa Nominal Anual (i)</option>
+                            <option value="t">Tiempo / Duración (t)</option>
                         </select>
                     </div>
-                    <button type="submit" class="submit-btn compound">Calcular Variable</button>
+                    
+                    <div id="group-compound-c">
+                        <label class="field-label" for="compound-c">Capital Inicial (C)</label>
+                        <input type="number" id="compound-c" class="form-input" step="any" placeholder="Ej. 1000">
+                    </div>
+                    <div id="group-compound-i">
+                        <label class="field-label" for="compound-i">Tasa de Interés Anual (i %)</label>
+                        <input type="number" id="compound-i" class="form-input" step="any" placeholder="Ej. 10">
+                    </div>
+                    <div id="group-compound-t" class="form-row-grid">
+                        <div>
+                            <label class="field-label" for="compound-t">Tiempo</label>
+                            <input type="number" id="compound-t" class="form-input" step="any" placeholder="Ej. 3">
+                        </div>
+                        <div>
+                            <label class="field-label" for="compound-t-type">Unidad</label>
+                            <select id="compound-t-type" class="form-select">
+                                <option value="years">Años</option>
+                                <option value="months">Meses</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="field-label" for="compound-k">Frecuencia de Capitalización (k)</label>
+                        <select id="compound-k" class="form-select">
+                            <option value="1">Anual (k=1)</option>
+                            <option value="2">Semestral (k=2)</option>
+                            <option value="4">Trimestral (k=4)</option>
+                            <option value="12">Mensual (k=12)</option>
+                        </select>
+                    </div>
+                    <div id="group-compound-vf" class="hidden">
+                        <label class="field-label" for="compound-vf">Monto Final Acumulado (Vf)</label>
+                        <input type="number" id="compound-vf" class="form-input" step="any" placeholder="Ej. 1331">
+                    </div>
+                    
+                    <button type="button" id="btn-calc-compound" class="submit-btn compound">Calcular Variable</button>
                 </form>
 
-                <div id="res-compound-container" class="hidden results-wrapper compound">
-                    <h3 class="results-title">Resultado del Despeje</h3>
-                    <div class="result-main-line"><span id="res-cmp-label" class="label">Dato obtenido:</span><span id="res-cmp-value" class="value compound">0.00</span></div>
-                    <div id="res-cmp-multi-currency" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Equivalente en Bolívares:</span><span id="res-cmp-bs" class="value">Bs 0.00</span></div>
-                        <div class="conversion-row"><span class="label">Equivalente en Euros:</span><span id="res-cmp-eur" class="value eur">€ 0.00</span></div>
+                <div id="results-compound" class="results-wrapper compound hidden">
+                    <h3 class="results-title">Resultado de la Ecuación</h3>
+                    <div class="result-main-line">
+                        <span class="label" id="res-compound-label">Monto Final:</span>
+                        <span class="value compound" id="res-compound-val">0.00 VES</span>
+                    </div>
+                    <div id="res-compound-conversion" class="currency-conversion-zone">
+                        <div class="conversion-row"><span class="label">En dólares:</span><span class="value" id="res-compound-usd">$0.00</span></div>
+                        <div class="conversion-row"><span class="label">En euros:</span><span class="value" id="res-compound-eur">€0.00</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="view-single-payment" class="hidden fade-in card-panel max-w-calculator">
-            <div class="panel-header-simple" style="background-color: #4f46e5;">
-                <h2>Factores de Pagos Únicos</h2>
-            </div>
+        <!-- SECCIÓN: FACTORES DE PAGOS ÚNICOS -->
+        <section id="section-single" class="card-panel max-w-calculator fade-in hidden">
+            <div class="panel-header-simple" style="background-color: #4f46e5;"><h2>Pagos Únicos (Todos los Despejes)</h2></div>
             <div class="panel-body">
-                <div class="selector-target-container" style="background-color: #f5f3ff; border-color: #ddd6fe;">
-                    <label for="single-factor-type" style="color: #4c1d95;">¿Qué factor vas a aplicar?</label>
-                    <select id="single-factor-type" onchange="toggleSinglePaymentFields()" class="form-select">
-                        <option value="F/P">Encontrar F dado P (Factor Compuesto de Pago Único)</option>
-                        <option value="P/F">Encontrar P dado F (Factor de Valor Presente de Pago Único)</option>
-                    </select>
-                </div>
-
-                <form id="form-single-payment" onsubmit="calcSinglePayment(event)" class="form-group-stack">
-                    <div id="box-single-P">
-                        <label class="field-label">Valor Presente Conocido (P) ($)</label>
-                        <input type="number" id="single-p" step="any" class="form-input" placeholder="Ej: 5000">
+                <form id="form-single" class="form-group-stack" onsubmit="return false;">
+                    <div class="selector-target-container" style="background-color: #f5f3ff; border-color: #ddd6fe;">
+                        <label for="single-target" style="color: #4338ca;">¿Qué deseas calcular / despejar?</label>
+                        <select id="single-target" class="form-select">
+                            <option value="F">Buscar Valor Futuro (F dada P)</option>
+                            <option value="P">Buscar Valor Presente (P dada F)</option>
+                            <option value="i">Buscar Tasa de Interés (i)</option>
+                            <option value="n">Buscar Número de Períodos (n)</option>
+                        </select>
                     </div>
-                    <div id="box-single-F" class="hidden">
-                        <label class="field-label">Valor Futuro Conocido (F) ($)</label>
-                        <input type="number" id="single-f" step="any" class="form-input" placeholder="Ej: 8000">
+                    <div id="group-single-p">
+                        <label class="field-label" for="single-p">Valor Presente (P)</label>
+                        <input type="number" id="single-p" class="form-input" step="any" placeholder="Ej. 1000">
                     </div>
-                    <div class="form-row-grid">
-                        <div>
-                            <label class="field-label">Tasa por Período (i) (%)</label>
-                            <input type="number" id="single-i" step="any" class="form-input" placeholder="Ej: 10" required>
-                        </div>
-                        <div>
-                            <label class="field-label">Número de Períodos (n)</label>
-                            <input type="number" id="single-n" step="any" class="form-input" placeholder="Ej: 5" required>
-                        </div>
+                    <div id="group-single-f">
+                        <label class="field-label" for="single-f">Valor Futuro (F)</label>
+                        <input type="number" id="single-f" class="form-input" step="any" placeholder="Ej. 2000">
                     </div>
-                    <button type="submit" class="submit-btn simple" style="background-color: #4f46e5;">Calcular Factor</button>
+                    <div id="group-single-i">
+                        <label class="field-label" for="single-i">Tasa de Interés por Período (%)</label>
+                        <input type="number" id="single-i" class="form-input" step="any" placeholder="Ej. 6">
+                    </div>
+                    <div id="group-single-n">
+                        <label class="field-label" for="single-n">Número de Períodos (n)</label>
+                        <input type="number" id="single-n" class="form-input" step="any" placeholder="Ej. 12">
+                    </div>
+                    <button type="button" id="btn-calc-single" class="submit-btn simple" style="background-color: #4f46e5;">Calcular Incógnita</button>
                 </form>
 
-                <div id="res-single-container" class="hidden results-wrapper" style="background-color: #f5f3ff; border-color: #ddd6fe;">
-                    <h3 class="results-title">Resultado de la Operación</h3>
-                    <div style="font-family: monospace; font-size: 0.95rem; margin-bottom: 0.75rem; color: #5b21b6;">
-                        Notación Estándar: <span id="res-single-factor-text" style="font-weight: bold;">(F/P, i%, n)</span>
-                    </div>
+                <div id="results-single" class="results-wrapper hidden" style="background-color: #f5f3ff; border-color: #ddd6fe;">
+                    <h3 class="results-title">Solución</h3>
                     <div class="result-main-line">
-                        <span id="res-single-label" class="label">Valor Calculado:</span>
-                        <span id="res-single-value" class="value simple" style="color: #4f46e5;">0.00</span>
+                        <span class="label" id="res-single-label">Resultado:</span>
+                        <span class="value simple" id="res-single-val" style="color: #4f46e5;">0.00</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="view-uniform-series" class="hidden fade-in card-panel max-w-calculator">
-            <div class="panel-header-compound" style="background-color: #0891b2;">
-                <h2>Series Uniformes (Anualidades)</h2>
-            </div>
+        <!-- SECCIÓN: SERIES UNIFORMES -->
+        <section id="section-uniform" class="card-panel max-w-calculator fade-in hidden">
+            <div class="panel-header-compound" style="background-color: #db2777;"><h2>Series Uniformes (Anualidades y Despejes)</h2></div>
             <div class="panel-body">
-                <div class="selector-target-container compound" style="background-color: #ecfeff; border-color: #c5eafc;">
-                    <label for="uniform-factor-type" style="color: #0369a1;">¿Qué factor o valor buscas despejar?</label>
-                    <select id="uniform-factor-type" onchange="toggleUniformFields()" class="form-select">
-                        <option value="P/A">Encontrar P dado A (Valor Presente de Serie Uniforme)</option>
-                        <option value="A/P">Encontrar A dado P (Recuperación de Capital)</option>
-                        <option value="F/A">Encontrar F dado A (Valor Futuro de Serie Uniforme)</option>
-                        <option value="A/F">Encontrar A dado F (Fondo de Amortización)</option>
-                    </select>
-                </div>
-
-                <form id="form-uniform-series" onsubmit="calcUniformSeries(event)" class="form-group-stack">
-                    <div id="box-uniform-A">
-                        <label class="field-label">Valor de la Anualidad / Pago Uniforme (A) ($)</label>
-                        <input type="number" id="uniform-a" step="any" class="form-input" placeholder="Ej: 500">
+                <form id="form-uniform" class="form-group-stack" onsubmit="return false;">
+                    <div class="selector-target-container compound" style="background-color: #fdf2f8; border-color: #fbcfe8;">
+                        <label for="uniform-target" style="color: #9d174d;">¿Qué deseas calcular / despejar?</label>
+                        <select id="uniform-target" class="form-select">
+                            <option value="P">Buscar Presente dado Pago (P/A)</option>
+                            <option value="F">Buscar Futuro dado Pago (F/A)</option>
+                            <option value="A_P">Buscar Pago dado Presente (A/P)</option>
+                            <option value="A_F">Buscar Pago dado Futuro (A/F)</option>
+                            <option value="n">Buscar Número de Pagos (n)</option>
+                        </select>
                     </div>
-                    <div id="box-uniform-P" class="hidden">
-                        <label class="field-label">Valor Presente Base (P) ($)</label>
-                        <input type="number" id="uniform-p" step="any" class="form-input" placeholder="Ej: 3000">
+                    <div id="group-uniform-a">
+                        <label class="field-label" for="uniform-a">Monto de la Anualidad o Pago (A)</label>
+                        <input type="number" id="uniform-a" class="form-input" step="any" placeholder="Ej. 150">
                     </div>
-                    <div id="box-uniform-F" class="hidden">
-                        <label class="field-label">Valor Futuro Objetivo (F) ($)</label>
-                        <input type="number" id="uniform-f" step="any" class="form-input" placeholder="Ej: 10000">
+                    <div id="group-uniform-p">
+                        <label class="field-label" for="uniform-p">Valor Presente Total (P)</label>
+                        <input type="number" id="uniform-p" class="form-input" step="any" placeholder="Ej. 1200">
                     </div>
-                    <div class="form-row-grid">
-                        <div>
-                            <label class="field-label">Tasa de Interés (i) (%)</label>
-                            <input type="number" id="uniform-i" step="any" class="form-input" placeholder="Ej: 8" required>
-                        </div>
-                        <div>
-                            <label class="field-label">Número de Pagos (n)</label>
-                            <input type="number" id="uniform-n" step="any" class="form-input" placeholder="Ej: 12" required>
-                        </div>
+                    <div id="group-uniform-f">
+                        <label class="field-label" for="uniform-f">Valor Futuro Total (F)</label>
+                        <input type="number" id="uniform-f" class="form-input" step="any" placeholder="Ej. 3000">
                     </div>
-                    <button type="submit" class="submit-btn compound" style="background-color: #0891b2;">Calcular Serie</button>
+                    <div id="group-uniform-i">
+                        <label class="field-label" for="uniform-i">Tasa por Período (i %)</label>
+                        <input type="number" id="uniform-i" class="form-input" step="any" placeholder="Ej. 4">
+                    </div>
+                    <div id="group-uniform-n">
+                        <label class="field-label" for="uniform-n">Número de Cuotas o Períodos (n)</label>
+                        <input type="number" id="uniform-n" class="form-input" step="any" placeholder="Ej. 24">
+                    </div>
+                    <button type="button" id="btn-calc-uniform" class="submit-btn compound" style="background-color: #db2777;">Calcular Incógnita</button>
                 </form>
 
-                <div id="res-uniform-container" class="hidden results-wrapper compound" style="background-color: #ecfeff; border-color: #c5eafc;">
-                    <h3 class="results-title">Resultado de la Operación</h3>
-                    <div style="font-family: monospace; font-size: 0.95rem; margin-bottom: 0.75rem; color: #0369a1;">
-                        Notación Estándar: <span id="res-uniform-factor-text" style="font-weight: bold;">(P/A, i%, n)</span>
-                    </div>
+                <div id="results-uniform" class="results-wrapper compound hidden" style="background-color: #fdf2f8; border-color: #fbcfe8;">
+                    <h3 class="results-title">Solución</h3>
                     <div class="result-main-line">
-                        <span id="res-uniform-label" class="label">Valor Equivalente:</span>
-                        <span id="res-uniform-value" class="value compound" style="color: #0891b2;">0.00</span>
+                        <span class="label" id="res-uniform-label">Resultado:</span>
+                        <span class="value compound" id="res-uniform-val" style="color: #db2777;">0.00</span>
                     </div>
                 </div>
             </div>
@@ -328,7 +336,7 @@
     </main>
 
     <footer class="main-footer">
-        <p>© 2026 FinanzasWeb - Tu Calculadora Financiera Avanzada con Multi-Divisas.</p>
+        <p>© 2026 Plataforma Financiera Educativa Avanzada. Tasas sincronizadas en vivo.</p>
     </footer>
 
     <script src="script.js"></script>
