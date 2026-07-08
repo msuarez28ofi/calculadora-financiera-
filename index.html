@@ -60,6 +60,8 @@
             <button id="nav-compound" class="nav-btn">Interés Compuesto</button>
             <button id="nav-single" class="nav-btn">Pagos Únicos</button>
             <button id="nav-uniform" class="nav-btn">Series Uniformes</button>
+            <button id="nav-rates" class="nav-btn" onclick="changeView('rates'); toggleSidebar();">Tasas Equivalentes</button>
+            <button id="nav-costs" class="nav-btn" onclick="changeView('costs'); toggleSidebar();">Estimación de Costos</button>
         </nav>
         <div class="sidebar-footer">
             <span>© 2026 FinanzasCalc</span>
@@ -106,6 +108,14 @@
                     <div style="background: var(--bg-card); padding: 1rem; border-left: 4px solid #db2777; border-radius: 4px;">
                         <h4>4. Series Uniformes (Anualidades)</h4>
                         <p style="font-size: 0.875rem;">Modelan situaciones con flujos de efectivo constantes que ocurren a intervalos regulares de tiempo (ej. cuotas de créditos, fondos de retiro, alquileres).</p>
+                    </div>
+                    <div style="background: var(--bg-card); padding: 1rem; border-left: 4px solid #f59e0b; border-radius: 4px;">
+                        <h4>5. Tasas Equivalentes </h4>
+                        <p style="font-size: 0.875rem;">La <strong>Tasa Nominal (r)</strong> es una referencia anual, pero la <strong>Tasa Efectiva (ie)</strong> indica el rendimiento verdadero considerando la frecuencia.</p>
+                    </div>
+                    <div style="background: var(--bg-card); padding: 1rem; border-left: 4px solid #8b5cf6; border-radius: 4px;">
+                        <h4>6. Estimación de Costos</h4>
+                        <p style="font-size: 0.875rem;">El análisis de costos determina la viabilidad operativa. El <strong>Costo Total</strong> es la suma de los Costos Fijos y Variables. El <strong>Punto de Equilibrio</strong> es la cantidad exacta de unidades a vender para que los ingresos igualen a los costos (cero ganancias, cero pérdidas).</p>
                     </div>
                 </div>
             </div>
@@ -330,6 +340,120 @@
                         <span class="value compound" id="res-uniform-val" style="color: #db2777;">0.00</span>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: tasas equivalentes -->
+        <section id="section-rates" class="card-panel max-w-calculator fade-in hidden">
+            <div class="panel-header-simple" style="background-color: #d97706;"><h2>Tema III: Tasas Equivalentes</h2></div>
+            <div class="panel-body">
+                
+                <div style="background: var(--bg-card); padding: 1rem; border-left: 4px solid #d97706; border-radius: 4px; margin-bottom: 1.5rem;">
+                    <p style="margin: 0; font-size: 0.9rem;">
+                        <strong>¿Para qué sirve esta calculadora?</strong><br>
+                        Te permite convertir una Tasa Nominal a su equivalente Efectiva (o viceversa) dependiendo de la frecuencia con la que se capitalice el dinero en el año. También incluye el cálculo para capitalización continua.
+                    </p>
+                </div>
+
+                <form id="form-rates" class="form-group-stack" onsubmit="return false;">
+                    <div class="selector-target-container" style="background-color: #fef3c7; border-color: #fde68a;">
+                        <label for="rates-target" style="color: #b45309;">¿Qué tipo de conversión deseas realizar?</label>
+                        <select id="rates-target" class="form-select" onchange="toggleRatesFields()">
+                            <option value="nom_to_efec">Nominal a Efectiva (TEA)</option>
+                            <option value="efec_to_nom">Efectiva a Nominal (TNA)</option>
+                            <option value="nom_to_cont">Nominal a Efectiva Continua</option>
+                            <option value="cont_to_nom">Efectiva Continua a Nominal</option>
+                        </select>
+                    </div>
+                    
+                    <div id="group-rates-input">
+                        <label class="field-label" for="rates-input">Tasa Conocida (%)</label>
+                        <input type="number" id="rates-input" class="form-input" step="any" placeholder="Ej. 12">
+                    </div>
+                    
+                    <div id="group-rates-m">
+                        <label class="field-label" for="rates-m">Períodos de Capitalización al Año (m)</label>
+                        <select id="rates-m" class="form-select">
+                            <option value="1">Anual (m=1)</option>
+                            <option value="2">Semestral (m=2)</option>
+                            <option value="4">Trimestral (m=4)</option>
+                            <option value="6">Bimestral (m=6)</option>
+                            <option value="12" selected>Mensual (m=12)</option>
+                            <option value="365">Diaria (m=365)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" id="btn-calc-rates" onclick="calcularTasas()" class="submit-btn" style="background-color: #d97706;">Calcular Equivalencia</button>
+                </form>
+
+                <div id="results-rates" class="results-wrapper hidden" style="background-color: #fef3c7; border-color: #fde68a;">
+                    <h3 class="results-title">Resultado de la Conversión</h3>
+                    <div class="result-main-line">
+                        <span class="label" id="res-rates-label">Tasa Calculada:</span>
+                        <span class="value" id="res-rates-val" style="color: #d97706; font-size: 1.5rem;">0.00 %</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN: Estimación de Costos -->
+        <section id="section-costs" class="card-panel max-w-calculator fade-in hidden">
+            <div class="panel-header-simple" style="background-color: #7c3aed;"><h2>Tema IV: Estimación de Costos</h2></div>
+            <div class="panel-body">
+                
+               <div style="background: var(--bg-card); padding: 1rem; border-left: 4px solid #7c3aed; border-radius: 4px; margin-bottom: 1.5rem;">
+                    <p style="margin: 0; font-size: 0.9rem;">
+                        <strong>¿Para qué sirve esta calculadora?</strong><br>
+                        Ingresa tus costos fijos, el costo variable y el precio de venta por unidad para determinar rápidamente el Costo Total, la Utilidad (o pérdida) proyectada y el Punto de Equilibrio exacto del proyecto.
+                    </p>
+                </div>
+
+                <form id="form-costs" class="form-group-stack" onsubmit="return false;">
+                    
+                    <div id="group-costs-cf">
+                        <label class="field-label" for="costs-cf">Costos Fijos Totales ($)</label>
+                        <input type="number" id="costs-cf" class="form-input" step="any" placeholder="Ej. 5000">
+                    </div>
+                    
+                    <div id="group-costs-cvu">
+                        <label class="field-label" for="costs-cvu">Costo Variable por Unidad ($)</label>
+                        <input type="number" id="costs-cvu" class="form-input" step="any" placeholder="Ej. 20">
+                    </div>
+
+                    <div id="group-costs-pvu">
+                        <label class="field-label" for="costs-pvu">Precio de Venta por Unidad ($)</label>
+                        <input type="number" id="costs-pvu" class="form-input" step="any" placeholder="Ej. 50">
+                    </div>
+                    
+                    <div id="group-costs-q">
+                        <label class="field-label" for="costs-q">Cantidad a Producir/Vender (Q)</label>
+                        <input type="number" id="costs-q" class="form-input" step="any" placeholder="Ej. 250">
+                    </div>
+                    
+                    <button type="button" id="btn-calc-costs" onclick="calcularCostos()" class="submit-btn" style="background-color: #7c3aed;">Calcular Costos y Utilidad</button>
+                </form>
+
+                <div id="results-costs" class="results-wrapper hidden" style="background-color: #f5f3ff; border-color: #c4b5fd;">
+                    <h3 class="results-title">Resultados del Análisis</h3>
+                    <div class="result-main-line" style="font-size: 1rem; margin-bottom: 0.5rem;">
+                        <span class="label">Costo Total (CT):</span>
+                        <span class="value" id="res-costs-ct" style="color: #475569;">$0.00</span>
+                    </div>
+                    <div class="result-main-line" style="font-size: 1rem; margin-bottom: 0.5rem;">
+                        <span class="label">Ingreso Total (IT):</span>
+                        <span class="value" id="res-costs-it" style="color: #475569;">$0.00</span>
+                    </div>
+                    <div class="result-main-line" style="font-size: 1.1rem; margin-bottom: 0.5rem; border-top: 1px dashed #c4b5fd; padding-top: 0.75rem;">
+                        <span class="label">Utilidad / Pérdida:</span>
+                        <span class="value" id="res-costs-util" style="font-weight: bold;">$0.00</span>
+                    </div>
+                    <div class="result-main-line" style="font-size: 1.1rem; border-top: 1px dashed #c4b5fd; padding-top: 0.75rem;">
+                        <span class="label" style="color: #6d28d9;">Punto de Equilibrio:</span>
+                        <span class="value" id="res-costs-pe" style="color: #6d28d9; font-weight: bold;">0 Unidades</span>
+                    </div>
+                </div>
+
             </div>
         </section>
 

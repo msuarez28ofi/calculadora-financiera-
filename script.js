@@ -48,7 +48,7 @@ function toggleSidebar() {
 }
 
 function changeView(viewName) {
-    const vistas = ['inicio', 'simple', 'compound', 'single', 'uniform'];
+    const vistas = ['inicio', 'simple', 'compound', 'single', 'uniform', 'rates', 'costs'];
     
     vistas.forEach(v => {
         const sección = document.getElementById(`section-${v}`);
@@ -289,3 +289,96 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleSingleFields();
     toggleUniformFields();
 });
+
+// =========================================================================
+// TEMA III: LÓGICA DE TASAS EQUIVALENTES
+// =========================================================================
+
+function toggleRatesFields() {
+    const target = document.getElementById('rates-target').value;
+    const groupM = document.getElementById('group-rates-m');
+
+    // Oculta la selección de meses si es capitalización continua
+    if (target === 'nom_to_cont' || target === 'cont_to_nom') {
+        groupM.classList.add('hidden');
+    } else {
+        groupM.classList.remove('hidden');
+    }
+    document.getElementById('results-rates').classList.add('hidden');
+}
+
+function calcularTasas() {
+    const target = document.getElementById('rates-target').value;
+    const inputRate = parseFloat(document.getElementById('rates-input').value) || 0;
+    const m = parseFloat(document.getElementById('rates-m').value) || 1;
+
+    let r = inputRate / 100; // Porcentaje a decimal
+    let res = 0;
+    let label = "";
+
+    if (target === 'nom_to_efec') {
+        res = (Math.pow(1 + (r / m), m) - 1) * 100;
+        label = "Tasa Efectiva Anual (TEA):";
+    } 
+    else if (target === 'efec_to_nom') {
+        res = m * (Math.pow(1 + r, 1 / m) - 1) * 100;
+        label = "Tasa Nominal Anual (TNA):";
+    } 
+    else if (target === 'nom_to_cont') {
+        res = (Math.exp(r) - 1) * 100;
+        label = "Tasa Efectiva Continua:";
+    } 
+    else if (target === 'cont_to_nom') {
+        res = Math.log(1 + r) * 100;
+        label = "Tasa Nominal Continua:";
+    }
+
+    document.getElementById('res-rates-label').textContent = label;
+    document.getElementById('res-rates-val').textContent = res.toFixed(4) + " %"; 
+    document.getElementById('results-rates').classList.remove('hidden');
+}
+
+// =========================================================================
+// TEMA IV: LÓGICA DE ESTIMACIÓN DE COSTOS
+// =========================================================================
+function calcularCostos() {
+    const cf = parseFloat(document.getElementById('costs-cf').value) || 0;
+    const cvu = parseFloat(document.getElementById('costs-cvu').value) || 0;
+    const pvu = parseFloat(document.getElementById('costs-pvu').value) || 0;
+    const q = parseFloat(document.getElementById('costs-q').value) || 0;
+
+    // Fórmulas matemáticas
+    const costoTotal = cf + (cvu * q);
+    const ingresoTotal = pvu * q;
+    const utilidad = ingresoTotal - costoTotal;
+    
+    let puntoEquilibrio = 0;
+    if (pvu > cvu) {
+        puntoEquilibrio = cf / (pvu - cvu);
+    }
+
+    // Mostrar Costos e Ingresos (aprovechando tu función formatUSD)
+    document.getElementById('res-costs-ct').textContent = formatUSD(costoTotal);
+    document.getElementById('res-costs-it').textContent = formatUSD(ingresoTotal);
+    
+    // Mostrar Utilidad (Verde si hay ganancia, Rojo si hay pérdida)
+    const elUtil = document.getElementById('res-costs-util');
+    elUtil.textContent = formatUSD(utilidad);
+    if (utilidad < 0) {
+        elUtil.style.color = '#ef4444'; // Rojo
+    } else {
+        elUtil.style.color = '#10b981'; // Verde
+    }
+
+    // Mostrar Punto de Equilibrio
+    const elPe = document.getElementById('res-costs-pe');
+    if (pvu <= cvu) {
+        elPe.textContent = "El precio debe superar al costo variable";
+        elPe.style.fontSize = "0.9rem";
+    } else {
+        elPe.textContent = Math.ceil(puntoEquilibrio) + " Unidades";
+        elPe.style.fontSize = "1.1rem";
+    }
+
+    document.getElementById('results-costs').classList.remove('hidden');
+}
