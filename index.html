@@ -41,67 +41,96 @@
             <button id="nav-uniform" class="nav-btn">Series Uniformes</button>
             <button id="nav-rates" class="nav-btn">Tasas Equivalentes</button>
             <button id="nav-costs" class="nav-btn">Estimación de Costos</button>
+            <span class="nav-section-title">Evaluación e Ingeniería</span>
+            <button id="nav-evaluacion" class="nav-btn">Evaluación de Proyectos</button>
+            <button id="nav-alternativas" class="nav-btn">Selección de Alternativas</button>
         </nav>
     </aside>
 
     <main>
-        <!-- SECCIÓN INICIO -->
         <section id="section-inicio" class="card-panel max-w-home fade-in">
             <div class="panel-body">
                 <h1 class="main-title">Ingeniería Económica e Indicadores</h1>
+                <p style="text-align: center; color: var(--text-secondary); margin-top: -1rem; margin-bottom: 2rem; font-size: 0.95rem;">
+                    💡 Haz clic en cualquier tarjeta de abajo para desglosar sus conceptos matemáticos y teóricos en tiempo real.
+                </p>
+                
                 <div class="concept-grid">
-                    <div class="concept-card card-simple">
-                        <h4>Interés Simple</h4>
+                    <div class="concept-card card-simple" onclick="mostrarConceptoHome('simple')">
+                        <h4>Interés Simple 👆</h4>
                         <p>Los rendimientos se evalúan sobre el capital original. <br>
                         <span class="sigla-badge">I</span> Interés Neto total ganado.<br>
                         <span class="sigla-badge">P</span> Valor Presente / Capital Inicial.<br>
                         <span class="sigla-badge">i</span> Tasa de interés por unidad de tiempo.<br>
                         <span class="sigla-badge">t</span> Tiempo total de exposición.</p>
                     </div>
-                    <div class="concept-card card-compound">
-                        <h4>Interés Compuesto</h4>
+                    <div class="concept-card card-compound" onclick="mostrarConceptoHome('compound')">
+                        <h4>Interés Compuesto 👆</h4>
                         <p>Capitalización sistemática de intereses devengados.<br>
                         <span class="sigla-badge">Vf</span> Valor Futuro acumulado final.<br>
                         <span class="sigla-badge">P</span> Valor Presente o Capital Base.<br>
                         <span class="sigla-badge">i</span> Tasa nominal establecida.<br>
-                        <span class="sigla-badge">m</span> Frecuencia de capitalización anual.</p>
+                        <span class="sigla-badge">m</span> Frecuencia de capitalización.</p>
                     </div>
-                    <div class="concept-card card-single">
-                        <h4>Pagos Únicos</h4>
+                    <div class="concept-card card-single" onclick="mostrarConceptoHome('single')">
+                        <h4>Pagos Únicos 👆</h4>
                         <p>Desplazamiento de flujos discretos en el tiempo.<br>
                         <span class="sigla-badge">P</span> Valor Presente (Monto actual).<br>
                         <span class="sigla-badge">F</span> Valor Futuro (Monto capitalizado).<br>
                         <span class="sigla-badge">n</span> Número de períodos exactos de transcurso.<br>
                         <span class="sigla-badge">i</span> Tasa efectiva del período.</p>
                     </div>
-                    <div class="concept-card card-uniform">
-                        <h4>Series Uniformes</h4>
-                        <p>Conjunto de anualidades o flujos iguales y consecutivos.<br>
-                        <span class="sigla-badge">A</span> Anualidad o Cuota Periódica constante.<br>
+                    <div class="concept-card card-uniform" onclick="mostrarConceptoHome('uniform')">
+                        <h4>Series Uniformes 👆</h4>
+                        <p>Conjunto de flujos recurrentes iguales y consecutivos.<br>
+                        <span class="sigla-badge">A</span> Cuota / Anualidad Periódica constante.<br>
                         <span class="sigla-badge">P</span> Valor Presente de la serie.<br>
                         <span class="sigla-badge">F</span> Valor Futuro de la serie.<br>
                         <span class="sigla-badge">n</span> Cantidad de cuotas ingresadas.</p>
                     </div>
-                    <div class="concept-card card-rates">
-                        <h4>Tasas Equivalentes</h4>
+                    <div class="concept-card card-rates" onclick="mostrarConceptoHome('rates')">
+                        <h4>Tasas Equivalentes 👆</h4>
                         <p>Homologación de rentabilidades financieras.<br>
                         <span class="sigla-badge">TEA</span> Tasa Efectiva Anual Real.<br>
-                        <span class="sigla-badge">TNA</span> Tasa Nominal Anual contractual.<br>
-                        <span class="sigla-badge">m</span> Períodos de capitalización en el año.</p>
+                        <span class="sigla-badge">TNA</span> Tasa Nominal de referencia.<br>
+                        <span class="sigla-badge">m</span> Períodos de capitalización.</p>
                     </div>
-                    <div class="concept-card card-costs">
-                        <h4>Estimación de Costos</h4>
+                    <div class="concept-card card-costs" onclick="mostrarConceptoHome('costs')">
+                        <h4>Estimación de Costos 👆</h4>
                         <p>Identificación operativa y márgenes comerciales.<br>
                         <span class="sigla-badge">CF</span> Costos Fijos estructurales independientes.<br>
                         <span class="sigla-badge">CVU</span> Costo Variable Unitario de fabricación.<br>
                         <span class="sigla-badge">PVU</span> Precio de Venta Unitario al público.<br>
                         <span class="sigla-badge">PE</span> Punto de Equilibrio operativo en volumen.</p>
                     </div>
+                    <div class="concept-card card-evaluacion" onclick="mostrarConceptoHome('evaluacion')" style="border-left: 4px solid var(--color-evaluacion);">
+                        <h4 class="val-evaluacion">Evaluación Económica 👆</h4>
+                        <p>Métodos para medir la rentabilidad de un proyecto.<br>
+                        <span class="sigla-badge">VPN</span> Valor Presente Neto analítico.<br>
+                        <span class="sigla-badge">VA</span> Valor Anual Equivalente de flujos.<br>
+                        <span class="sigla-badge">TIR</span> Tasa Interna de Retorno de la inversión.<br>
+                        <span class="sigla-badge">PRI</span> Periodo de Recuperación descontado.</p>
+                    </div>
+                    <div class="concept-card card-alternativas" onclick="mostrarConceptoHome('alternativas')" style="border-left: 4px solid var(--color-alternativas);">
+                        <h4 class="val-alternativas">Selección de Alternativas 👆</h4>
+                        <p>Análisis de reemplazo y vidas diferentes.<br>
+                        <span class="sigla-badge">MCM</span> Mínimo Común Múltiplo de horizontes.<br>
+                        <span class="sigla-badge">VAI</span> Valor Anual Incremental de análisis.<br>
+                        <span class="sigla-badge">VP</span> Comparación directa en ciclo común.</p>
+                    </div>
+                </div>
+
+                <div id="home-concept-detail" class="hidden fade-in" style="margin-top: 2.5rem; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-neutral);">
+                    <div id="concept-detail-header" style="padding: 1rem 1.5rem; color: white; font-weight: 700; display: flex; justify-content: space-between; align-items: center;">
+                        <span id="concept-detail-title">Concepto Seleccionado</span>
+                        <button onclick="cerrarConceptoHome()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; line-height: 1;">&times;</button>
+                    </div>
+                    <div id="concept-detail-body" style="padding: 1.5rem; background: var(--bg-box-neutral); line-height: 1.6;">
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- INTERÉS SIMPLE -->
         <section id="section-simple" class="card-panel max-w-calculator fade-in hidden">
             <div class="panel-header header-simple">Interés Simple</div>
             <div class="panel-body">
@@ -119,34 +148,36 @@
                     <div id="s-g-p"><label class="field-label">Valor Presente / Capital (P)</label><input type="number" id="simple-p" class="form-input" value="1000"></div>
                     <div id="s-g-i"><label class="field-label">Tasa de Interés (% Periódico)</label><input type="number" id="simple-i" class="form-input" value="10"></div>
                     <div id="s-g-t" class="form-row-grid">
-                        <div><label class="field-label">Tiempo (t)</label><input type="number" id="simple-t" class="form-input" value="1"></div>
+                        <div><label class="field-label">Tiempo</label><input type="number" id="simple-t" class="form-input" value="1"></div>
                         <div>
                             <label class="field-label">Período de Tiempo</label>
                             <select id="simple-t-unit" class="form-select">
-                                <option value="mensual">Mensual</option>
-                                <option value="bimensual">Bimensual</option>
-                                <option value="trimestral">Trimestral</option>
-                                <option value="semestral">Semestral</option>
-                                <option value="anual" selected>Anual</option>
+                                <option value="1">Anual</option>
+                                <option value="0.5">Semestral</option>
+                                <option value="0.25">Trimestral</option>
+                                <option value="0.1666">Bimestral</option>
+                                <option value="0.0833">Mensual</option>
                             </select>
                         </div>
                     </div>
-                    <div id="s-g-int" class="hidden"><label class="field-label">Interés Neto Devengado (I)</label><input type="number" id="simple-int" class="form-input" value="100"></div>
-                    <div id="s-g-vf" class="hidden"><label class="field-label">Valor Futuro Esperado (Vf)</label><input type="number" id="simple-vf" class="form-input" value="1100"></div>
-                    <button type="button" id="btn-calc-simple" class="submit-btn btn-simple">Calcular Variable</button>
+                    <div id="s-g-I" class="hidden"><label class="field-label">Interés Ganado (I)</label><input type="number" id="simple-I" class="form-input" value="100"></div>
+                    <div id="s-g-vf" class="hidden"><label class="field-label">Valor Futuro acumulado (Vf)</label><input type="number" id="simple-vf" class="form-input" value="1100"></div>
+                    
+                    <button type="button" id="btn-calc-simple" class="submit-btn btn-simple">Calcular Interés Simple</button>
                 </form>
+
                 <div id="results-simple" class="results-wrapper res-border-simple hidden">
-                    <h3 class="results-title">Resultado del Despeje</h3>
-                    <div class="result-main-line"><span class="label" id="res-simple-label">Valor:</span><span class="value val-simple" id="res-simple-val">0.00</span></div>
+                    <h3 class="results-title">Resultados Obtenidos</h3>
+                    <div class="result-main-line"><span class="label" id="lbl-simple-res">Valor:</span><span class="value val-simple" id="res-simple-main">0.00</span></div>
                     <div id="divisas-simple" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Conversión USD:</span><span class="value" id="res-simple-usd">$0.00</span></div>
-                        <div class="conversion-row"><span class="label">Conversión EUR:</span><span class="value" id="res-simple-eur">€0.00</span></div>
+                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-simple-ves">0.00 VES</span></div>
+                        <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-simple-usd">$0.00 USD</span></div>
+                        <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-simple-eur">€0.00 EUR</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- INTERÉS COMPUESTO -->
         <section id="section-compound" class="card-panel max-w-calculator fade-in hidden">
             <div class="panel-header header-compound">Interés Compuesto</div>
             <div class="panel-body">
@@ -154,207 +185,178 @@
                     <div class="selector-target-container">
                         <label for="compound-target">Variable a Despejar:</label>
                         <select id="compound-target" class="form-select">
-                            <option value="Vf">Valor Futuro Acumulado (Vf)</option>
-                            <option value="P">Valor Presente Requerido (P)</option>
-                            <option value="i">Tasa de Interés Anual Nominal (%)</option>
-                            <option value="t">Tiempo Total Expresado</option>
+                            <option value="Vf">Valor Futuro acumulado (Vf)</option>
+                            <option value="P">Valor Presente / Capital (P)</option>
+                            <option value="i">Tasa de Interés Nominal (i)</option>
+                            <option value="n">Número de Períodos totales (n)</option>
                         </select>
                     </div>
-                    <div id="co-g-p"><label class="field-label">Valor Presente / Capital Inicial (P)</label><input type="number" id="compound-p" class="form-input" value="1000"></div>
-                    <div id="co-g-i"><label class="field-label">Tasa de Interés Anual Nominal (%)</label><input type="number" id="compound-i" class="form-input" value="12"></div>
-                    <div id="co-g-t" class="form-row-grid">
-                        <div><label class="field-label">Tiempo Total (t)</label><input type="number" id="compound-t" class="form-input" value="1"></div>
+                    <div id="c-g-p"><label class="field-label">Valor Presente / Capital (P)</label><input type="number" id="compound-p" class="form-input" value="1000"></div>
+                    <div id="c-g-i"><label class="field-label">Tasa Nominal Base (%)</label><input type="number" id="compound-i" class="form-input" value="12"></div>
+                    <div id="c-g-n" class="form-row-grid">
+                        <div><label class="field-label">Tiempo (Unidades)</label><input type="number" id="compound-n" class="form-input" value="1"></div>
                         <div>
-                            <label class="field-label">Base Temporal del Tiempo</label>
-                            <select id="compound-t-unit" class="form-select">
-                                <option value="mensual">Meses</option>
-                                <option value="bimensual">Bimestres</option>
-                                <option value="trimestral">Trimestres</option>
-                                <option value="semestral">Semestres</option>
-                                <option value="anual" selected>Años</option>
+                            <label class="field-label">Capitalización / Periodo</label>
+                            <select id="compound-m" class="form-select">
+                                <option value="1">Anual</option>
+                                <option value="2">Semestral</option>
+                                <option value="4">Trimestral</option>
+                                <option value="6">Bimestral</option>
+                                <option value="12">Mensual</option>
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <label class="field-label">Frecuencia de Capitalización (m)</label>
-                        <select id="compound-m" class="form-select">
-                            <option value="12">Mensual (m = 12)</option>
-                            <option value="6">Bimensual (m = 6)</option>
-                            <option value="4">Trimestral (m = 4)</option>
-                            <option value="2">Semestral (m = 2)</option>
-                            <option value="1" selected>Anual (m = 1)</option>
-                        </select>
-                    </div>
-                    <div id="co-g-vf" class="hidden"><label class="field-label">Valor Futuro Metálico (Vf)</label><input type="number" id="compound-vf" class="form-input" value="1120"></div>
-                    <button type="button" id="btn-calc-compound" class="submit-btn btn-compound">Calcular Variable</button>
+                    <div id="c-g-vf" class="hidden"><label class="field-label">Valor Futuro (Vf)</label><input type="number" id="compound-vf" class="form-input" value="1126.83"></div>
+                    
+                    <button type="button" id="btn-calc-compound" class="submit-btn btn-compound">Calcular Interés Compuesto</button>
                 </form>
+
                 <div id="results-compound" class="results-wrapper res-border-compound hidden">
-                    <h3 class="results-title">Resultado del Despeje</h3>
-                    <div class="result-main-line"><span class="label" id="res-compound-label">Valor:</span><span class="value val-compound" id="res-compound-val">0.00</span></div>
+                    <h3 class="results-title">Resultados Obtenidos</h3>
+                    <div class="result-main-line"><span class="label" id="lbl-compound-res">Valor:</span><span class="value val-compound" id="res-compound-main">0.00</span></div>
                     <div id="divisas-compound" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Conversión USD:</span><span class="value" id="res-compound-usd">$0.00</span></div>
-                        <div class="conversion-row"><span class="label">Conversión EUR:</span><span class="value" id="res-compound-eur">€0.00</span></div>
+                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-compound-ves">0.00 VES</span></div>
+                        <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-compound-usd">$0.00 USD</span></div>
+                        <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-compound-eur">€0.00 EUR</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- PAGOS ÚNICOS -->
         <section id="section-single" class="card-panel max-w-calculator fade-in hidden">
-            <div class="panel-header header-single">Pagos Únicos (Factores P y F)</div>
+            <div class="panel-header header-single">Pagos Únicos</div>
             <div class="panel-body">
                 <form class="form-group-stack" onsubmit="return false;">
                     <div class="selector-target-container">
-                        <label for="single-target">Despeje de Factor Requerido:</label>
+                        <label for="single-target">Encontrar Variable:</label>
                         <select id="single-target" class="form-select">
-                            <option value="F">Calcular Futuro dado el Presente (F/P)</option>
-                            <option value="P">Calcular Presente dado el Futuro (P/F)</option>
-                            <option value="n">Calcular Períodos de Tiempo (n)</option>
-                            <option value="i">Calcular Tasa de Interés del Período (i)</option>
+                            <option value="F">Valor Futuro dado P (F/P)</option>
+                            <option value="P">Valor Presente dado F (P/F)</option>
                         </select>
                     </div>
-                    <div id="si-g-p"><label class="field-label">Valor Presente (P)</label><input type="number" id="single-p" class="form-input" value="1000"></div>
-                    <div id="si-g-f" class="hidden"><label class="field-label">Valor Futuro (F)</label><input type="number" id="single-f" class="form-input" value="1500"></div>
-                    <div id="si-g-i"><label class="field-label">Tasa por Período (% i)</label><input type="number" id="single-i" class="form-input" value="5"></div>
-                    <div id="si-g-n" class="form-row-grid">
-                        <div><label class="field-label">Número de Períodos (n)</label><input type="number" id="single-n" class="form-input" value="8"></div>
-                        <div>
-                            <label class="field-label">Unidad del Período</label>
-                            <select id="single-n-unit" class="form-select">
-                                <option value="mensual">Mensual</option>
-                                <option value="bimensual">Bimensual</option>
-                                <option value="trimestral">Trimestral</option>
-                                <option value="semestral">Semestral</option>
-                                <option value="anual" selected>Anual</option>
-                            </select>
-                        </div>
+                    <div id="sg-g-p"><label class="field-label">Valor Presente (P)</label><input type="number" id="single-p" class="form-input" value="1000"></div>
+                    <div id="sg-g-f" class="hidden"><label class="field-label">Valor Futuro (F)</label><input type="number" id="single-f" class="form-input" value="1500"></div>
+                    <div class="form-row-grid">
+                        <div><label class="field-label">Tasa Efectiva por Período (%)</label><input type="number" id="single-i" class="form-input" value="10"></div>
+                        <div><label class="field-label">Número de Períodos (n)</label><input type="number" id="single-n" class="form-input" value="5"></div>
                     </div>
-                    <button type="button" id="btn-calc-single" class="submit-btn btn-single">Calcular Incógnita</button>
+                    
+                    <button type="button" id="btn-calc-single" class="submit-btn btn-single">Calcular Equivalencia</button>
                 </form>
+
                 <div id="results-single" class="results-wrapper res-border-single hidden">
-                    <h3 class="results-title">Resultados Visibles</h3>
-                    <div class="result-main-line"><span class="label" id="res-single-label">Monto:</span><span class="value val-single" id="res-single-val">0.00</span></div>
+                    <h3 class="results-title">Resultados de Equivalencia</h3>
+                    <div class="result-main-line"><span class="label" id="lbl-single-res">Valor:</span><span class="value val-single" id="res-single-main">0.00</span></div>
                     <div id="divisas-single" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Equivalencia USD:</span><span class="value" id="res-single-usd">$0.00</span></div>
-                        <div class="conversion-row"><span class="label">Equivalencia EUR:</span><span class="value" id="res-single-eur">€0.00</span></div>
+                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-single-ves">0.00 VES</span></div>
+                        <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-single-usd">$0.00 USD</span></div>
+                        <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-single-eur">€0.00 EUR</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SERIES UNIFORMES -->
         <section id="section-uniform" class="card-panel max-w-calculator fade-in hidden">
-            <div class="panel-header header-uniform">Series Uniformes (Anualidades)</div>
+            <div class="panel-header header-uniform">Series Uniformes</div>
             <div class="panel-body">
                 <form class="form-group-stack" onsubmit="return false;">
                     <div class="selector-target-container">
-                        <label for="uniform-target">Fórmulas y Despejes Disponibles:</label>
+                        <label for="uniform-target">Variable a Despejar:</label>
                         <select id="uniform-target" class="form-select">
-                            <option value="P">Buscar Presente dado la Cuota (P/A)</option>
-                            <option value="F">Buscar Futuro dado la Cuota (F/A)</option>
-                            <option value="A_P">Buscar Cuota dado el Presente (A/P)</option>
-                            <option value="A_F">Buscar Cuota dado el Futuro (A/F)</option>
+                            <option value="P">Valor Presente de Anualidad (P/A)</option>
+                            <option value="F">Valor Futuro de Anualidad (F/A)</option>
+                            <option value="A_P">Anualidad dado Valor Presente (A/P)</option>
+                            <option value="A_F">Anualidad dado Valor Futuro (A/F)</option>
                         </select>
                     </div>
+                    <div id="u-g-a"><label class="field-label">Cuota / Pago Periódico (A)</label><input type="number" id="uniform-a" class="form-input" value="200"></div>
+                    <div id="u-g-p" class="hidden"><label class="field-label">Valor Presente acumulado (P)</label><input type="number" id="uniform-p" class="form-input" value="1000"></div>
+                    <div id="u-g-f" class="hidden"><label class="field-label">Valor Futuro acumulado (F)</label><input type="number" id="uniform-f" class="form-input" value="1200"></div>
+                    
                     <div class="form-row-grid">
-                        <div>
-                            <label class="field-label">Momento de Pago</label>
-                            <select id="uniform-moment" class="form-select"><option value="vencida">Vencida (Fin Período)</option><option value="anticipada">Anticipada (Inicio Período)</option></select>
-                        </div>
-                        <div>
-                            <label class="field-label">Intervalo de la Cuota</label>
-                            <select id="uniform-time-unit" class="form-select">
-                                <option value="mensual">Mensual</option>
-                                <option value="bimensual">Bimensual</option>
-                                <option value="trimestral">Trimestral</option>
-                                <option value="semestral">Semestral</option>
-                                <option value="anual">Anual</option>
-                            </select>
-                        </div>
+                        <div><label class="field-label">Tasa de interés (%)</label><input type="number" id="uniform-i" class="form-input" value="8"></div>
+                        <div><label class="field-label">Número de Cuotas (n)</label><input type="number" id="uniform-n" class="form-input" value="6"></div>
                     </div>
-                    <div id="un-g-a"><label class="field-label">Monto de la Cuota Fija (A)</label><input type="number" id="uniform-a" class="form-input" value="200"></div>
-                    <div id="un-g-p" class="hidden"><label class="field-label">Valor Presente de la Serie (P)</label><input type="number" id="uniform-p" class="form-input" value="2000"></div>
-                    <div id="un-g-f" class="hidden"><label class="field-label">Valor Futuro Acumulado (F)</label><input type="number" id="uniform-f" class="form-input" value="2500"></div>
-                    <div class="form-row-grid">
-                        <div><label class="field-label">Tasa Periódica (% i)</label><input type="number" id="uniform-i" class="form-input" value="3"></div>
-                        <div><label class="field-label">Número de Cuotas (n)</label><input type="number" id="uniform-n" class="form-input" value="12"></div>
-                    </div>
-                    <button type="button" id="btn-calc-uniform" class="submit-btn btn-uniform">Calcular Operación</button>
+                    
+                    <button type="button" id="btn-calc-uniform" class="submit-btn btn-uniform">Calcular Amortización</button>
                 </form>
+
                 <div id="results-uniform" class="results-wrapper res-border-uniform hidden">
-                    <h3 class="results-title">Resultados Desglosados</h3>
-                    <div class="result-main-line"><span class="label" id="res-uniform-label">Resultado:</span><span class="value val-uniform" id="res-uniform-val">0.00</span></div>
-                    <div class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-uniform-usd">$0.00</span></div>
-                        <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-uniform-eur">€0.00</span></div>
+                    <h3 class="results-title">Cálculo de Anualidad</h3>
+                    <div class="result-main-line"><span class="label" id="lbl-uniform-res">Valor:</span><span class="value val-uniform" id="res-uniform-main">0.00</span></div>
+                    <div id="divisas-uniform" class="currency-conversion-zone">
+                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-uniform-ves">0.00 VES</span></div>
+                        <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-uniform-usd">$0.00 USD</span></div>
+                        <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-uniform-eur">€0.00 EUR</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- TASAS EQUIVALENTES -->
         <section id="section-rates" class="card-panel max-w-calculator fade-in hidden">
-            <div class="panel-header header-rates">Tasas Equivalentes</div>
+            <div class="panel-header header-rates">Conversión de Tasas</div>
             <div class="panel-body">
                 <form class="form-group-stack" onsubmit="return false;">
                     <div class="selector-target-container">
-                        <label for="rates-target">Tipo de Conversión:</label>
+                        <label for="rates-target">Modalidad de Conversión:</label>
                         <select id="rates-target" class="form-select">
-                            <option value="nom_to_efec">Convertir Nominal (TNA) a Efectiva Anual (TEA)</option>
-                            <option value="efec_to_nom">Convertir Efectiva (TEA) a Nominal Anual (TNA)</option>
-                            <option value="nom_to_nom">Nominal a otra Nominal Equivalente</option>
+                            <option value="nom_eff">Tasa Nominal ➔ Tasa Efectiva Equivalente</option>
+                            <option value="eff_nom">Tasa Efectiva ➔ Tasa Nominal Equivalente</option>
+                            <option value="eff_eff">Tasa Efectiva Menor ➔ Tasa Efectiva Mayor Equivalente</option>
                         </select>
                     </div>
-                    <div><label class="field-label">Tasa de Interés de Entrada (%)</label><input type="number" id="rates-in" class="form-input" value="24"></div>
+                    <div><label class="field-label" id="lbl-rates-input">Tasa de Entrada (%)</label><input type="number" id="rates-val" class="form-input" value="24"></div>
                     <div class="form-row-grid">
                         <div>
-                            <label class="field-label">Capitalización Origen (m1)</label>
-                            <select id="rates-m1" class="form-select">
-                                <option value="12">Mensual (12)</option>
-                                <option value="6">Bimestral (6)</option>
-                                <option value="4">Trimestral (4)</option>
-                                <option value="2">Semestral (2)</option>
-                                <option value="1">Anual (1)</option>
+                            <label class="field-label">Frecuencia de capitalización (m)</label>
+                            <select id="rates-m" class="form-select">
+                                <option value="12">Mensual</option>
+                                <option value="6">Bimestral</option>
+                                <option value="4">Trimestral</option>
+                                <option value="2">Semestral</option>
+                                <option value="1">Anual</option>
                             </select>
                         </div>
-                        <div id="rates-m2-container" class="hidden">
-                            <label class="field-label">Capitalización Destino (m2)</label>
-                            <select id="rates-m2" class="form-select">
-                                <option value="12">Mensual (12)</option>
-                                <option value="6">Bimestral (6)</option>
-                                <option value="4">Trimestral (4)</option>
-                                <option value="2">Semestral (2)</option>
-                                <option value="1">Anual (1)</option>
+                        <div id="rates-div-target" class="hidden">
+                            <label class="field-label">Capitalización Destino</label>
+                            <select id="rates-m-dest" class="form-select">
+                                <option value="1">Anual</option>
+                                <option value="2">Semestral</option>
+                                <option value="4">Trimestral</option>
+                                <option value="6">Bimestral</option>
+                                <option value="12">Mensual</option>
                             </select>
                         </div>
                     </div>
-                    <button type="button" id="btn-calc-rates" class="submit-btn btn-rates">Convertir Tasa de Interés</button>
+                    
+                    <button type="button" id="btn-calc-rates" class="submit-btn btn-rates">Homologar Tasa</button>
                 </form>
+
                 <div id="results-rates" class="results-wrapper res-border-rates hidden">
-                    <h3 class="results-title">Homologación</h3>
-                    <div class="result-main-line"><span class="label" id="res-rates-label">Tasa Equivalente:</span><span class="value val-rates" id="res-rates-val">0.00 %</span></div>
+                    <h3 class="results-title">Equivalencia de Tasa</h3>
+                    <div class="result-main-line"><span class="label">Tasa Equivalente calculada:</span><span class="value val-rates" id="res-rates-main">0.00 %</span></div>
                 </div>
             </div>
         </section>
 
-        <!-- ESTIMACIÓN DE COSTOS -->
         <section id="section-costs" class="card-panel max-w-calculator fade-in hidden">
-            <div class="panel-header header-costs">Estimación de Costos y Punto de Equilibrio</div>
+            <div class="panel-header header-costs">Estimación de Costos y Margen</div>
             <div class="panel-body">
                 <form class="form-group-stack" onsubmit="return false;">
                     <div class="form-row-grid">
                         <div><label class="field-label">Costos Fijos Totales (CF)</label><input type="number" id="costs-cf" class="form-input" value="5000"></div>
-                        <div><label class="field-label">Costo Variable Unitario (CVU)</label><input type="number" id="costs-cvu" class="form-input" value="20"></div>
+                        <div><label class="field-label">Costo Variable Unitario (CVU)</label><input type="number" id="costs-cvu" class="form-input" value="15"></div>
                     </div>
                     <div class="form-row-grid">
-                        <div><label class="field-label">Precio Venta Unitario (PVU)</label><input type="number" id="costs-pvu" class="form-input" value="45"></div>
-                        <div><label class="field-label">Cantidad a Producir (Q)</label><input type="number" id="costs-q" class="form-input" value="300"></div>
+                        <div><label class="field-label">Precio Venta Unitario (PVU)</label><input type="number" id="costs-pvu" class="form-input" value="35"></div>
+                        <div><label class="field-label">Volumen Producido / Vendido (Q)</label><input type="number" id="costs-q" class="form-input" value="400"></div>
                     </div>
-                    <button type="button" id="btn-calc-costs" class="submit-btn btn-costs">Analizar Operativa Financiera</button>
+                    <button type="button" id="btn-calc-costs" class="submit-btn btn-costs">Calcular Punto de Equilibrio</button>
                 </form>
+
                 <div id="results-costs" class="results-wrapper res-border-costs hidden">
-                    <h3 class="results-title">Desglose Operativo Completo</h3>
-                    <div class="result-main-line"><span class="label">Costo Variable Total:</span><span class="value val-costs" id="res-costs-cvt">0.00</span></div>
+                    <h3 class="results-title">Estructura Comercial</h3>
+                    <div class="result-main-line"><span class="label">Costo Variable Total (CV):</span><span class="value val-costs" id="res-costs-cvt">0.00</span></div>
                     <div class="result-main-line"><span class="label">Costo Total (CT):</span><span class="value val-costs" id="res-costs-ct">0.00</span></div>
                     <div class="result-main-line"><span class="label">Ingreso Total (IT):</span><span class="value val-costs" id="res-costs-it">0.00</span></div>
                     <div class="result-main-line"><span class="label">Utilidad Neta (U):</span><span class="value" id="res-costs-u">0.00</span></div>
@@ -366,9 +368,113 @@
                 </div>
             </div>
         </section>
+
+        <section id="section-evaluacion" class="card-panel max-w-calculator fade-in hidden">
+            <div class="panel-header header-evaluacion" style="background-color: var(--color-evaluacion);">Tema V: Evaluación Económica</div>
+            <div class="panel-body">
+                <form class="form-group-stack" onsubmit="return false;">
+                    <div class="selector-target-container">
+                        <label for="evaluacion-target">Variable Destino de Evaluación:</label>
+                        <select id="evaluacion-target" class="form-select">
+                            <option value="vpn">Valor Presente Neto (VPN)</option>
+                            <option value="va">Valor Anual Equivalente (VA)</option>
+                            <option value="tir">Tasa Interna de Retorno (TIR)</option>
+                            <option value="pri">Periodo de Recuperación Descontado (PRI)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="field-label">Inversión Inicial ($ o VES)</label>
+                        <input type="number" id="eval-inv" class="form-input" value="10000">
+                    </div>
+                    <div>
+                        <label class="field-label">Flujo Neto Efectivo por Periodo ($ o VES)</label>
+                        <input type="number" id="eval-flujo" class="form-input" value="3500">
+                    </div>
+                    <div class="form-row-grid">
+                        <div>
+                            <label class="field-label">Vida Útil (Periodos)</label>
+                            <input type="number" id="eval-vida" class="form-input" value="5">
+                        </div>
+                        <div>
+                            <label class="field-label">Valor de Salvamento (Reskate)</label>
+                            <input type="number" id="eval-rescate" class="form-input" value="1000">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="field-label">TMAR / TREMA (% del Periodo)</label>
+                        <input type="number" id="eval-tmar" class="form-input" value="15">
+                    </div>
+                    <button type="button" id="btn-calc-evaluacion" class="submit-btn btn-evaluacion" style="background-color: var(--color-evaluacion); color: white;">Evaluar Proyecto</button>
+                </form>
+
+                <div id="results-evaluacion" class="results-wrapper res-border-evaluacion hidden">
+                    <h3 class="results-title" style="color: var(--color-evaluacion);">Resultados del Proyecto</h3>
+                    <div class="result-main-line"><span class="label" id="lbl-eval-res">Indicador:</span><span class="value val-evaluacion" id="res-eval-main">0.00</span></div>
+                    <div id="res-eval-status-box" style="margin-top: 0.5rem; margin-bottom: 0.75rem; font-weight: bold; font-size: 0.95rem;">Decisión: <span id="res-eval-status">--</span></div>
+                    <div id="divisas-evaluacion" class="currency-conversion-zone" style="border-top:1px dashed var(--border-neutral); padding-top:0.5rem;">
+                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-eval-ves">0.00 VES</span></div>
+                        <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-eval-usd">$0.00 USD</span></div>
+                        <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-eval-eur">€0.00 EUR</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-alternativas" class="card-panel max-w-calculator fade-in hidden">
+            <div class="panel-header header-alternativas" style="background-color: var(--color-alternativas);">Tema VI: Selección de Alternativas (MCM)</div>
+            <div class="panel-body">
+                <form class="form-group-stack" onsubmit="return false;">
+                    <div class="selector-target-container">
+                        <label for="alternativas-target">Variable Destino de Análisis:</label>
+                        <select id="alternativas-target" class="form-select">
+                            <option value="decision">Seleccionar Proyecto Más Viable</option>
+                            <option value="mcm">Horizonte de Estudio Común (MCM)</option>
+                            <option value="vpna">VPN Alternativa A (en ciclo MCM)</option>
+                            <option value="vpnb">VPN Alternativa B (en ciclo MCM)</option>
+                        </select>
+                    </div>
+                    <div style="background: var(--bg-box-neutral); padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; border: 1px solid var(--border-neutral);">
+                        <label class="field-label" style="font-weight: 700; color: var(--text-primary);">TMAR Global de la Empresa (%)</label>
+                        <input type="number" id="alt-tmar" class="form-input" value="12">
+                    </div>
+                    
+                    <div class="form-row-grid" style="gap: 1.5rem; border-bottom: 1px dashed var(--border-neutral); padding-bottom: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <h4 class="val-alternativas" style="margin-bottom: 0.5rem; font-size: 0.95rem; border-bottom: 2px solid var(--color-alternativas); padding-bottom: 0.25rem;">Alternativa A</h4>
+                            <label class="field-label" style="font-size: 0.75rem;">Inversión ($)</label>
+                            <input type="number" id="alt-invA" class="form-input" value="50000">
+                            <label class="field-label" style="font-size: 0.75rem;">Flujo Neto por Periodo ($)</label>
+                            <input type="number" id="alt-flujoA" class="form-input" value="18000">
+                            <label class="field-label" style="font-size: 0.75rem;">Vida Útil (Unidades)</label>
+                            <input type="number" id="alt-vidaA" class="form-input" value="4">
+                        </div>
+                        <div style="border-left: 1px dashed var(--border-neutral); padding-left: 1rem;">
+                            <h4 class="val-alternativas" style="margin-bottom: 0.5rem; font-size: 0.95rem; border-bottom: 2px solid var(--color-alternativas); padding-bottom: 0.25rem;">Alternativa B</h4>
+                            <label class="field-label" style="font-size: 0.75rem;">Inversión ($)</label>
+                            <input type="number" id="alt-invB" class="form-input" value="65000">
+                            <label class="field-label" style="font-size: 0.75rem;">Flujo Neto por Periodo ($)</label>
+                            <input type="number" id="alt-flujoB" class="form-input" value="22000">
+                            <label class="field-label" style="font-size: 0.75rem;">Vida Útil (Unidades)</label>
+                            <input type="number" id="alt-vidaB" class="form-input" value="6">
+                        </div>
+                    </div>
+
+                    <button type="button" id="btn-calc-alternativas" class="submit-btn btn-alternativas" style="background-color: var(--color-alternativas); color: white;">Comparar por MCM</button>
+                </form>
+
+                <div id="results-alternativas" class="results-wrapper res-border-alternativas hidden">
+                    <h3 class="results-title" style="color: var(--color-alternativas);">Estudio de Reemplazo</h3>
+                    <div class="result-main-line"><span class="label" id="lbl-alt-res">Resultado:</span><span class="value val-alternativas" id="res-alt-main">--</span></div>
+                    <div id="divisas-alternativas" class="currency-conversion-zone" style="border-top:1px dashed var(--border-neutral); padding-top:0.5rem;">
+                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-alt-ves">0.00 VES</span></div>
+                        <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-alt-usd">$0.00 USD</span></div>
+                        <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-alt-eur">€0.00 EUR</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="main-footer"><p>© 2026 Ingeniería Financiera Educativa Avanzada.</p></footer>
     <script src="script.js"></script>
 </body>
 </html>

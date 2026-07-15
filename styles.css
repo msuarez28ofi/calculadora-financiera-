@@ -16,6 +16,8 @@
     --color-uniform: #d97706;
     --color-rates: #ea580c;
     --color-costs: #db2777;
+    --color-evaluacion: #9333ea;
+    --color-alternativas: #06b6d4;
 }
 
 [data-theme="dark"] {
@@ -48,7 +50,7 @@ main { flex: 1; padding: 2rem 1rem; display: flex; justify-content: center; alig
 
 /* Caja de Tasas con su color identificativo */
 .rates-box { display: flex; gap: 0.75rem; font-size: 0.85rem; background: var(--bg-box-neutral); padding: 0.5rem 0.75rem; border-radius: 6px; font-weight: 700; border: 1px solid var(--border-neutral); color: var(--text-primary); }
-.rates-box span { color: #10b981; } /* Color distintivo verde para divisas activas */
+.rates-box span { color: #10b981; }
 
 /* --- SIDEBAR --- */
 .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: var(--bg-card); z-index: 50; transition: left 0.3s ease; border-right: 1px solid var(--border-neutral); display: flex; flex-direction: column; }
@@ -56,73 +58,87 @@ main { flex: 1; padding: 2rem 1rem; display: flex; justify-content: center; alig
 .sidebar-header { padding: 1.25rem; border-bottom: 1px solid var(--border-neutral); display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
 .close-sidebar-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; }
 .sidebar-nav { padding: 1rem; flex: 1; display: flex; flex-direction: column; gap: 0.25rem; }
-.nav-section-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin: 0.75rem 0 0.25rem 0.5rem; }
-.nav-btn { background: none; border: none; text-align: left; padding: 0.75rem 1rem; width: 100%; border-radius: 6px; cursor: pointer; color: var(--text-secondary); font-weight: 500; font-size: 0.925rem; }
-.nav-btn:hover, .nav-btn.active { background: var(--bg-main); color: var(--text-primary); }
-.sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 45; display: none; }
+.nav-section-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 1rem; margin-bottom: 0.5rem; padding-left: 0.75rem; }
+.nav-btn { display: block; width: 100%; text-align: left; padding: 0.75rem 1rem; border-radius: 8px; border: none; background: transparent; color: var(--text-secondary); font-weight: 600; cursor: pointer; }
+.nav-btn:hover { background-color: var(--bg-box-neutral); color: var(--text-primary); }
+.nav-btn.active { background-color: var(--bg-main); color: var(--text-primary); border-left: 4px solid var(--color-simple); }
+
+.sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 45; display: none; }
 .sidebar-overlay.active { display: block; }
 
-/* --- PANELES Y TARJETAS --- */
-.card-panel { background: var(--bg-card); width: 100%; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid var(--border-neutral); }
-.max-w-home { max-width: 950px; }
-.max-w-calculator { max-width: 600px; }
-.panel-header { padding: 1.25rem; color: #ffffff; font-weight: 700; font-size: 1.25rem; }
+/* --- CARDS & PANELS --- */
+.card-panel { background-color: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-neutral); width: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); overflow: hidden; }
+.max-w-home { max-width: 1000px; }
+.max-w-calculator { max-width: 540px; }
+
+.panel-header { padding: 1.25rem; font-weight: 750; font-size: 1.2rem; color: white; border-bottom: 1px solid var(--border-neutral); }
 .panel-body { padding: 1.5rem; }
 
-/* Cabeceras de Calculadoras */
+/* Headers Temáticos */
 .header-simple { background-color: var(--color-simple); }
 .header-compound { background-color: var(--color-compound); }
 .header-single { background-color: var(--color-single); }
 .header-uniform { background-color: var(--color-uniform); }
 .header-rates { background-color: var(--color-rates); }
 .header-costs { background-color: var(--color-costs); }
+.header-evaluacion { background-color: var(--color-evaluacion); }
+.header-alternativas { background-color: var(--color-alternativas); }
 
-/* --- GRID DE CONCEPTOS INICIALES (COLOR POR TEMA + SIGLAS ENFÁTICAS) --- */
-.main-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem; text-align: center; }
-.concept-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-top: 1.5rem; }
-@media (min-width: 768px) { .concept-grid { grid-template-columns: 1fr 1fr; } }
-.concept-card { padding: 1.25rem; border-radius: 8px; background: var(--bg-box-neutral); border-left: 5px solid var(--border-neutral); }
-.concept-card h4 { font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700; }
-.concept-card p { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5; }
-.sigla-badge { font-weight: 700; background: rgba(0,0,0,0.06); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.8rem; }
-[data-theme="dark"] .sigla-badge { background: rgba(255,255,255,0.1); }
+/* --- FORMS & INPUTS --- */
+.form-group-stack { display: flex; flex-direction: column; gap: 1rem; }
+.form-row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+@media (max-width: 480px) { .form-row-grid { grid-template-columns: 1fr; } }
 
-/* Asignación visual a conceptos */
-.card-simple { border-left-color: var(--color-simple); } .card-simple h4 { color: var(--color-simple); }
-.card-compound { border-left-color: var(--color-compound); } .card-compound h4 { color: var(--color-compound); }
-.card-single { border-left-color: var(--color-single); } .card-single h4 { color: var(--color-single); }
-.card-uniform { border-left-color: var(--color-uniform); } .card-uniform h4 { color: var(--color-uniform); }
-.card-rates { border-left-color: var(--color-rates); } .card-rates h4 { color: var(--color-rates); }
-.card-costs { border-left-color: var(--color-costs); } .card-costs h4 { color: var(--color-costs); }
+.field-label { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.35rem; display: block; }
+.form-input, .form-select { width: 100%; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid var(--border-neutral); background-color: var(--bg-input); color: var(--text-primary); font-size: 0.95rem; font-weight: 600; }
+.form-input:focus, .form-select:focus { outline: none; border-color: var(--color-simple); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
 
-/* --- FORMULARIOS --- */
-.form-group-stack { display: flex; flex-direction: column; gap: 1.25rem; }
-.form-row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.selector-target-container { padding: 1rem; border-radius: 8px; border: 1px solid var(--border-neutral); background: var(--bg-box-neutral); }
-.selector-target-container label { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; display: block; }
-.field-label { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.375rem; display: block; color: var(--text-secondary); }
-.form-input, .form-select { width: 100%; padding: 0.65rem 0.75rem; border-radius: 6px; border: 1px solid var(--border-neutral); background-color: var(--bg-input); color: var(--text-primary); font-size: 0.95rem; }
+/* Botones de Cálculo */
+.submit-btn { border: none; font-weight: 750; font-size: 1rem; padding: 0.85rem; border-radius: 8px; cursor: pointer; display: block; width: 100%; text-align: center; margin-top: 0.5rem; }
+.btn-simple { background-color: var(--color-simple); color: white; }
+.btn-compound { background-color: var(--color-compound); color: white; }
+.btn-single { background-color: var(--color-single); color: white; }
+.btn-uniform { background-color: var(--color-uniform); color: white; }
+.btn-rates { background-color: var(--color-rates); color: white; }
+.btn-costs { background-color: var(--color-costs); color: white; }
+.btn-evaluacion { background-color: var(--color-evaluacion); color: white; }
+.btn-alternativas { background-color: var(--color-alternativas); color: white; }
 
-/* Botones Dinámicos */
-.submit-btn { width: 100%; padding: 0.8rem; border: none; border-radius: 6px; color: white; font-weight: 700; font-size: 1rem; cursor: pointer; }
-.btn-simple { background-color: var(--color-simple); }
-.btn-compound { background-color: var(--color-compound); }
-.btn-single { background-color: var(--color-single); }
-.btn-uniform { background-color: var(--color-uniform); }
-.btn-rates { background-color: var(--color-rates); }
-.btn-costs { background-color: var(--color-costs); }
+/* Selector superior de variable */
+.selector-target-container { background: var(--bg-box-neutral); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-neutral); display: flex; flex-direction: column; gap: 0.35rem; }
+.selector-target-container label { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
 
-/* --- CONTENEDORES DE RESULTADOS OPTIMIZADOS (MÁXIMA VISIBILIDAD) --- */
-.results-wrapper { margin-top: 1.5rem; padding: 1.5rem; border-radius: 8px; border: 2px solid transparent; background: var(--bg-box-neutral); }
-.results-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-neutral); padding-bottom: 0.5rem; }
+/* --- GLOSARIO DE INICIO (CARDS) --- */
+.main-title { font-size: 1.8rem; font-weight: 850; margin-bottom: 1rem; text-align: center; }
+.concept-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+.concept-card { background: var(--bg-card); border-radius: 10px; padding: 1rem; border: 1px solid var(--border-neutral); transition: all 0.2s ease; cursor: pointer; }
+.concept-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
+.concept-card h4 { font-size: 1rem; font-weight: 750; margin-bottom: 0.5rem; }
+.concept-card p { font-size: 0.8rem; line-height: 1.4; color: var(--text-secondary); }
 
+.card-simple { border-left: 4px solid var(--color-simple); } .card-simple h4 { color: var(--color-simple); }
+.card-compound { border-left: 4px solid var(--color-compound); } .card-compound h4 { color: var(--color-compound); }
+.card-single { border-left: 4px solid var(--color-single); } .card-single h4 { color: var(--color-single); }
+.card-uniform { border-left: 4px solid var(--color-uniform); } .card-uniform h4 { color: var(--color-uniform); }
+.card-rates { border-left: 4px solid var(--color-rates); } .card-rates h4 { color: var(--color-rates); }
+.card-costs { border-left: 4px solid var(--color-costs); } .card-costs h4 { color: var(--color-costs); }
+.card-evaluacion { border-left: 4px solid var(--color-evaluacion); } .card-evaluacion h4 { color: var(--color-evaluacion); }
+.card-alternativas { border-left: 4px solid var(--color-alternativas); } .card-alternativas h4 { color: var(--color-alternativas); }
+
+.sigla-badge { background: var(--bg-box-neutral); border: 1px solid var(--border-neutral); border-radius: 4px; padding: 0.1rem 0.35rem; font-family: monospace; font-size: 0.75rem; font-weight: 700; margin-right: 0.2rem; color: var(--text-primary); }
+
+/* --- RESULTADOS --- */
+.results-wrapper { margin-top: 1.5rem; border-radius: 8px; border: 1px solid var(--border-neutral); padding: 1rem; background: var(--bg-box-neutral); }
 .res-border-simple { border-color: var(--color-simple); } .res-border-simple .results-title { color: var(--color-simple); }
 .res-border-compound { border-color: var(--color-compound); } .res-border-compound .results-title { color: var(--color-compound); }
 .res-border-single { border-color: var(--color-single); } .res-border-single .results-title { color: var(--color-single); }
 .res-border-uniform { border-color: var(--color-uniform); } .res-border-uniform .results-title { color: var(--color-uniform); }
 .res-border-rates { border-color: var(--color-rates); } .res-border-rates .results-title { color: var(--color-rates); }
 .res-border-costs { border-color: var(--color-costs); } .res-border-costs .results-title { color: var(--color-costs); }
+.res-border-evaluacion { border-color: var(--color-evaluacion); } .res-border-evaluacion .results-title { color: var(--color-evaluacion); }
+.res-border-alternativas { border-color: var(--color-alternativas); } .res-border-alternativas .results-title { color: var(--color-alternativas); }
 
+.results-title { font-size: 1rem; font-weight: 800; margin-bottom: 0.75rem; text-transform: uppercase; }
 .result-main-line { display: flex; justify-content: space-between; align-items: center; font-size: 1.4rem; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px dashed var(--border-neutral); padding-bottom: 0.5rem; }
 .result-main-line .label { font-weight: 700; color: var(--text-primary); }
 .result-main-line .value { font-weight: 850; }
@@ -133,10 +149,8 @@ main { flex: 1; padding: 2rem 1rem; display: flex; justify-content: center; alig
 .val-uniform { color: var(--color-uniform); }
 .val-rates { color: var(--color-rates); }
 .val-costs { color: var(--color-costs); }
+.val-evaluacion { color: var(--color-evaluacion); }
+.val-alternativas { color: var(--color-alternativas); }
 
 .currency-conversion-zone { padding-top: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
-.conversion-row { display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem; font-weight: 600; }
-.conversion-row .label { color: var(--text-secondary); }
-.conversion-row .value { color: var(--text-primary); font-weight: 700; }
-
-.main-footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-neutral); background-color: var(--bg-card); }
+.conversion-row { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
