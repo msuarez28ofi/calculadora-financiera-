@@ -43,6 +43,7 @@
         <button id="nav-anualidades" class="nav-btn" style="color: var(--color-anualidades); font-weight:700;" onclick="irA('anualidades')">Anualidades y sus Tipos</button>
         <button id="nav-rates" class="nav-btn" style="color: var(--color-rates); font-weight:700;">Tasas Equivalentes</button>
         <button id="nav-costs" class="nav-btn" style="color: var(--color-costs); font-weight:700;">Estimación de Costos</button>
+        <button id="nav-capacidad" class="nav-btn" style="color: #00796B; font-weight:700;" onclick="irA('capacidad')">Capacidad de Producción</button>
         <button id="nav-evaluacion" class="nav-btn" style="color: var(--color-evaluacion); font-weight:700;">Evaluación de Proyectos</button>
         <button id="nav-alternativas" class="nav-btn" style="color: var(--color-alternativas); font-weight:700;">Selección de Alternativas</button>
     </nav>
@@ -112,6 +113,13 @@
                         <span class="sigla-badge">CVU</span> Costo Variable Unitario.<br>
                         <span class="sigla-badge">PVU</span> Precio de Venta Unitario.<br>
                         <span class="sigla-badge">PE</span> Punto de Equilibrio operativo.</p>
+                    </div>
+                    <div class="concept-card" style="border-left: 4px solid #00796B;" onclick="mostrarConceptoHome('capacidad')">
+                        <h4 style="color: #00796B;">Capacidad de Producción 👆</h4>
+                        <p>Evalúa el nivel de operación para cubrir costos y generar utilidades.<br>
+                        <span class="sigla-badge">PE</span> Punto de Equilibrio.<br>
+                        <span class="sigla-badge">U</span> Utilidad Operativa.<br>
+                        <span class="sigla-badge">Q_obj</span> Volumen Deseado.</p>
                     </div>
                     <div class="concept-card card-evaluacion" onclick="mostrarConceptoHome('evaluacion')">
                         <h4 class="val-evaluacion">Evaluación Económica 👆</h4>
@@ -427,80 +435,184 @@
         </section>
 
         <section id="section-rates" class="card-panel max-w-calculator fade-in hidden">
-            <div class="panel-header header-rates">Conversión de Tasas</div>
+            <div class="panel-header header-rates" style="background-color: var(--color-rates); color: white;">Tasas Equivalentes</div>
             <div class="panel-body">
                 <form class="form-group-stack" onsubmit="return false;">
+                    
                     <div class="selector-target-container">
-                        <label for="rates-target">Modalidad de Conversión:</label>
-                        <select id="rates-target" class="form-select">
-                            <option value="nom_eff">Tasa Nominal ➔ Tasa Efectiva Equivalente</option>
-                            <option value="eff_nom">Tasa Efectiva ➔ Tasa Nominal Equivalente</option>
-                            <option value="eff_eff">Tasa Efectiva Menor ➔ Tasa Efectiva Mayor Equivalente</option>
+                        <label for="rates-target">Tipo de Conversión:</label>
+                        <select id="rates-target" class="form-select" onchange="checkRates()">
+                            <option value="TEA">Nominal a Efectiva Anual (TEA)</option>
+                            <option value="TNA">Efectiva Anual a Nominal (TNA)</option>
+                            <option value="HOMOLOGACION">Homologación (Efectiva a Efectiva)</option>
                         </select>
                     </div>
-                    <div><label class="field-label" id="lbl-rates-input">Tasa de Entrada (%)</label><input type="number" id="rates-val" class="form-input" value="24"></div>
+                    
+                    <div>
+                        <label class="field-label" id="lbl-rates-input">Tasa Nominal Anual (%)</label>
+                        <input type="number" id="rates-i" class="form-input" value="12" step="0.01">
+                    </div>
+                    
                     <div class="form-row-grid">
-                        <div>
-                            <label class="field-label">Frecuencia de capitalización (m)</label>
-                            <select id="rates-m" class="form-select">
-                                <option value="12">Mensual</option>
-                                <option value="6">Bimestral</option>
-                                <option value="4">Trimestral</option>
-                                <option value="2">Semestral</option>
-                                <option value="1">Anual</option>
+                        <div id="grp-rates-m1">
+                            <label class="field-label" id="lbl-rates-m1">Frecuencia de Capitalización (m)</label>
+                            <select id="rates-m1" class="form-select">
+                                <option value="360">Diaria (360)</option>
+                                <option value="12" selected>Mensual (12)</option>
+                                <option value="6">Bimestral (6)</option>
+                                <option value="4">Trimestral (4)</option>
+                                <option value="2">Semestral (2)</option>
+                                <option value="1">Anual (1)</option>
                             </select>
                         </div>
-                        <div id="rates-div-target" class="hidden">
-                            <label class="field-label">Capitalización Destino</label>
-                            <select id="rates-m-dest" class="form-select">
-                                <option value="1">Anual</option>
-                                <option value="2">Semestral</option>
-                                <option value="4">Trimestral</option>
-                                <option value="6">Bimestral</option>
-                                <option value="12">Mensual</option>
+                        
+                        <!-- Este campo solo aparece si se selecciona "Homologación" -->
+                        <div id="grp-rates-m2" class="hidden">
+                            <label class="field-label">Frecuencia Destino (m2)</label>
+                            <select id="rates-m2" class="form-select">
+                                <option value="360">Diaria (360)</option>
+                                <option value="12">Mensual (12)</option>
+                                <option value="6">Bimestral (6)</option>
+                                <option value="4">Trimestral (4)</option>
+                                <option value="2" selected>Semestral (2)</option>
+                                <option value="1">Anual (1)</option>
                             </select>
                         </div>
                     </div>
                     
-                    <button type="button" id="btn-calc-rates" class="submit-btn btn-rates">Homologar Tasa</button>
+                    <button type="button" id="btn-calc-rates" class="submit-btn btn-rates" style="background-color: var(--color-rates);" onclick="runRates()">Calcular Equivalencia</button>
                 </form>
 
                 <div id="results-rates" class="results-wrapper res-border-rates hidden">
-                    <h3 class="results-title">Equivalencia de Tasa</h3>
-                    <div class="result-main-line"><span class="label">Tasa Equivalente calculada:</span><span class="value val-rates" id="res-rates-main">0.00 %</span></div>
+                    <h3 class="results-title">Tasa Equivalente Calculada</h3>
+                    <div class="result-main-line">
+                        <span class="label">Resultado:</span>
+                        <span class="value val-rates" id="res-rates-main">0.00 %</span>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="section-costs" class="card-panel max-w-calculator fade-in hidden">
-            <div class="panel-header header-costs">Estimación de Costos y Margen</div>
+            <div class="panel-header header-costs" style="background-color: var(--color-costs); color: white;">Estimación de Costos</div>
             <div class="panel-body">
                 <form class="form-group-stack" onsubmit="return false;">
-                    <div class="form-row-grid">
-                        <div><label class="field-label">Costos Fijos Totales (CF)</label><input type="number" id="costs-cf" class="form-input" value="5000"></div>
-                        <div><label class="field-label">Costo Variable Unitario (CVU)</label><input type="number" id="costs-cvu" class="form-input" value="15"></div>
+                    
+                    <!-- Selector de variable a calcular (Despejes) -->
+                    <div class="selector-target-container">
+                        <label for="cost-target">Variable a calcular (Despeje):</label>
+                        <select id="cost-target" class="form-select" onchange="checkCosts()">
+                            <option value="CT">Costo Total (CT)</option>
+                            <option value="CF">Costos Fijos (CF)</option>
+                            <option value="CVU">Costo Variable Unitario (CVU)</option>
+                            <option value="Q">Volumen de Producción (Q)</option>
+                        </select>
                     </div>
-                    <div class="form-row-grid">
-                        <div><label class="field-label">Precio Venta Unitario (PVU)</label><input type="number" id="costs-pvu" class="form-input" value="35"></div>
-                        <div><label class="field-label">Volumen Producido / Vendido (Q)</label><input type="number" id="costs-q" class="form-input" value="400"></div>
+
+                    <!-- Contenedores de Inputs -->
+                    <div id="grp-cost-ct" class="hidden">
+                        <label class="field-label">Costo Total Estimado (CT)</label>
+                        <input type="number" id="cost-ct" class="form-input" value="20000">
                     </div>
-                    <button type="button" id="btn-calc-costs" class="submit-btn btn-costs">Calcular Punto de Equilibrio</button>
+
+                    <div id="grp-cost-cf">
+                        <label class="field-label">Costos Fijos Totales (CF)</label>
+                        <input type="number" id="cost-cf" class="form-input" value="5000">
+                    </div>
+                    
+                    <div class="form-row-grid">
+                        <div id="grp-cost-cvu">
+                            <label class="field-label">Costo Variable Unitario (CVU)</label>
+                            <input type="number" id="cost-cvu" class="form-input" value="15">
+                        </div>
+                        <div id="grp-cost-q">
+                            <label class="field-label">Volumen de Producción (Q)</label>
+                            <input type="number" id="cost-q" class="form-input" value="1000">
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="btn-calc-costs" class="submit-btn btn-costs" style="background-color: var(--color-costs);" onclick="runCosts()">Calcular Variable</button>
                 </form>
 
                 <div id="results-costs" class="results-wrapper res-border-costs hidden">
-                    <h3 class="results-title">Estructura Comercial</h3>
-                    <div class="result-main-line"><span class="label">Costo Variable Total (CV):</span><span class="value val-costs" id="res-costs-cvt">0.00</span></div>
-                    <div class="result-main-line"><span class="label">Costo Total (CT):</span><span class="value val-costs" id="res-costs-ct">0.00</span></div>
-                    <div class="result-main-line"><span class="label">Ingreso Total (IT):</span><span class="value val-costs" id="res-costs-it">0.00</span></div>
-                    <div class="result-main-line"><span class="label">Utilidad Neta (U):</span><span class="value" id="res-costs-u">0.00</span></div>
-                    <div class="result-main-line" style="border-top:2px solid var(--border-neutral);"><span class="label">Punto de Equilibrio (PE):</span><span class="value val-costs" id="res-costs-pe">0 Unidades</span></div>
-                    <div id="divisas-costs" class="currency-conversion-zone" style="border-top:1px dashed var(--border-neutral); margin-top:0.5rem;">
-                        <div class="conversion-row"><span class="label">Utilidad en USD:</span><span class="value" id="res-costs-usd">$0.00</span></div>
-                        <div class="conversion-row"><span class="label">Utilidad en EUR:</span><span class="value" id="res-costs-eur">€0.00</span></div>
+                    <h3 class="results-title">Estructura de Costos Calculada</h3>
+                    <div class="result-main-line">
+                        <span class="label">Costo Total (CT):</span>
+                        <span class="value val-costs" id="res-costs-total">0.00</span>
+                    </div>
+                    <small id="res-costs-detalle" style="display:block; margin-bottom: 0.75rem; color: var(--text-muted);">
+                        Costo Variable Total: <span id="res-costs-cvt">0.00</span> | Costo Unitario Total: <span id="res-costs-cu">0.00</span>
+                    </small>
+                    <div id="divisas-costs" class="currency-conversion-zone">
+                        <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-costs-eur">0.00 EUR</span></div>
+                        <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-costs-usd">$0.00 USD</span></div>
                     </div>
                 </div>
             </div>
         </section>
+
+
+        <!-- MÓDULO: CAPACIDAD Y PRODUCCIÓN -->
+        <section id="section-capacidad" class="card-panel max-w-calculator fade-in hidden">
+            <div class="panel-header" style="background-color: #00796B; color: white;">Capacidad de Producción y Equilibrio</div>
+            <div class="panel-body">
+                <form class="form-group-stack" onsubmit="return false;">
+                    
+                    <div class="selector-target-container">
+                        <label for="cap-target">¿Qué deseas calcular?:</label>
+                        <select id="cap-target" class="form-select" onchange="checkCapacidad()">
+                            <option value="PE">Punto de Equilibrio (Unidades)</option>
+                            <option value="UTILIDAD">Utilidad Operativa Estimada</option>
+                            <option value="Q_OBJ">Unidades para Meta de Utilidad</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="field-label">Costos Fijos Operativos (CF)</label>
+                        <input type="number" id="cap-cf" class="form-input" value="12000">
+                    </div>
+                    
+                    <div class="form-row-grid">
+                        <div>
+                            <label class="field-label">Costo Variable Unitario (CVU)</label>
+                            <input type="number" id="cap-cvu" class="form-input" value="20">
+                        </div>
+                        <div>
+                            <label class="field-label">Precio de Venta Unit. (PVU)</label>
+                            <input type="number" id="cap-pvu" class="form-input" value="50">
+                        </div>
+                    </div>
+
+                    <div id="grp-cap-q" class="hidden">
+                        <label class="field-label">Unidades Producidas/Vendidas (Q)</label>
+                        <input type="number" id="cap-q" class="form-input" value="800">
+                    </div>
+
+                    <div id="grp-cap-u" class="hidden">
+                        <label class="field-label">Utilidad Deseada</label>
+                        <input type="number" id="cap-u" class="form-input" value="5000">
+                    </div>
+                    
+                    <button type="button" class="submit-btn" style="background-color: #00796B; color: white;" onclick="runCapacidad()">Calcular Producción</button>
+                </form>
+
+                <div id="results-capacidad" class="results-wrapper hidden" style="border-left-color: #00796B;">
+                    <h3 class="results-title" style="color: #00796B;">Análisis Operativo</h3>
+                    <div class="result-main-line">
+                        <span class="label">Resultado:</span>
+                        <span class="value" id="res-cap-main" style="color: #00796B;">0</span>
+                    </div>
+                    <small style="display:block; margin-bottom: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+                        Ingresos Totales (Ventas): <span id="res-cap-ingresos">0.00</span> | Margen de Contribución Unitario: <span id="res-cap-margen">0.00</span>
+                    </small>
+                    <div id="divisas-cap" class="currency-conversion-zone hidden">
+                        <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-cap-eur">0.00 EUR</span></div>
+                        <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-cap-usd">$0.00 USD</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <section id="section-evaluacion" class="card-panel max-w-calculator fade-in hidden">
             <div class="panel-header header-evaluacion">Evaluación Económica</div>

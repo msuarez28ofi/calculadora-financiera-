@@ -33,7 +33,7 @@ function toggleMenu() {
 }
 
 function irA(v) {
-    ['inicio','simple','compound','single','uniform','anualidades','rates','costs','evaluacion','alternativas'].forEach(x => {
+    ['inicio','simple','compound','single','uniform','anualidades','rates','costs','evaluacion','alternativas','capacidad'].forEach(x => {
         if(document.getElementById(`section-${x}`)) document.getElementById(`section-${x}`).classList.add('hidden');
         if(document.getElementById(`nav-${x}`)) document.getElementById(`nav-${x}`).classList.remove('active');
     });
@@ -309,6 +309,31 @@ const GLOSARIO_TEMAS = {
             <p>Calcula el VPN evaluando la reinversión de los activos cada vez que finaliza su ciclo de vida individual.</p>
             <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
                 <strong>VPN_MCM = Σ VPN_Ciclo<sub>k</sub> * (1 + i)<sup>-t<sub>k</sub></sup></strong>
+            </div>
+        `
+    },
+    capacidad: {
+        titulo: "Capacidad de Producción y Punto de Equilibrio",
+        color: "#00796B",
+        cuerpo: `
+            <p>Evalúa el nivel de operación necesario para cubrir los costos y generar utilidades, relacionando precios, costos fijos y variables.</p>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid #00796B; color: #00796B; padding-bottom: 0.25rem;">1. Punto de Equilibrio (PE)</h4>
+            <p>Nivel de ventas donde los ingresos totales igualan a los costos totales (Utilidad cero).</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>PE = CF / (PVU - CVU)</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid #00796B; color: #00796B; padding-bottom: 0.25rem;">2. Utilidad Operativa (U)</h4>
+            <p>Ganancia o pérdida generada a un determinado volumen de producción Q.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>U = (PVU * Q) - [ CF + (CVU * Q) ]</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid #00796B; color: #00796B; padding-bottom: 0.25rem;">3. Volumen para Utilidad Deseada (Q_obj)</h4>
+            <p>Despeje para conocer las unidades que deben venderse para alcanzar una meta de ganancia.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Q_obj = (CF + U) / (PVU - CVU)</strong>
             </div>
         `
     }
@@ -937,3 +962,231 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('btn-calc-evaluacion').addEventListener("click", runEvaluacion);
     document.getElementById('btn-calc-alternativas').addEventListener("click", runAlternativas);
 });
+
+
+// =========================================================================
+// CALCULADORA DE ESTIMACIÓN DE COSTOS (CON DESPEJES)
+// =========================================================================
+
+function checkCosts() {
+    let target = document.getElementById('cost-target').value;
+    
+    // 1. Mostrar todos los contenedores de inputs por defecto
+    ['grp-cost-ct', 'grp-cost-cf', 'grp-cost-cvu', 'grp-cost-q'].forEach(id => {
+        let el = document.getElementById(id);
+        if(el) el.classList.remove('hidden');
+    });
+
+    // 2. Ocultar únicamente el campo que el usuario desea calcular (Despeje)
+    if(target === 'CT') document.getElementById('grp-cost-ct').classList.add('hidden');
+    if(target === 'CF') document.getElementById('grp-cost-cf').classList.add('hidden');
+    if(target === 'CVU') document.getElementById('grp-cost-cvu').classList.add('hidden');
+    if(target === 'Q') document.getElementById('grp-cost-q').classList.add('hidden');
+}
+
+function runCosts() {
+    // Obtener la variable a despejar
+    let target = document.getElementById('cost-target').value;
+    
+    // Capturar los valores de los inputs (si están vacíos, asumen 0)
+    let CT = parseFloat(document.getElementById('cost-ct').value) || 0;
+    let CF = parseFloat(document.getElementById('cost-cf').value) || 0;
+    let CVU = parseFloat(document.getElementById('cost-cvu').value) || 0;
+    let Q = parseFloat(document.getElementById('cost-q').value) || 0;
+
+    let ans = 0;
+    let lbl = "";
+    let cvt = 0; // Costo Variable Total
+    let cu = 0;  // Costo Unitario
+
+    // Evaluar el despeje seleccionado
+    if (target === 'CT') {
+        ans = CF + (CVU * Q);
+        lbl = "Costo Total (CT):";
+        cvt = CVU * Q;
+        cu = Q > 0 ? (ans / Q) : 0;
+    } 
+    else if (target === 'CF') {
+        ans = CT - (CVU * Q);
+        lbl = "Costos Fijos (CF):";
+        cvt = CVU * Q;
+        cu = Q > 0 ? (CT / Q) : 0;
+    } 
+    else if (target === 'CVU') {
+        ans = Q > 0 ? ((CT - CF) / Q) : 0;
+        lbl = "Costo Variable Unit. (CVU):";
+        cvt = ans * Q;
+        cu = Q > 0 ? (CT / Q) : 0;
+    } 
+    else if (target === 'Q') {
+        ans = CVU > 0 ? ((CT - CF) / CVU) : 0;
+        lbl = "Volumen de Producción (Q):";
+        cvt = CVU * ans;
+        cu = ans > 0 ? (CT / ans) : 0;
+    }
+
+    // Mostrar Resultados en la Interfaz
+    // Actualiza el texto de la etiqueta principal
+    let lblElement = document.querySelector("#results-costs .label");
+    if(lblElement) lblElement.textContent = lbl;
+
+    // Formatear el resultado según si es dinero o unidades
+    let formattedAns = target === 'Q' 
+        ? Math.round(ans).toLocaleString('es-VE') + " Unid." 
+        : ans.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2});
+        
+    document.getElementById('res-costs-total').textContent = formattedAns;
+    
+    // Actualizar detalles (Costo Variable Total y Costo Unitario)
+    document.getElementById('res-costs-cvt').textContent = cvt.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('res-costs-cu').textContent = cu.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+    // Mostrar conversiones de divisas (solo si estamos calculando dinero)
+    let divisasDiv = document.getElementById('divisas-costs');
+    if (target !== 'Q') {
+        divisasDiv.classList.remove('hidden');
+        pintarDivisas('res-costs-usd', 'res-costs-eur', ans);
+    } else {
+        // Ocultar la sección de divisas si calculamos volumen de producción
+        divisasDiv.classList.add('hidden'); 
+    }
+
+    // Hacer visible el cuadro de resultados
+    document.getElementById('results-costs').classList.remove('hidden');
+}
+
+// =========================================================================
+// CALCULADORA DE TASAS EQUIVALENTES
+// =========================================================================
+
+function checkRates() {
+    let target = document.getElementById('rates-target').value;
+    let m2Container = document.getElementById('grp-rates-m2');
+    let m1Label = document.getElementById('lbl-rates-m1');
+    let inputLabel = document.getElementById('lbl-rates-input');
+
+    // Cambiar etiquetas y mostrar/ocultar m2 dependiendo del tipo de conversión
+    if (target === 'TEA' || target === 'TNA') {
+        m2Container.classList.add('hidden');
+        m1Label.textContent = "Frecuencia de Capitalización (m)";
+        inputLabel.textContent = target === 'TEA' ? "Tasa Nominal Anual (%)" : "Tasa Efectiva Anual (%)";
+    } else if (target === 'HOMOLOGACION') {
+        m2Container.classList.remove('hidden');
+        m1Label.textContent = "Frecuencia Origen (m1)";
+        inputLabel.textContent = "Tasa Efectiva Origen (%)";
+    }
+}
+
+function runRates() {
+    let target = document.getElementById('rates-target').value;
+    
+    // Capturar valores. La tasa se divide entre 100 para volverla decimal
+    let i = (parseFloat(document.getElementById('rates-i').value) || 0) / 100;
+    let m1 = parseFloat(document.getElementById('rates-m1').value) || 12;
+    let m2 = parseFloat(document.getElementById('rates-m2').value) || 1; 
+
+    let ans = 0;
+    let lbl = "";
+
+    // Evaluar la matemática según la selección
+    if (target === 'TEA') {
+        ans = Math.pow(1 + (i / m1), m1) - 1;
+        lbl = "Tasa Efectiva Anual (TEA):";
+    } else if (target === 'TNA') {
+        ans = m1 * (Math.pow(1 + i, 1 / m1) - 1);
+        lbl = "Tasa Nominal Anual (TNA):";
+    } else if (target === 'HOMOLOGACION') {
+        ans = Math.pow(1 + i, m1 / m2) - 1;
+        lbl = "Tasa Efectiva Destino:";
+    }
+
+    // Imprimir resultado en pantalla (se multiplica por 100 para volverla porcentaje)
+    document.getElementById('res-rates-main').textContent = (ans * 100).toFixed(4) + " %";
+    document.querySelector("#results-rates .label").textContent = lbl;
+    document.getElementById('results-rates').classList.remove('hidden');
+}
+
+
+// =========================================================================
+// CALCULADORA DE CAPACIDAD DE PRODUCCIÓN Y EQUILIBRIO
+// =========================================================================
+
+function checkCapacidad() {
+    let target = document.getElementById('cap-target').value;
+    
+    // Mostrar campos opcionales por defecto
+    ['grp-cap-q', 'grp-cap-u'].forEach(id => {
+        let el = document.getElementById(id);
+        if(el) el.classList.remove('hidden');
+    });
+
+    // Ocultar dependiendo del objetivo
+    if(target === 'PE') {
+        document.getElementById('grp-cap-q').classList.add('hidden'); // No necesita Q
+        document.getElementById('grp-cap-u').classList.add('hidden'); // No necesita Utilidad
+    } else if (target === 'UTILIDAD') {
+        document.getElementById('grp-cap-u').classList.add('hidden'); // La va a calcular
+    } else if (target === 'Q_OBJ') {
+        document.getElementById('grp-cap-q').classList.add('hidden'); // La va a calcular
+    }
+}
+
+function runCapacidad() {
+    let target = document.getElementById('cap-target').value;
+    
+    let CF = parseFloat(document.getElementById('cap-cf').value) || 0;
+    let CVU = parseFloat(document.getElementById('cap-cvu').value) || 0;
+    let PVU = parseFloat(document.getElementById('cap-pvu').value) || 0;
+    let Q = parseFloat(document.getElementById('cap-q').value) || 0;
+    let U = parseFloat(document.getElementById('cap-u').value) || 0;
+
+    let ans = 0;
+    let lbl = "";
+    let isMoneda = false;
+    let margenUnitario = PVU - CVU;
+
+    if (margenUnitario <= 0) {
+        alert("El Precio de Venta Unitario (PVU) debe ser mayor al Costo Variable Unitario (CVU) para poder calcular el margen.");
+        return;
+    }
+
+    if (target === 'PE') {
+        ans = CF / margenUnitario;
+        lbl = "Punto de Equilibrio (PE):";
+    } else if (target === 'UTILIDAD') {
+        ans = (PVU * Q) - (CF + (CVU * Q));
+        lbl = "Utilidad / Pérdida Operativa:";
+        isMoneda = true;
+    } else if (target === 'Q_OBJ') {
+        ans = (CF + U) / margenUnitario;
+        lbl = "Unidades a Producir/Vender (Q):";
+    }
+
+    // Actualizar etiquetas visuales
+    let lblElement = document.querySelector("#results-capacidad .label");
+    if(lblElement) lblElement.textContent = lbl;
+
+    // Formato matemático (Si son unidades, se redondea hacia arriba, no puedes vender media unidad)
+    let formattedAns = isMoneda 
+        ? ans.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2})
+        : Math.ceil(ans).toLocaleString('es-VE') + " Unidades";
+        
+    document.getElementById('res-cap-main').textContent = formattedAns;
+    
+    // Ingresos y Margen de detalle
+    let qBase = target === 'UTILIDAD' ? Q : Math.ceil(ans);
+    let ingresosTotales = PVU * qBase;
+    document.getElementById('res-cap-ingresos').textContent = ingresosTotales.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('res-cap-margen').textContent = margenUnitario.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+    // Manejo de divisas
+    let divisasDiv = document.getElementById('divisas-cap');
+    if (isMoneda) {
+        divisasDiv.classList.remove('hidden');
+        pintarDivisas('res-cap-usd', 'res-cap-eur', ans);
+    } else {
+        divisasDiv.classList.add('hidden'); 
+    }
+
+    document.getElementById('results-capacidad').classList.remove('hidden');
+}
