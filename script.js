@@ -185,7 +185,7 @@ function cerrarConceptoHome() {
 // OPERACIONES LÓGICAS DE LOS FORMULARIOS
 // =========================================================================
 
-// INTERÉS SIMPLE (Ajustado sin Interés Ganado I)
+// INTERÉS SIMPLE
 function checkSimple() {
     let t = document.getElementById('simple-target').value;
     ['s-g-p','s-g-i','s-g-t','s-g-vf'].forEach(x => document.getElementById(x).classList.remove('hidden'));
@@ -349,6 +349,9 @@ function runUniform() {
     let i = (parseFloat(document.getElementById('uniform-i').value) || 0) / 100;
     let n = parseFloat(document.getElementById('uniform-n').value) || 0;
 
+    let unidadSelect = document.getElementById('uniform-unidad-tiempo');
+    let unidadTexto = unidadSelect ? unidadSelect.options[unidadSelect.selectedIndex].text : 'cuotas';
+
     let ans = 0, lbl = "";
     let f1 = Math.pow(1 + i, n);
 
@@ -360,7 +363,7 @@ function runUniform() {
         lbl = "Valor Futuro Acumulado (F):";
     } else if (target === 'A_P') {
         ans = P * ((i * f1) / (f1 - 1));
-        lbl = "Pago / Cuota Requerida (A):";
+        lbl = "Cuota Periódica Requerida (A):";
     } else if (target === 'A_F') {
         ans = F * (i / (f1 - 1));
         lbl = "Fondo de Ahorro Periódico (A):";
@@ -368,6 +371,12 @@ function runUniform() {
 
     document.getElementById('lbl-uniform-res').textContent = lbl;
     document.getElementById('res-uniform-main').textContent = ans.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2});
+    
+    let detalleBox = document.getElementById('res-uniform-detalle');
+    if (detalleBox) {
+        detalleBox.innerHTML = `* Calculado para <strong>${n} cuotas con frecuencia ${unidadTexto.toLowerCase()}</strong> a una tasa del <strong>${(i * 100)}% por período ${unidadTexto.toLowerCase()}</strong>.`;
+    }
+
     pintarDivisas('res-uniform-usd', 'res-uniform-eur', ans);
     document.getElementById('results-uniform').classList.remove('hidden');
 }

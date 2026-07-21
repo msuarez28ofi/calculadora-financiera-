@@ -285,8 +285,19 @@
                     <div id="u-g-f" class="hidden"><label class="field-label">Valor Futuro acumulado (F)</label><input type="number" id="uniform-f" class="form-input" value="1200"></div>
                     
                     <div class="form-row-grid">
-                        <div><label class="field-label">Tasa de interés (%)</label><input type="number" id="uniform-i" class="form-input" value="8"></div>
+                        <div><label class="field-label">Tasa por Período (%)</label><input type="number" id="uniform-i" class="form-input" value="8"></div>
                         <div><label class="field-label">Número de Cuotas (n)</label><input type="number" id="uniform-n" class="form-input" value="6"></div>
+                    </div>
+
+                    <div>
+                        <label class="field-label">Frecuencia / Período de la Cuota</label>
+                        <select id="uniform-unidad-tiempo" class="form-select">
+                            <option value="meses">Mensual</option>
+                            <option value="bimensual">Bimestral</option>
+                            <option value="trimestral">Trimestral</option>
+                            <option value="semestral">Semestral</option>
+                            <option value="años" selected>Anual</option>
+                        </select>
                     </div>
                     
                     <button type="button" id="btn-calc-uniform" class="submit-btn btn-uniform">Calcular Amortización</button>
@@ -295,6 +306,7 @@
                 <div id="results-uniform" class="results-wrapper res-border-uniform hidden">
                     <h3 class="results-title">Cálculo de Anualidad</h3>
                     <div class="result-main-line"><span class="label" id="lbl-uniform-res">Valor:</span><span class="value val-uniform" id="res-uniform-main">0.00</span></div>
+                    <small id="res-uniform-detalle" style="display:block; margin-bottom: 0.75rem; color: var(--text-muted);"></small>
                     <div id="divisas-uniform" class="currency-conversion-zone">
                         <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-uniform-ves">0.00 VES</span></div>
                         <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-uniform-usd">$0.00 USD</span></div>
