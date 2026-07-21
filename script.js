@@ -12,7 +12,7 @@ async function actualizarMonedas() {
             TASA_USD = data.rates.VES || 40.00;
             TASA_EUR = TASA_USD / (data.rates.EUR || 0.92);
         }
-    } catch(e) { console.warn("Modo local activo."); }
+    } catch(e) { console.warn("Modo de respaldo activo."); }
     document.getElementById('tasa-usd').textContent = TASA_USD.toFixed(2) + " VES";
     document.getElementById('tasa-eur').textContent = TASA_EUR.toFixed(2) + " VES";
 }
@@ -26,30 +26,31 @@ function pintarDivisas(idUsd, idEur, montoVES) {
     document.getElementById(idEur).textContent = fEUR(montoVES);
 }
 
-// NAVEGACIÓN
+// NAVEGACIÓN Y MENÚ SIDEBAR
 function toggleMenu() {
     document.getElementById('sidebar').classList.toggle('open');
     document.getElementById('sidebar-overlay').classList.toggle('active');
 }
 
 function irA(v) {
-    ['inicio','simple','compound','single','uniform','rates','costs','evaluacion','alternativas'].forEach(x => {
+    ['inicio','simple','compound','single','uniform','anualidades','rates','costs','evaluacion','alternativas'].forEach(x => {
         if(document.getElementById(`section-${x}`)) document.getElementById(`section-${x}`).classList.add('hidden');
         if(document.getElementById(`nav-${x}`)) document.getElementById(`nav-${x}`).classList.remove('active');
     });
+    
     if(document.getElementById(`section-${v}`)) document.getElementById(`section-${v}`).classList.remove('hidden');
     if(document.getElementById(`nav-${v}`)) document.getElementById(`nav-${v}`).classList.add('active');
 }
 
 // =========================================================================
-// DESGLOSE DINÁMICO DE CONCEPTOS EN EL INICIO (GLOSARIO)
+// GLOSARIO DE CONCEPTOS Y FÓRMULAS
 // =========================================================================
 const GLOSARIO_TEMAS = {
     simple: {
         titulo: "Concepto de Interés Simple",
         color: "var(--color-simple)",
         cuerpo: `
-            <p>El <strong>Interés Simple</strong> es un método financiero donde los rendimientos generados durante un tiempo determinado se calculan <strong>únicamente sobre el capital inicial (P)</strong>. Esto significa que los intereses ganados no se acumulan para generar nuevos intereses en el siguiente período.</p>
+            <p>El <strong>Interés Simple</strong> es un método financiero donde los rendimientos generados durante un tiempo determinado se calculan <strong>únicamente sobre el capital inicial (P)</strong>.</p>
             <h4 style="margin-top:1rem; font-weight:700;">Fórmula Base de Valor Futuro:</h4>
             <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:1.1rem; text-align:center;">
                 Vf = P * (1 + i * t)
@@ -57,8 +58,7 @@ const GLOSARIO_TEMAS = {
             <p style="margin-top:1rem;"><strong>Características Principales:</strong></p>
             <ul style="margin-left:1.5rem; margin-top:0.5rem;">
                 <li>La tasa de interés (i) y el tiempo (t) deben estar expresados en la misma unidad de tiempo.</li>
-                <li>Los intereses cobrados o pagados son constantes en cada período.</li>
-                <li>Es el método más común para préstamos a corto plazo, depósitos temporales o compras financiadas sencillas.</li>
+                <li>Los intereses devengados son constantes en cada período.</li>
             </ul>
         `
     },
@@ -66,100 +66,117 @@ const GLOSARIO_TEMAS = {
         titulo: "Concepto de Interés Compuesto",
         color: "var(--color-compound)",
         cuerpo: `
-            <p>El <strong>Interés Compuesto</strong> representa la acumulación sistemática de rendimientos. Aquí, los intereses devengados al final de cada período de capitalización <strong>se suman al capital original</strong>, pasando a formar un nuevo capital sobre el cual se calcularán los intereses del período siguiente (anatocismo o interés sobre interés).</p>
+            <p>El <strong>Interés Compuesto</strong> representa la acumulación sistemática de rendimientos donde los intereses devengados al final de cada período <strong>se suman al capital original</strong> para generar nuevos intereses.</p>
             <h4 style="margin-top:1rem; font-weight:700;">Fórmula Base:</h4>
             <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:1.1rem; text-align:center;">
                 Vf = P * (1 + i/m)<sup>n</sup>
             </div>
-            <p style="margin-top:1rem;"><strong>Características Principales:</strong></p>
-            <ul style="margin-left:1.5rem; margin-top:0.5rem;">
-                <li>El capital base cambia constantemente al finalizar cada período de capitalización.</li>
-                <li>Muestra un crecimiento exponencial en el tiempo, a diferencia del crecimiento lineal del interés simple.</li>
-                <li>Es el estándar del sistema bancario moderno, cuentas de ahorro a largo plazo, fondos mutuos e inversiones de capital.</li>
-            </ul>
         `
     },
     single: {
         titulo: "Concepto de Pagos Únicos",
         color: "var(--color-single)",
         cuerpo: `
-            <p>Los <strong>Pagos Únicos</strong> analizan el comportamiento y el valor del dinero a través del tiempo considerando un único flujo de efectivo en el presente (P) y otro único en el futuro (F). Se enfoca en resolver "cuánto vale hoy un dinero del futuro" o "cuánto valdrá en el futuro lo que invierto hoy".</p>
-            <h4 style="margin-top:1rem; font-weight:700;">Factores de Desplazamiento:</h4>
-            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:1rem; display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; text-align:center;">
-                <div>Factor F/P: F = P*(1+i)<sup>n</sup></div>
-                <div>Factor P/F: P = F / (1+i)<sup>n</sup></div>
+            <p>Analiza el comportamiento de un único flujo de efectivo en el presente (P) y otro en el futuro (F).</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; text-align:center;">
+                F = P * (1 + i)<sup>n</sup> &nbsp;|&nbsp; P = F / (1 + i)<sup>n</sup>
             </div>
-            <p style="margin-top:1rem;"><strong>Características Principales:</strong></p>
-            <ul style="margin-left:1.5rem; margin-top:0.5rem;">
-                <li>Permite calcular equivalencias directas entre dos puntos discretos en el tiempo.</li>
-                <li>Se utiliza como el cimiento conceptual para comprender el Valor Actual Neto (VAN) y la evaluación de proyectos de inversión.</li>
-            </ul>
         `
     },
     uniform: {
         titulo: "Concepto de Series Uniformes",
         color: "var(--color-uniform)",
         cuerpo: `
-            <p>Las <strong>Series Uniformes</strong> (también llamadas <em>Anualidades</em>) consisten en una serie de flujos de efectivo o pagos que poseen exactamente el **mismo monto de dinero (A)** y ocurren a intervalos de tiempo constantes y regulares (mensual, bimestral, trimestral, semestral o anual).</p>
-            <h4 style="margin-top:1rem; font-weight:700;">Tipos de Serie:</h4>
-            <ul style="margin-left:1.5rem; margin-top:0.5rem; margin-bottom:1rem;">
-                <li><strong>Vencida:</strong> Los pagos se efectúan al finalizar cada intervalo (ej: cuotas de un crédito tradicional).</li>
-                <li><strong>Anticipada:</strong> Los pagos se efectúan al inicio de cada intervalo (ej: alquiler de un inmueble).</li>
-            </ul>
-            <p><strong>Uso Común:</strong> Permite planificar amortizaciones de créditos vehiculares, hipotecarios, rentas estables, o el establecimiento de fondos de jubilación continuos.</p>
+            <p>Las <strong>Series Uniformes</strong> consisten en un conjunto de pagos o cobros iguales (A) a intervalos regulares de tiempo.</p>
+        `
+    },
+    anualidades: {
+        titulo: "Las Anualidades y sus Fórmulas Matemáticas Completa",
+        color: "var(--color-anualidades)",
+        cuerpo: `
+            <p>Una <strong>Anualidad</strong> es una serie de depósitos, pagos o retiros periódicos iguales (A) a intervalos regulares. A continuación se presentan todas sus clasificaciones teóricas e integrales junto a sus <strong>fórmulas matemáticas explícitas</strong>:</p>
+
+            <!-- 1. VENCIDA / ORDINARIA -->
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-anualidades); color: var(--color-anualidades); padding-bottom: 0.25rem;">1. Anualidad Ordinaria (Vencida)</h4>
+            <p>Los pagos se realizan al final de cada período de pago.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Valor Presente (P):</strong> P = A * [ (1 - (1 + i)<sup>-n</sup>) / i ] <br><br>
+                <strong>Valor Futuro (F):</strong> F = A * [ ((1 + i)<sup>n</sup> - 1) / i ] <br><br>
+                <strong>Cuota dado Presente (A|P):</strong> A = P * [ i / (1 - (1 + i)<sup>-n</sup>) ] <br><br>
+                <strong>Cuota dado Futuro (A|F):</strong> A = F * [ i / ((1 + i)<sup>n</sup> - 1) ]
+            </div>
+
+            <!-- 2. ANTICIPADA -->
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-anualidades); color: var(--color-anualidades); padding-bottom: 0.25rem;">2. Anualidad Anticipada</h4>
+            <p>Los pagos se realizan al inicio de cada período de pago (se multiplican por el factor de capitalización <code>(1 + i)</code>).</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Valor Presente (P):</strong> P = A * [ (1 - (1 + i)<sup>-n</sup>) / i ] * (1 + i) <br><br>
+                <strong>Valor Futuro (F):</strong> F = A * [ ((1 + i)<sup>n</sup> - 1) / i ] * (1 + i) <br><br>
+                <strong>Cuota dado Presente (A|P):</strong> A = P / [ ((1 - (1 + i)<sup>-n</sup>) / i) * (1 + i) ] <br><br>
+                <strong>Cuota dado Futuro (A|F):</strong> A = F / [ (((1 + i)<sup>n</sup> - 1) / i) * (1 + i) ]
+            </div>
+
+            <!-- 3. DIFERIDA -->
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-anualidades); color: var(--color-anualidades); padding-bottom: 0.25rem;">3. Anualidad Diferida</h4>
+            <p>Los pagos comienzan después de transcurrir un período de gracia o diferimiento de <code>k</code> períodos.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Valor Presente (P):</strong> P = A * [ (1 - (1 + i)<sup>-n</sup>) / i ] * (1 + i)<sup>-k</sup> <br><br>
+                <strong>Valor Futuro (F):</strong> F = A * [ ((1 + i)<sup>n</sup> - 1) / i ] <br><br>
+                <strong>Cuota dado Presente (A|P):</strong> A = (P * (1 + i)<sup>k</sup>) * [ i / (1 - (1 + i)<sup>-n</sup>) ]
+            </div>
+
+            <!-- 4. PERPETUIDAD -->
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-anualidades); color: var(--color-anualidades); padding-bottom: 0.25rem;">4. Perpetuidad (Serie Infinita)</h4>
+            <p>Serie de pagos que se extienden indefinidamente en el tiempo (<code>n → ∞</code>).</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Valor Presente Perpetuo:</strong> P = A / i <br><br>
+                <strong>Cuota Perpetua:</strong> A = P * i
+            </div>
+
+            <!-- 5. ANUALIDADES GENERALES -->
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-anualidades); color: var(--color-anualidades); padding-bottom: 0.25rem;">5. Anualidad General</h4>
+            <p>El período de pago no coincide con el período de capitalización de la tasa. Requiere convertir la tasa nominal/efectiva a una tasa equivalente <code>i_eq</code> que coincida con la frecuencia de los pagos.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Tasa Equivalente Periódica (i_eq):</strong> i_eq = (1 + i_origen)<sup>(m_origen / m_destino)</sup> - 1
+            </div>
+
+            <!-- 6. ANUALIDADES CONTINGENTES -->
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-anualidades); color: var(--color-anualidades); padding-bottom: 0.25rem;">6. Anualidad Contingente / Vitalicia</h4>
+            <p>El inicio o la finalización de la serie de pagos depende de un evento incierto (ej. un seguro de vida o pensión actuarial).</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Valor Actuarial Estimado:</strong> P = Σ [ (A * p<sub>t</sub>) / (1 + i)<sup>t</sup> ]
+            </div>
         `
     },
     rates: {
         titulo: "Concepto de Tasas Equivalentes",
         color: "var(--color-rates)",
         cuerpo: `
-            <p>La **Homologación de Tasas de Interés** permite comparar o convertir diferentes ofertas de financiamiento que operan bajo distintas bases temporales o periodos de capitalización. Dos tasas son equivalentes si, operando sobre un mismo capital durante el mismo plazo, producen el mismo rendimiento final.</p>
-            <h4 style="margin-top:1rem; font-weight:700;">Fórmula Nominal a Efectiva:</h4>
-            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:1.1rem; text-align:center;">
+            <p>Permite comparar rentabilidades bajo distintas bases temporales de capitalización.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; text-align:center;">
                 TEA = (1 + TNA/m)<sup>m</sup> - 1
             </div>
-            <p style="margin-top:1rem;"><strong>Diferencia Esencial:</strong></p>
-            <ul style="margin-left:1.5rem; margin-top:0.5rem;">
-                <li><strong>Tasa Nominal Anual (TNA):</strong> Es una tasa teórica o de referencia que no considera la reinversión de intereses internos.</li>
-                <li><strong>Tasa Efectiva Anual (TEA):</strong> Es la rentabilidad o costo real neto del año, incorporando de forma exacta el efecto multiplicador de la capitalización compuesta.</li>
-            </ul>
         `
     },
     costs: {
-        titulo: "Concepto de Estimación de Costos",
+        titulo: "Estimación de Costos",
         color: "var(--color-costs)",
         cuerpo: `
-            <p>El **Análisis de Costos y Punto de Equilibrio** evalúa la viabilidad comercial de una producción industrial o comercialización de servicios. Permite determinar el volumen de actividad mínimo indispensable para que la empresa no obtenga pérdidas.</p>
-            <h4 style="margin-top:1rem; font-weight:700;">Fórmula del Punto de Equilibrio (en Q):</h4>
-            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:1.1rem; text-align:center;">
-                PE = CF / (PVU - CVU)
-            </div>
-            <p style="margin-top:1rem;">Donde la diferencia <em>(PVU - CVU)</em> representa el margen de contribución marginal unitario que amortiza los costos fijos totales de la estructura corporativa.</p>
+            <p>Punto de Equilibrio: <code>PE = CF / (PVU - CVU)</code></p>
         `
     },
     evaluacion: {
-        titulo: "Tema V: Técnicas de Evaluación de Proyectos",
+        titulo: "Evaluación Económica de Proyectos",
         color: "var(--color-evaluacion)",
         cuerpo: `
-            <p>La <strong>Evaluación Económica de Proyectos</strong> comprende herramientas financieras indispensables para juzgar la conveniencia de una inversión de capital.</p>
-            <ul style="margin-left:1.5rem; margin-top:0.5rem; line-height: 1.6;">
-                <li><strong>Valor Presente Neto (VPN):</strong> Mide el valor excedente en el presente tras descontar los flujos a la tasa mínima requerida (TREMA). Si VPN &ge; 0, el proyecto se acepta.</li>
-                <li><strong>Valor Anual (VA):</strong> Expresa todos los ingresos y egresos en una serie uniforme equivalente temporal.</li>
-                <li><strong>Tasa Interna de Retorno (TIR):</strong> La tasa interna a la cual el VPN se iguala a cero. Debe ser superior a la TREMA para autorizar la inversión.</li>
-                <li><strong>Periodo de Recuperación (PRI):</strong> El tiempo requerido para que los flujos acumulados descontados recuperen el desembolso inicial.</li>
-            </ul>
+            <p>Análisis de métricas VPN, VA, TIR y PRI.</p>
         `
     },
     alternativas: {
-        titulo: "Tema VI: Selección de Alternativas",
+        titulo: "Selección de Alternativas",
         color: "var(--color-alternativas)",
         cuerpo: `
-            <p>La <strong>Selección de Alternativas de Inversión</strong> permite decidir de forma objetiva entre proyectos mutuamente excluyentes.</p>
-            <p style="margin-top: 0.5rem;">Cuando los proyectos poseen <strong>vidas útiles diferentes</strong>, la comparación directa de sus VPNs no es válida, pues operan sobre plazos desiguales. Para resolver esto se emplea el método del:</p>
-            <ul style="margin-left:1.5rem; margin-top:0.5rem; line-height: 1.6;">
-                <li><strong>Mínimo Común Múltiplo (MCM):</strong> Se repiten en cadena los ciclos de vida útil de cada alternativa hasta alcanzar un horizonte de estudio unificado (MCM de los años de vida útil). Las reinversiones iniciales correspondientes se aplican en cada ciclo de renovación.</li>
-                <li><strong>Valor Anual Equivalente (VA):</strong> Permite calcular el costo o ganancia equivalente temporal, siendo este un criterio directo y automático sin necesidad de expandir los periodos.</li>
-            </ul>
+            <p>Análisis de proyectos con vidas útiles distintas mediante MCM.</p>
         `
     }
 };
@@ -182,18 +199,150 @@ function cerrarConceptoHome() {
 }
 
 // =========================================================================
-// OPERACIONES LÓGICAS DE LOS FORMULARIOS
+// CALCULADORA DE ANUALIDADES Y SUS TIPOS COMPLETA
 // =========================================================================
+function checkAnualidades() {
+    let tipo = document.getElementById('anu-tipo').value;
+    let target = document.getElementById('anu-target').value;
 
+    // Mostrar/ocultar inputs según tipo
+    if (tipo === 'diferida') {
+        document.getElementById('anu-g-gracia').classList.remove('hidden');
+    } else {
+        document.getElementById('anu-g-gracia').classList.add('hidden');
+    }
+
+    if (tipo === 'general') {
+        document.getElementById('anu-g-cap').classList.remove('hidden');
+    } else {
+        document.getElementById('anu-g-cap').classList.add('hidden');
+    }
+
+    if (tipo === 'contingente') {
+        document.getElementById('anu-g-prob').classList.remove('hidden');
+    } else {
+        document.getElementById('anu-g-prob').classList.add('hidden');
+    }
+
+    // Ajustar opciones de variable a calcular según tipo (Perpetuidad)
+    let optionF = document.querySelector("#anu-target option[value='F']");
+    let optionAF = document.querySelector("#anu-target option[value='A_F']");
+    
+    if (tipo === 'perpetua') {
+        if (optionF) optionF.disabled = true;
+        if (optionAF) optionAF.disabled = true;
+        if (target === 'F' || target === 'A_F') {
+            document.getElementById('anu-target').value = 'P';
+            target = 'P';
+        }
+        document.getElementById('anu-g-n-container').classList.add('hidden');
+    } else {
+        if (optionF) optionF.disabled = false;
+        if (optionAF) optionAF.disabled = false;
+        document.getElementById('anu-g-n-container').classList.remove('hidden');
+    }
+
+    // Mostrar/Ocultar campos de variables
+    ['anu-g-a','anu-g-p','anu-g-f'].forEach(x => document.getElementById(x).classList.remove('hidden'));
+    
+    if (target === 'P' || target === 'F') { 
+        document.getElementById('anu-g-p').classList.add('hidden'); 
+        document.getElementById('anu-g-f').classList.add('hidden'); 
+    } else if (target === 'A_P') { 
+        document.getElementById('anu-g-a').classList.add('hidden'); 
+        document.getElementById('anu-g-f').classList.add('hidden'); 
+    } else if (target === 'A_F') { 
+        document.getElementById('anu-g-a').classList.add('hidden'); 
+        document.getElementById('anu-g-p').classList.add('hidden'); 
+    }
+}
+
+function runAnualidades() {
+    let tipo = document.getElementById('anu-tipo').value;
+    let target = document.getElementById('anu-target').value;
+
+    let A = parseFloat(document.getElementById('anu-a').value) || 0;
+    let P = parseFloat(document.getElementById('anu-p').value) || 0;
+    let F = parseFloat(document.getElementById('anu-f').value) || 0;
+    let iInput = (parseFloat(document.getElementById('anu-i').value) || 0) / 100;
+    let n = parseFloat(document.getElementById('anu-n').value) || 0;
+    let k = parseFloat(document.getElementById('anu-k').value) || 0;
+    let prob = (parseFloat(document.getElementById('anu-prob') ? document.getElementById('anu-prob').value : 100) || 100) / 100;
+
+    let unidadSelect = document.getElementById('anu-unidad');
+    let unidadTexto = unidadSelect ? unidadSelect.options[unidadSelect.selectedIndex].text : 'cuotas';
+
+    // Ajuste por Anualidad General (Diferencia entre frecuencia de pago y capitalización)
+    let i = iInput;
+    if (tipo === 'general') {
+        let freqPago = parseFloat(document.getElementById('anu-unidad-freq').value) || 12;
+        let freqCap = parseFloat(document.getElementById('anu-cap-freq').value) || 12;
+        // Convertir tasa del periodo de capitalización al periodo de pago equivalente
+        i = Math.pow(1 + iInput, freqCap / freqPago) - 1;
+    }
+
+    let factorAnticipado = (tipo === 'anticipada') ? (1 + i) : 1;
+    let factorGracia = (tipo === 'diferida') ? Math.pow(1 + i, -k) : 1;
+    let factorContingente = (tipo === 'contingente') ? prob : 1;
+
+    let ans = 0, lbl = "";
+    let f1 = Math.pow(1 + i, n);
+
+    if (tipo === 'perpetua') {
+        if (target === 'P') {
+            ans = (A / i) * factorAnticipado * factorGracia;
+            lbl = `Valor Presente [PERPETUIDAD ${tipo.toUpperCase()}]:`;
+        } else if (target === 'A_P') {
+            ans = (P * i) / (factorAnticipado * factorGracia);
+            lbl = `Cuota Periódica [PERPETUIDAD ${tipo.toUpperCase()}]:`;
+        }
+    } else {
+        if (target === 'P') {
+            let pBase = A * ((1 - Math.pow(1 + i, -n)) / i);
+            ans = pBase * factorAnticipado * factorGracia * factorContingente;
+            lbl = `Valor Presente [${tipo.toUpperCase()}]:`;
+        } else if (target === 'F') {
+            let fBase = A * ((f1 - 1) / i);
+            ans = fBase * factorAnticipado * factorContingente;
+            lbl = `Valor Futuro [${tipo.toUpperCase()}]:`;
+        } else if (target === 'A_P') {
+            let pAjustado = P / (factorAnticipado * factorGracia * factorContingente);
+            ans = pAjustado * ((i * f1) / (f1 - 1));
+            lbl = `Cuota Periódica A|P [${tipo.toUpperCase()}]:`;
+        } else if (target === 'A_F') {
+            let fAjustado = F / (factorAnticipado * factorContingente);
+            ans = fAjustado * (i / (f1 - 1));
+            lbl = `Cuota Periódica A|F [${tipo.toUpperCase()}]:`;
+        }
+    }
+
+    document.getElementById('lbl-anu-res').textContent = lbl;
+    document.getElementById('res-anu-main').textContent = ans.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2});
+    
+    let detalleBox = document.getElementById('res-anu-detalle');
+    if (detalleBox) {
+        let textoGracia = (tipo === 'diferida') ? ` con ${k} períodos de gracia` : '';
+        let textoDuracion = (tipo === 'perpetua') ? 'perpetua (infinita)' : `${n} cuotas (${unidadTexto.toLowerCase()})`;
+        let textoProb = (tipo === 'contingente') ? ` con probabilidad del ${(prob*100).toFixed(1)}%` : '';
+        
+        detalleBox.innerHTML = `* Calculado para <strong>Anualidad ${tipo}</strong> de <strong>${textoDuracion}</strong>${textoGracia}${textoProb} a una tasa equivalente de <strong>${(i * 100).toFixed(4)}% por período</strong>.`;
+    }
+
+    pintarDivisas('res-anu-usd', 'res-anu-eur', ans);
+    document.getElementById('results-anualidades').classList.remove('hidden');
+}
+
+// =========================================================================
 // INTERÉS SIMPLE
+// =========================================================================
 function checkSimple() {
     let t = document.getElementById('simple-target').value;
     ['s-g-p','s-g-i','s-g-t','s-g-vf'].forEach(x => document.getElementById(x).classList.remove('hidden'));
     
-    if(t === 'Vf') { document.getElementById('s-g-vf').classList.add('hidden'); }
-    else if(t === 'P') { document.getElementById('s-g-p').classList.add('hidden'); }
-    else if(t === 'i') { document.getElementById('s-g-i').classList.add('hidden'); }
-    else if(t === 't') { document.getElementById('s-g-t').classList.add('hidden'); }
+    if(t === 'Vf') document.getElementById('s-g-vf').classList.add('hidden');
+    else if(t === 'P') document.getElementById('s-g-p').classList.add('hidden');
+    else if(t === 'i') document.getElementById('s-g-i').classList.add('hidden');
+    else if(t === 't') document.getElementById('s-g-t').classList.add('hidden');
 }
 
 function runSimple() {
@@ -236,7 +385,9 @@ function runSimple() {
     document.getElementById('results-simple').classList.remove('hidden');
 }
 
+// =========================================================================
 // INTERÉS COMPUESTO
+// =========================================================================
 function checkCompound() {
     let t = document.getElementById('compound-target').value;
     ['c-g-p','c-g-i','c-g-n','c-g-vf'].forEach(x => document.getElementById(x).classList.remove('hidden'));
@@ -288,7 +439,9 @@ function runCompound() {
     document.getElementById('results-compound').classList.remove('hidden');
 }
 
+// =========================================================================
 // PAGOS ÚNICOS
+// =========================================================================
 function checkSingle() {
     let t = document.getElementById('single-target').value;
     if(t === 'F') {
@@ -331,7 +484,9 @@ function runSingle() {
     document.getElementById('results-single').classList.remove('hidden');
 }
 
+// =========================================================================
 // SERIES UNIFORMES
+// =========================================================================
 function checkUniform() {
     let t = document.getElementById('uniform-target').value;
     ['u-g-a','u-g-p','u-g-f'].forEach(x => document.getElementById(x).classList.remove('hidden'));
@@ -381,7 +536,9 @@ function runUniform() {
     document.getElementById('results-uniform').classList.remove('hidden');
 }
 
-// TASAS EQUIVALENTES
+// =========================================================================
+// TASAS EQUIVALENTES, COSTOS Y EVALUACIÓN
+// =========================================================================
 function runRates() {
     let target = document.getElementById('rates-target').value;
     let val = parseFloat(document.getElementById('rates-val').value) || 0;
@@ -401,7 +558,6 @@ function runRates() {
     document.getElementById('results-rates').classList.remove('hidden');
 }
 
-// ESTIMACIÓN DE COSTOS
 function runCosts() {
     let cf = parseFloat(document.getElementById('costs-cf').value) || 0;
     let cvu = parseFloat(document.getElementById('costs-cvu').value) || 0;
@@ -431,10 +587,6 @@ function runCosts() {
     document.getElementById('results-costs').classList.remove('hidden');
 }
 
-// =========================================================================
-// OPERACIONES FINANCIERAS EVALUACIÓN DE PROYECTOS Y SELECCIÓN DE ALTERNATIVAS
-// =========================================================================
-
 function calcularTIRProyecto(inversion, flujo, vida, salvamento) {
     let low = -0.99, high = 5.0, mid = 0;
     for (let k = 0; k < 100; k++) {
@@ -455,7 +607,6 @@ function calcularTIRProyecto(inversion, flujo, vida, salvamento) {
 function obtenerMCD(a, b) { return !b ? a : obtenerMCD(b, a % b); }
 function obtenerMCM(a, b) { return (a * b) / obtenerMCD(a, b); }
 
-// EVALUACIÓN ECONÓMICA DE PROYECTOS
 function runEvaluacion() {
     let P = parseFloat(document.getElementById('eval-inv').value) || 0;
     let F = parseFloat(document.getElementById('eval-flujo').value) || 0;
@@ -535,7 +686,6 @@ function runEvaluacion() {
     document.getElementById('results-evaluacion').classList.remove('hidden');
 }
 
-// SELECCIÓN DE ALTERNATIVAS (MCM)
 function runAlternativas() {
     let target = document.getElementById('alternativas-target').value;
     let i = (parseFloat(document.getElementById('alt-tmar').value) || 0) / 100;
@@ -610,7 +760,7 @@ function runAlternativas() {
 }
 
 // =========================================================================
-// CARGA Y CONFIGURACIÓN GENERAL DEL SISTEMA (DOM)
+// CARGA INICIAL
 // =========================================================================
 document.addEventListener("DOMContentLoaded", () => {
     actualizarMonedas();
@@ -624,16 +774,21 @@ document.addEventListener("DOMContentLoaded", () => {
         document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
     });
 
-    ['inicio','simple','compound','single','uniform','rates','costs','evaluacion','alternativas'].forEach(v => {
+    ['inicio','simple','compound','single','uniform','anualidades','rates','costs','evaluacion','alternativas'].forEach(v => {
         if(document.getElementById(`nav-${v}`)) {
             document.getElementById(`nav-${v}`).addEventListener("click", () => { 
                 irA(v); 
                 toggleMenu(); 
-                cerrarConceptoHome(); 
             });
         }
     });
 
+    // Listeners Anualidades
+    document.getElementById('anu-tipo').addEventListener("change", checkAnualidades);
+    document.getElementById('anu-target').addEventListener("change", checkAnualidades);
+    document.getElementById('btn-calc-anualidades').addEventListener("click", runAnualidades);
+
+    // Listeners Módulos Restantes
     document.getElementById('simple-target').addEventListener("change", checkSimple);
     document.getElementById('compound-target').addEventListener("change", checkCompound);
     document.getElementById('single-target').addEventListener("change", checkSingle);
