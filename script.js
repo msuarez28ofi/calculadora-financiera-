@@ -50,9 +50,9 @@ const GLOSARIO_TEMAS = {
         color: "var(--color-simple)",
         cuerpo: `
             <p>El <strong>Interés Simple</strong> es un método financiero donde los rendimientos generados durante un tiempo determinado se calculan <strong>únicamente sobre el capital inicial (P)</strong>. Esto significa que los intereses ganados no se acumulan para generar nuevos intereses en el siguiente período.</p>
-            <h4 style="margin-top:1rem; font-weight:700;">Fórmula Base:</h4>
+            <h4 style="margin-top:1rem; font-weight:700;">Fórmula Base de Valor Futuro:</h4>
             <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:1.1rem; text-align:center;">
-                I = P * i * t
+                Vf = P * (1 + i * t)
             </div>
             <p style="margin-top:1rem;"><strong>Características Principales:</strong></p>
             <ul style="margin-left:1.5rem; margin-top:0.5rem;">
@@ -91,7 +91,7 @@ const GLOSARIO_TEMAS = {
             </div>
             <p style="margin-top:1rem;"><strong>Características Principales:</strong></p>
             <ul style="margin-left:1.5rem; margin-top:0.5rem;">
-                <li>Permite calcular equivalencias directas entre dos puntos discretos in el tiempo.</li>
+                <li>Permite calcular equivalencias directas entre dos puntos discretos en el tiempo.</li>
                 <li>Se utiliza como el cimiento conceptual para comprender el Valor Actual Neto (VAN) y la evaluación de proyectos de inversión.</li>
             </ul>
         `
@@ -185,13 +185,12 @@ function cerrarConceptoHome() {
 // OPERACIONES LÓGICAS DE LOS FORMULARIOS
 // =========================================================================
 
-// INTERÉS SIMPLE
+// INTERÉS SIMPLE (Ajustado sin Interés Ganado I)
 function checkSimple() {
     let t = document.getElementById('simple-target').value;
-    ['s-g-p','s-g-i','s-g-t','s-g-I','s-g-vf'].forEach(x => document.getElementById(x).classList.remove('hidden'));
+    ['s-g-p','s-g-i','s-g-t','s-g-vf'].forEach(x => document.getElementById(x).classList.remove('hidden'));
     
-    if(t === 'I') { document.getElementById('s-g-I').classList.add('hidden'); }
-    else if(t === 'Vf') { document.getElementById('s-g-vf').classList.add('hidden'); }
+    if(t === 'Vf') { document.getElementById('s-g-vf').classList.add('hidden'); }
     else if(t === 'P') { document.getElementById('s-g-p').classList.add('hidden'); }
     else if(t === 'i') { document.getElementById('s-g-i').classList.add('hidden'); }
     else if(t === 't') { document.getElementById('s-g-t').classList.add('hidden'); }
@@ -203,26 +202,22 @@ function runSimple() {
     let i = (parseFloat(document.getElementById('simple-i').value) || 0) / 100;
     let t = parseFloat(document.getElementById('simple-t').value) || 0;
     let unit = parseFloat(document.getElementById('simple-t-unit').value) || 1;
-    let I = parseFloat(document.getElementById('simple-I').value) || 0;
     let Vf = parseFloat(document.getElementById('simple-vf').value) || 0;
 
     let tAjustado = t * unit;
     let ans = 0, lbl = "";
 
-    if (target === 'I') {
-        ans = P * i * tAjustado;
-        lbl = "Interés Ganado (I):";
-    } else if (target === 'Vf') {
+    if (target === 'Vf') {
         ans = P * (1 + i * tAjustado);
         lbl = "Valor Futuro Acumulado (Vf):";
     } else if (target === 'P') {
-        ans = I / (i * tAjustado);
+        ans = Vf / (1 + i * tAjustado);
         lbl = "Capital Inicial Requerido (P):";
     } else if (target === 'i') {
-        ans = (I / (P * tAjustado)) * 100;
+        ans = ((Vf / P - 1) / tAjustado) * 100;
         lbl = "Tasa de Interés Nominal (%):";
     } else if (target === 't') {
-        ans = (I / (P * i)) / unit;
+        ans = ((Vf / P - 1) / i) / unit;
         lbl = "Tiempo Estimado del Período:";
     }
 
@@ -312,6 +307,9 @@ function runSingle() {
     let i = (parseFloat(document.getElementById('single-i').value) || 0) / 100;
     let n = parseFloat(document.getElementById('single-n').value) || 0;
 
+    let unidadSelect = document.getElementById('single-unidad-tiempo');
+    let unidadTexto = unidadSelect ? unidadSelect.options[unidadSelect.selectedIndex].text : 'períodos';
+
     let ans = 0, lbl = "";
     if (target === 'F') {
         ans = P * Math.pow(1 + i, n);
@@ -323,6 +321,12 @@ function runSingle() {
 
     document.getElementById('lbl-single-res').textContent = lbl;
     document.getElementById('res-single-main').textContent = ans.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2});
+    
+    let detalleBox = document.getElementById('res-single-detalle');
+    if (detalleBox) {
+        detalleBox.innerHTML = `* Calculado para <strong>${n} ${unidadTexto.toLowerCase()}</strong> a una tasa del <strong>${(i * 100)}% por período ${unidadTexto.toLowerCase()}</strong>.`;
+    }
+
     pintarDivisas('res-single-usd', 'res-single-eur', ans);
     document.getElementById('results-single').classList.remove('hidden');
 }
@@ -595,7 +599,6 @@ function runAlternativas() {
 
     document.getElementById('results-alternativas').classList.remove('hidden');
 }
-
 
 // =========================================================================
 // CARGA Y CONFIGURACIÓN GENERAL DEL SISTEMA (DOM)

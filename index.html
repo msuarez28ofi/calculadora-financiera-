@@ -59,7 +59,7 @@
                     <div class="concept-card card-simple" onclick="mostrarConceptoHome('simple')">
                         <h4>Interés Simple 👆</h4>
                         <p>Los rendimientos se evalúan sobre el capital original. <br>
-                        <span class="sigla-badge">I</span> Interés Neto total ganado.<br>
+                        <span class="sigla-badge">Vf</span> Valor Futuro Acumulado.<br>
                         <span class="sigla-badge">P</span> Valor Presente / Capital Inicial.<br>
                         <span class="sigla-badge">i</span> Tasa de interés por unidad de tiempo.<br>
                         <span class="sigla-badge">t</span> Tiempo total de exposición.</p>
@@ -138,7 +138,6 @@
                     <div class="selector-target-container">
                         <label for="simple-target">Variable a Despejar:</label>
                         <select id="simple-target" class="form-select">
-                            <option value="I">Interés Neto Ganado (I)</option>
                             <option value="Vf">Valor Futuro Total (Vf)</option>
                             <option value="P">Valor Presente / Capital Inicial (P)</option>
                             <option value="i">Tasa de Interés (i)</option>
@@ -160,7 +159,6 @@
                             </select>
                         </div>
                     </div>
-                    <div id="s-g-I" class="hidden"><label class="field-label">Interés Ganado (I)</label><input type="number" id="simple-I" class="form-input" value="100"></div>
                     <div id="s-g-vf" class="hidden"><label class="field-label">Valor Futuro acumulado (Vf)</label><input type="number" id="simple-vf" class="form-input" value="1100"></div>
                     
                     <button type="button" id="btn-calc-simple" class="submit-btn btn-simple">Calcular Interés Simple</button>
@@ -236,9 +234,21 @@
                     </div>
                     <div id="sg-g-p"><label class="field-label">Valor Presente (P)</label><input type="number" id="single-p" class="form-input" value="1000"></div>
                     <div id="sg-g-f" class="hidden"><label class="field-label">Valor Futuro (F)</label><input type="number" id="single-f" class="form-input" value="1500"></div>
+                    
                     <div class="form-row-grid">
                         <div><label class="field-label">Tasa Efectiva por Período (%)</label><input type="number" id="single-i" class="form-input" value="10"></div>
                         <div><label class="field-label">Número de Períodos (n)</label><input type="number" id="single-n" class="form-input" value="5"></div>
+                    </div>
+
+                    <div>
+                        <label class="field-label">Unidad de Tiempo</label>
+                        <select id="single-unidad-tiempo" class="form-select">
+                            <option value="meses">Mensual</option>
+                            <option value="bimensual">Bimestral</option>
+                            <option value="trimestral">Trimestral</option>
+                            <option value="semestral">Semestral</option>
+                            <option value="años" selected>Anual</option>
+                        </select>
                     </div>
                     
                     <button type="button" id="btn-calc-single" class="submit-btn btn-single">Calcular Equivalencia</button>
@@ -247,6 +257,7 @@
                 <div id="results-single" class="results-wrapper res-border-single hidden">
                     <h3 class="results-title">Resultados de Equivalencia</h3>
                     <div class="result-main-line"><span class="label" id="lbl-single-res">Valor:</span><span class="value val-single" id="res-single-main">0.00</span></div>
+                    <small id="res-single-detalle" style="display:block; margin-bottom: 0.75rem; color: var(--text-muted);"></small>
                     <div id="divisas-single" class="currency-conversion-zone">
                         <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-single-ves">0.00 VES</span></div>
                         <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-single-usd">$0.00 USD</span></div>
