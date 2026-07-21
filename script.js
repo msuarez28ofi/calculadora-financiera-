@@ -43,55 +43,124 @@ function irA(v) {
 }
 
 // =========================================================================
-// GLOSARIO DE CONCEPTOS Y FÓRMULAS
+// GLOSARIO DE CONCEPTOS Y FÓRMULAS CON DESPEJES COMPLETOS
 // =========================================================================
 const GLOSARIO_TEMAS = {
     simple: {
-        titulo: "Concepto de Interés Simple",
+        titulo: "Interés Simple: Concepto y Despejes de Fórmulas",
         color: "var(--color-simple)",
         cuerpo: `
-            <p>El <strong>Interés Simple</strong> es un método financiero donde los rendimientos generados durante un tiempo determinado se calculan <strong>únicamente sobre el capital inicial (P)</strong>.</p>
-            <h4 style="margin-top:1rem; font-weight:700;">Fórmula Base de Valor Futuro:</h4>
-            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:1.1rem; text-align:center;">
-                Vf = P * (1 + i * t)
+            <p>El <strong>Interés Simple</strong> calcula los rendimientos financieros <strong>únicamente sobre el capital inicial (P)</strong> durante el periodo de tiempo estipulado.</p>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-simple); color: var(--color-simple); padding-bottom: 0.25rem;">1. Valor Futuro / Monto Acumulado (Vf)</h4>
+            <p>Calcula el capital final devengado acumulando los intereses al principal.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Vf = P * (1 + i * t)</strong>
             </div>
-            <p style="margin-top:1rem;"><strong>Características Principales:</strong></p>
-            <ul style="margin-left:1.5rem; margin-top:0.5rem;">
-                <li>La tasa de interés (i) y el tiempo (t) deben estar expresados en la misma unidad de tiempo.</li>
-                <li>Los intereses devengados son constantes en cada período.</li>
-            </ul>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-simple); color: var(--color-simple); padding-bottom: 0.25rem;">2. Valor Presente / Capital Inicial (P)</h4>
+            <p>Despeje para hallar la inversión inicial requerida dado un monto futuro objetivo.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>P = Vf / (1 + i * t)</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-simple); color: var(--color-simple); padding-bottom: 0.25rem;">3. Tasa de Interés Periódica (i)</h4>
+            <p>Despeje para determinar el rendimiento porcentual generado por unidad de tiempo.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>i = ( (Vf / P) - 1 ) / t</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-simple); color: var(--color-simple); padding-bottom: 0.25rem;">4. Tiempo de Exposición (t)</h4>
+            <p>Despeje para conocer la duración en periodos necesaria para alcanzar el monto futuro.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>t = ( (Vf / P) - 1 ) / i</strong>
+            </div>
         `
     },
     compound: {
-        titulo: "Concepto de Interés Compuesto",
+        titulo: "Interés Compuesto: Concepto y Despejes de Fórmulas",
         color: "var(--color-compound)",
         cuerpo: `
-            <p>El <strong>Interés Compuesto</strong> representa la acumulación sistemática de rendimientos donde los intereses devengados al final de cada período <strong>se suman al capital original</strong> para generar nuevos intereses.</p>
-            <h4 style="margin-top:1rem; font-weight:700;">Fórmula Base:</h4>
-            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:1.1rem; text-align:center;">
-                Vf = P * (1 + i/m)<sup>n</sup>
+            <p>El <strong>Interés Compuesto</strong> contempla la reinvestimento periódico de intereses (capitalización), donde los rendimientos de cada período se suman al capital original para generar nuevos intereses.</p>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-compound); color: var(--color-compound); padding-bottom: 0.25rem;">1. Valor Futuro Acumulado (Vf)</h4>
+            <p>Monto resultante al capitalizar el valor presente durante <code>n</code> periodos a la tasa efectiva periódica <code>i = i_nominal / m</code>.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Vf = P * (1 + i)<sup>n</sup></strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-compound); color: var(--color-compound); padding-bottom: 0.25rem;">2. Valor Presente Base (P)</h4>
+            <p>Despeje para descontar un flujo futuro a valor actual aplicando la tasa de capitalización.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>P = Vf / (1 + i)<sup>n</sup></strong> &nbsp;o bien&nbsp; <strong>P = Vf * (1 + i)<sup>-n</sup></strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-compound); color: var(--color-compound); padding-bottom: 0.25rem;">3. Tasa de Interés Periódica (i) / Nominal Base (i_nom)</h4>
+            <p>Despeje mediante radicación para determinar la tasa por periodo y su ajuste nominal multiplicando por <code>m</code>.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>i = (Vf / P)<sup>(1 / n)</sup> - 1</strong> <br><br>
+                <strong>i_nominal = m * [ (Vf / P)<sup>(1 / n)</sup> - 1 ]</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-compound); color: var(--color-compound); padding-bottom: 0.25rem;">4. Número de Períodos de Capitalización (n)</h4>
+            <p>Despeje utilizando propiedades de logaritmos naturales para despejar el exponente <code>n</code>.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>n = ln(Vf / P) / ln(1 + i)</strong>
             </div>
         `
     },
     single: {
-        titulo: "Concepto de Pagos Únicos",
+        titulo: "Pagos Únicos: Factores y Despejes Financieros",
         color: "var(--color-single)",
         cuerpo: `
-            <p>Analiza el comportamiento de un único flujo de efectivo en el presente (P) y otro en el futuro (F).</p>
-            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; text-align:center;">
-                F = P * (1 + i)<sup>n</sup> &nbsp;|&nbsp; P = F / (1 + i)<sup>n</sup>
+            <p>Modela la equivalencia entre un único flujo de caja presente (P) y un único flujo de caja futuro (F) separados por <code>n</code> períodos a una tasa <code>i</code>.</p>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-single); color: var(--color-single); padding-bottom: 0.25rem;">1. Factor de Capitalización de Pago Único (F/P)</h4>
+            <p>Determina un valor futuro dado un valor presente conocido.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>F = P * (1 + i)<sup>n</sup></strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-single); color: var(--color-single); padding-bottom: 0.25rem;">2. Factor de Actualización / Descuento de Pago Único (P/F)</h4>
+            <p>Determina un valor presente equivalente a partir de un valor futuro dado.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>P = F / (1 + i)<sup>n</sup></strong>
             </div>
         `
     },
     uniform: {
-        titulo: "Concepto de Series Uniformes",
+        titulo: "Series Uniformes: Fórmulas y Despejes Completo",
         color: "var(--color-uniform)",
         cuerpo: `
-            <p>Las <strong>Series Uniformes</strong> consisten en un conjunto de pagos o cobros iguales (A) a intervalos regulares de tiempo.</p>
+            <p>Conjunto de flujos de caja iguales y periódicos (A). Permite calcular la equivalencia respecto a un único monto presente (P) o un valor acumulado futuro (F).</p>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-uniform); color: var(--color-uniform); padding-bottom: 0.25rem;">1. Valor Presente dada una Serie Uniforme (P/A)</h4>
+            <p>Calcula el valor actual equivalente de una serie uniforme de cuotas.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>P = A * [ ((1 + i)<sup>n</sup> - 1) / (i * (1 + i)<sup>n</sup>) ]</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-uniform); color: var(--color-uniform); padding-bottom: 0.25rem;">2. Valor Futuro dada una Serie Uniforme (F/A)</h4>
+            <p>Calcula la cantidad total acumulada al final de la serie de pagos.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>F = A * [ ((1 + i)<sup>n</sup> - 1) / i ]</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-uniform); color: var(--color-uniform); padding-bottom: 0.25rem;">3. Cuota dado un Valor Presente (A/P) - Recuperación de Capital</h4>
+            <p>Despeje para amortizar una deuda presente mediante pagos uniformes.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>A = P * [ (i * (1 + i)<sup>n</sup>) / ((1 + i)<sup>n</sup> - 1) ]</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-uniform); color: var(--color-uniform); padding-bottom: 0.25rem;">4. Cuota dado un Valor Futuro (A/F) - Fondo de Amortización</h4>
+            <p>Despeje para determinar el ahorro periódico necesario para alcanzar un fondo futuro.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>A = F * [ i / ((1 + i)<sup>n</sup> - 1) ]</strong>
+            </div>
         `
     },
     anualidades: {
-        titulo: "Las Anualidades y sus Fórmulas Matemáticas Completa",
+        titulo: "Las Anualidades y sus Fórmulas Matemáticas Completas",
         color: "var(--color-anualidades)",
         cuerpo: `
             <p>Una <strong>Anualidad</strong> es una serie de depósitos, pagos o retiros periódicos iguales (A) a intervalos regulares. A continuación se presentan todas sus clasificaciones teóricas e integrales junto a sus <strong>fórmulas matemáticas explícitas</strong>:</p>
@@ -149,34 +218,98 @@ const GLOSARIO_TEMAS = {
         `
     },
     rates: {
-        titulo: "Concepto de Tasas Equivalentes",
+        titulo: "Tasas Equivalentes: Fórmulas de Conversión",
         color: "var(--color-rates)",
         cuerpo: `
-            <p>Permite comparar rentabilidades bajo distintas bases temporales de capitalización.</p>
-            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; text-align:center;">
-                TEA = (1 + TNA/m)<sup>m</sup> - 1
+            <p>Permite equiparar rentabilidades efectivas considerando diferentes frecuencias de capitalización en el tiempo.</p>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-rates); color: var(--color-rates); padding-bottom: 0.25rem;">1. Tasa Nominal a Tasa Efectiva Equivalente (TEA)</h4>
+            <p>Convierte una Tasa Nominal Anual (TNA) con <code>m</code> periodos de capitalización a Tasa Efectiva Anual.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>TEA = (1 + TNA / m)<sup>m</sup> - 1</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-rates); color: var(--color-rates); padding-bottom: 0.25rem;">2. Tasa Efectiva a Tasa Nominal Equivalente (TNA)</h4>
+            <p>Despeje para hallar la TNA dada una tasa efectiva observada.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>TNA = m * [ (1 + TEA)<sup>(1 / m)</sup> - 1 ]</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-rates); color: var(--color-rates); padding-bottom: 0.25rem;">3. Homologación entre Tasas Efectivas de Distinto Período</h4>
+            <p>Convierte una tasa efectiva del periodo de origen <code>m1</code> a una tasa efectiva del periodo de destino <code>m2</code>.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>i_destino = (1 + i_origen)<sup>(m2 / m1)</sup> - 1</strong>
             </div>
         `
     },
     costs: {
-        titulo: "Estimación de Costos",
+        titulo: "Estimación de Costos: Modelo Operativo y Despejes",
         color: "var(--color-costs)",
         cuerpo: `
-            <p>Punto de Equilibrio: <code>PE = CF / (PVU - CVU)</code></p>
+            <p>Identifica la relación comercial entre los Costos Fijos (CF), Costos Variables Unitarios (CVU), Precios de Venta (PVU) y la Utilidad Operativa (U).</p>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-costs); color: var(--color-costs); padding-bottom: 0.25rem;">1. Punto de Equilibrio Operativo en Unidades (PE)</h4>
+            <p>Volumen de producción/venta <code>Q</code> donde la Utilidad es exactamente igual a cero (Estructura de Margen de Contribución).</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>PE = CF / (PVU - CVU)</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-costs); color: var(--color-costs); padding-bottom: 0.25rem;">2. Ecuación General de Utilidad Operativa (U)</h4>
+            <p>Calcula el beneficio neto operativo a partir de un volumen de venta <code>Q</code> determinado.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>U = Ingresos Totales - Costos Totales</strong> <br>
+                <strong>U = (PVU * Q) - [ CF + (CVU * Q) ]</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-costs); color: var(--color-costs); padding-bottom: 0.25rem;">3. Despeje de Unidades Necesarias para una Utilidad Deseada (Q_obj)</h4>
+            <p>Determina las unidades requeridas a producir para alcanzar una meta de ganancia.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Q_obj = (CF + U_deseada) / (PVU - CVU)</strong>
+            </div>
         `
     },
     evaluacion: {
-        titulo: "Evaluación Económica de Proyectos",
+        titulo: "Evaluación Económica de Proyectos: Métricas",
         color: "var(--color-evaluacion)",
         cuerpo: `
-            <p>Análisis de métricas VPN, VA, TIR y PRI.</p>
+            <p>Modelos matemáticos para determinar la viabilidad financiera de una inversión proyectada en el tiempo.</p>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-evaluacion); color: var(--color-evaluacion); padding-bottom: 0.25rem;">1. Valor Presente Neto (VPN)</h4>
+            <p>Suma descontada a valor actual de todos los flujos netos de caja (FNC) menos la inversión inicial (P).</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>VPN = -P + Σ [ FNC<sub>t</sub> / (1 + i)<sup>t</sup> ] + [ S / (1 + i)<sup>n</sup> ]</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-evaluacion); color: var(--color-evaluacion); padding-bottom: 0.25rem;">2. Valor Anual Equivalente (VA)</h4>
+            <p>Homologa el VPN a una serie de flujos anuales constantes mediante el factor de recuperación de capital.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>VA = VPN * [ (i * (1 + i)<sup>n</sup>) / ((1 + i)<sup>n</sup> - 1) ]</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-evaluacion); color: var(--color-evaluacion); padding-bottom: 0.25rem;">3. Tasa Interna de Retorno (TIR)</h4>
+            <p>Es la tasa de descuento <code>r</code> que iguala exactamente el Valor Presente Neto a cero.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>0 = -P + Σ [ FNC<sub>t</sub> / (1 + TIR)<sup>t</sup> ] + [ S / (1 + TIR)<sup>n</sup> ]</strong>
+            </div>
         `
     },
     alternativas: {
-        titulo: "Selección de Alternativas",
+        titulo: "Selección de Alternativas: Horizonte de Estudio",
         color: "var(--color-alternativas)",
         cuerpo: `
-            <p>Análisis de proyectos con vidas útiles distintas mediante MCM.</p>
+            <p>Técnica de ingeniería económica para comparar proyectos excluyentes con vidas útiles desiguales.</p>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-alternativas); color: var(--color-alternativas); padding-bottom: 0.25rem;">1. Método del Mínimo Común Múltiplo (MCM)</h4>
+            <p>Iguala los horizontes de análisis repitiendo el ciclo de inversión de los proyectos hasta alcanzar un tiempo común.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>Horizonte Común = MCM(Vida_Util_A, Vida_Util_B)</strong>
+            </div>
+
+            <h4 style="margin-top:1.25rem; font-weight:700; border-bottom: 2px solid var(--color-alternativas); color: var(--color-alternativas); padding-bottom: 0.25rem;">2. Criterio del Valor Presente Neto Acumulado en el MCM</h4>
+            <p>Calcula el VPN evaluando la reinversión de los activos cada vez que finaliza su ciclo de vida individual.</p>
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:6px; font-family:monospace; margin:0.5rem 0; font-size:0.95rem;">
+                <strong>VPN_MCM = Σ VPN_Ciclo<sub>k</sub> * (1 + i)<sup>-t<sub>k</sub></sup></strong>
+            </div>
         `
     }
 };
