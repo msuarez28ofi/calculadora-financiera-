@@ -36,16 +36,16 @@
         <button id="nav-inicio" class="nav-btn active">Inicio y Glosario</button>
         
         <span class="nav-section-title">Modelos</span>
-        <button id="nav-simple" class="nav-btn" style="color: var(--color-simple); font-weight:700;">Interés Simple</button>
-        <button id="nav-compound" class="nav-btn" style="color: var(--color-compound); font-weight:700;">Interés Compuesto</button>
-        <button id="nav-single" class="nav-btn" style="color: var(--color-single); font-weight:700;">Pagos Únicos</button>
-        <button id="nav-uniform" class="nav-btn" style="color: var(--color-uniform); font-weight:700;">Series Uniformes</button>
-        <button id="nav-anualidades" class="nav-btn" style="color: var(--color-anualidades); font-weight:700;" onclick="irA('anualidades')">Anualidades y sus Tipos</button>
-        <button id="nav-rates" class="nav-btn" style="color: var(--color-rates); font-weight:700;">Tasas Equivalentes</button>
-        <button id="nav-costs" class="nav-btn" style="color: var(--color-costs); font-weight:700;">Estimación de Costos</button>
-        <button id="nav-capacidad" class="nav-btn" style="color: #00796B; font-weight:700;" onclick="irA('capacidad')">Capacidad de Producción</button>
-        <button id="nav-evaluacion" class="nav-btn" style="color: var(--color-evaluacion); font-weight:700;">Evaluación de Proyectos</button>
-        <button id="nav-alternativas" class="nav-btn" style="color: var(--color-alternativas); font-weight:700;">Selección de Alternativas</button>
+        <button id="nav-simple" class="nav-btn" style="color: blue; font-weight:700;">Interés Simple</button>
+        <button id="nav-compound" class="nav-btn" style="color: blue; font-weight:700;">Interés Compuesto</button>
+        <button id="nav-single" class="nav-btn" style="color: blue; font-weight:700;">Pagos Únicos</button>
+        <button id="nav-uniform" class="nav-btn" style="color: blue; font-weight:700;">Series Uniformes</button>
+        <button id="nav-anualidades" class="nav-btn" style="color: blue; font-weight:700;" onclick="irA('anualidades')">Anualidades y sus Tipos</button>
+        <button id="nav-rates" class="nav-btn" style="color: blue; font-weight:700;">Tasas Equivalentes</button>
+        <button id="nav-costs" class="nav-btn" style="color: blue; font-weight:700;">Estimación de Costos</button>
+        <button id="nav-capacidad" class="nav-btn" style="color: blue; font-weight:700;" onclick="irA('capacidad')">Capacidad de Producción</button>
+        <button id="nav-evaluacion" class="nav-btn" style="color: blue; font-weight:700;">Evaluación de Proyectos</button>
+        <button id="nav-alternativas" class="nav-btn" style="color: blue; font-weight:700;">Selección de Alternativas</button>
     </nav>
 </aside>
 
@@ -240,7 +240,6 @@
                     <div class="result-main-line"><span class="label" id="lbl-anu-res">Valor:</span><span class="value val-anualidades" id="res-anu-main">0.00</span></div>
                     <small id="res-anu-detalle" style="display:block; margin-bottom: 0.75rem; color: var(--text-muted);"></small>
                     <div id="divisas-anualidades" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-anu-ves">0.00 VES</span></div>
                         <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-anu-usd">$0.00 USD</span></div>
                         <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-anu-eur">€0.00 EUR</span></div>
                     </div>
@@ -286,7 +285,6 @@
                     <h3 class="results-title">Resultados Obtenidos</h3>
                     <div class="result-main-line"><span class="label" id="lbl-simple-res">Valor:</span><span class="value val-simple" id="res-simple-main">0.00</span></div>
                     <div id="divisas-simple" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-simple-ves">0.00 VES</span></div>
                         <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-simple-usd">$0.00 USD</span></div>
                         <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-simple-eur">€0.00 EUR</span></div>
                     </div>
@@ -331,7 +329,6 @@
                     <h3 class="results-title">Resultados Obtenidos</h3>
                     <div class="result-main-line"><span class="label" id="lbl-compound-res">Valor:</span><span class="value val-compound" id="res-compound-main">0.00</span></div>
                     <div id="divisas-compound" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-compound-ves">0.00 VES</span></div>
                         <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-compound-usd">$0.00 USD</span></div>
                         <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-compound-eur">€0.00 EUR</span></div>
                     </div>
@@ -377,7 +374,6 @@
                     <div class="result-main-line"><span class="label" id="lbl-single-res">Valor:</span><span class="value val-single" id="res-single-main">0.00</span></div>
                     <small id="res-single-detalle" style="display:block; margin-bottom: 0.75rem; color: var(--text-muted);"></small>
                     <div id="divisas-single" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-single-ves">0.00 VES</span></div>
                         <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-single-usd">$0.00 USD</span></div>
                         <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-single-eur">€0.00 EUR</span></div>
                     </div>
@@ -426,7 +422,6 @@
                     <div class="result-main-line"><span class="label" id="lbl-uniform-res">Valor:</span><span class="value val-uniform" id="res-uniform-main">0.00</span></div>
                     <small id="res-uniform-detalle" style="display:block; margin-bottom: 0.75rem; color: var(--text-muted);"></small>
                     <div id="divisas-uniform" class="currency-conversion-zone">
-                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-uniform-ves">0.00 VES</span></div>
                         <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-uniform-usd">$0.00 USD</span></div>
                         <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-uniform-eur">€0.00 EUR</span></div>
                     </div>
@@ -657,7 +652,6 @@
                     <div class="result-main-line"><span class="label" id="lbl-eval-res">Indicador:</span><span class="value val-evaluacion" id="res-eval-main">0.00</span></div>
                     <div id="res-eval-status-box" style="margin-top: 0.5rem; margin-bottom: 0.75rem; font-weight: bold; font-size: 0.95rem;">Decisión: <span id="res-eval-status">--</span></div>
                     <div id="divisas-evaluacion" class="currency-conversion-zone" style="border-top:1px dashed var(--border-neutral); padding-top:0.5rem;">
-                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-eval-ves">0.00 VES</span></div>
                         <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-eval-usd">$0.00 USD</span></div>
                         <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-eval-eur">€0.00 EUR</span></div>
                     </div>
@@ -710,8 +704,7 @@
                 <div id="results-alternativas" class="results-wrapper res-border-alternativas hidden">
                     <h3 class="results-title val-alternativas">Estudio de Reemplazo</h3>
                     <div class="result-main-line"><span class="label" id="lbl-alt-res">Resultado:</span><span class="value val-alternativas" id="res-alt-main">--</span></div>
-                    <div id="divisas-alternativas" class="currency-conversion-zone" style="border-top:1px dashed var(--border-neutral); padding-top:0.5rem;">
-                        <div class="conversion-row"><span class="label">Monto en VES:</span><span class="value" id="res-alt-ves">0.00 VES</span></div>
+                    <div id="divisas-alternativas" class="currency-conversion-zone" style="border-top:1px dashed var(--border-neutral); padding-top:0.5rem;">         
                         <div class="conversion-row"><span class="label">Monto en USD:</span><span class="value" id="res-alt-usd">$0.00 USD</span></div>
                         <div class="conversion-row"><span class="label">Monto en EUR:</span><span class="value" id="res-alt-eur">€0.00 EUR</span></div>
                     </div>
